@@ -11,6 +11,7 @@ using EntitasSystems = Entitas.Systems;
 using RMC.Common.Entitas.Systems.Destroy;
 using RMC.Common.Singleton;
 using UnityEngine.SceneManagement;
+using System;
 
 namespace RMC.EntitasTemplate.Entitas.Controllers
 {
@@ -35,9 +36,9 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 
 		// ------------------ Methods
 
-		protected void Awake () 
+		override protected void Awake () 
 		{
-
+			base.Awake();
 			Debug.Log ("GC.Awake()");
 			SetupPools ();
 			SetupSystems ();
@@ -51,7 +52,10 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 			{
 				_systems.Execute ();
 			}
-			
+		}
+		protected void OnDestroy () 
+		{
+			DestroyPoolObserver();
 		}
 
         private Bounds GetBounds()
@@ -131,34 +135,43 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 
 			//	Physics based - as an example.
 			_systems.Add (_pool.CreateSystem<CollisionSystem> ());
+
+			_systems.Initialize();
+			_systems.ActivateReactiveSystems();
+
 		}
+
+
+
+        private void DestroyPoolObserver()
+        {
+			if (_poolObserver != null)
+			{
+				_poolObserver.Deactivate();
+				
+				Destroy (_poolObserver.entitiesContainer);
+				_poolObserver = null;
+			}
+        }
 
 
 		//TODO: Restart is not complete. It doesn't truely represent a fresh start yet - srivello
 		public void Restart ()
 		{
-			return;
 			Debug.Log ("Restart()");
-
-			if (_poolObserver != null)
-			{
-				Destroy (_poolObserver.entitiesContainer.gameObject);
-				_poolObserver.Deactivate();
-				_poolObserver = null;
-			}
+			DestroyPoolObserver();
 
 			_systems.DeactivateReactiveSystems();
 			_pool.Reset();
 
 			GameController.Destroy();
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-			
-
 		}
 
-		public void TogglePause ()
+
+		//TODO: Pause is not working - srivello
+        public void TogglePause ()
 		{
-			
 			_isPaused = !_isPaused;	
 			Debug.Log ("TogglePause() _isPaused: " + _isPaused);	
 

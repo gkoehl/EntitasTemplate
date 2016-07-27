@@ -34,6 +34,9 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
             _scoreGroup = Pools.pool.GetGroup(Matcher.AllOf (Matcher.Game));
 			Debug.Log ("_scoreGroup: " + _scoreGroup.count);
 
+		// 	 pool.GetGroup(Matcher.Score).OnEntityAdded += (group, entity) => updateScore(entity.score.score);
+        // updateScore(pool.score.score);
+
 			//TODO: these listeners are not working
             _scoreGroup.OnEntityUpdated += OnScoreUpdated;
 			_scoreGroup.OnEntityAdded += OnScoreAdded;

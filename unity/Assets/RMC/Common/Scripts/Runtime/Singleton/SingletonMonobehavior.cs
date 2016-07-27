@@ -121,10 +121,10 @@ namespace RMC.Common.Singleton
 		
 		/// <summary>
 		/// Instantiate this instance. 
-		/// 
-		/// 	1. Creates GameObject with name of subclass
-		/// 	2. Persists by default (optional)
-		/// 	3. Predictable life-cycle.
+		/// 	1. Attempts to find an existing GameObject that matches (There will be 0 or 1 at any time)
+		/// 	2. Creates GameObject with name of subclass
+		/// 	3. Persists by default (optional)
+		/// 	4. Predictable life-cycle.
 		/// 
 		/// </summary>
 		public static T Instantiate ()
@@ -132,9 +132,18 @@ namespace RMC.Common.Singleton
 			
 			if (!IsInstantiated())
 			{
-				GameObject go = new GameObject ();
-				_Instance = go.AddComponent<T>();
-				go.name = _Instance.GetType().FullName;
+				GameObject go  = GameObject.FindObjectOfType<T>().gameObject;
+				if (go == null)
+				{
+					go 			= new GameObject ();
+					_Instance 	= go.AddComponent<T>();
+				}
+				else
+				{
+					_Instance = go.GetComponent<T>();
+				}
+				
+				go.name 		= _Instance.GetType().Name;
 				DontDestroyOnLoad (go);
 
 				if (OnInstantiateCompleted != null)
@@ -145,6 +154,10 @@ namespace RMC.Common.Singleton
 			return _Instance;
 		}
 
+		virtual protected void Awake()
+		{
+			Instantiate();
+		}
 
 		/// <summary>
 		/// Destroys all memory/references associated with the instance
@@ -158,8 +171,6 @@ namespace RMC.Common.Singleton
 				DestroyImmediate (_Instance.gameObject);
 				_Instance = null;
 			}
-
-
 		}
 		
 		//--------------------------------------
