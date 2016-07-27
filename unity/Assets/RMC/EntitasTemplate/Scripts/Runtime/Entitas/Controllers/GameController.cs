@@ -8,10 +8,11 @@ using RMC.Common.Entitas.Systems;
 
 // This is required because the entitas class path is similar to my namespaces. This prevents collision - srivello
 using EntitasSystems = Entitas.Systems;
+//
 using RMC.Common.Entitas.Systems.Destroy;
 using RMC.Common.Singleton;
 using UnityEngine.SceneManagement;
-using System;
+using RMC.Common.Entitas.Systems.GameState;
 
 namespace RMC.EntitasTemplate.Entitas.Controllers
 {
@@ -40,9 +41,16 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 		{
 			base.Awake();
 			Debug.Log ("GC.Awake()");
+
+			Application.targetFrameRate = 30;
+
 			SetupPools ();
+			SetupPoolObserver();
 			SetupSystems ();
 			SetupEntities ();
+
+
+			_pool.CreateEntity().willStartNextRound = true;
 
 		}
 
@@ -72,14 +80,28 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 			//	TODO: Not sure why I must do this, but I must or other classes can't do pool lookups - srivello
 			_pool = Pools.pool;
 			
+
+
+		}
+
+
+		private void SetupPoolObserver()
+		{
+
 			//	Optional debugging (Its helpful.)
 #if (!ENTITAS_DISABLE_VISUAL_DEBUGGING && UNITY_EDITOR)
-			 _poolObserver = new PoolObserver (_pool);
-
+			//TODO: Sometimes there are two of these in the hierarchy. Prevent that - srivello
+			PoolObserverBehaviour poolObserverBehaviour = GameObject.FindObjectOfType<PoolObserverBehaviour>();
+			if (poolObserverBehaviour == null)
+			{
+				_poolObserver = new PoolObserver (_pool);
+				//Set as a child to unclutter hierarchy
+				_poolObserver.entitiesContainer.transform.SetParent (transform);	
+			}
 			//Helpful if you want to see the pools in the hierarchy after you STOP the scene. Rarely needed - srivello
 			//Object.DontDestroyOnLoad (poolObserver.entitiesContainer);
 #endif
-
+			
 		}
 
 		private void SetupEntities ()
@@ -93,19 +115,13 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 			Entity entityWhite = _pool.CreateEntity ();
 			entityWhite.AddPosition (new Vector3 (25, 0, 0));
 			entityWhite.AddVelocity (Vector3.zero);
-			entityWhite.AddInput (0);
+			entityWhite.HasInput (true);
 			entityWhite.AddResource ("Prefabs/PaddleWhite");
-
-			Entity entityBall = _pool.CreateEntity ();
-			entityBall.AddPosition (new Vector3 (0,0,0));
-			entityBall.AddVelocity (new Vector3 (1f, 1f, 0));
-			entityBall.AddResource ("Prefabs/Ball");
-			entityBall.AddBoundsBounce(-1);
 
 			Entity entityBlack = _pool.CreateEntity ();
 			entityBlack.AddPosition (new Vector3 (-25, 0, 0));
 			entityBlack.AddVelocity (Vector3.zero);
-			entityBlack.AddAI (entityBall, 1, 0.5f);
+			entityBlack.AddAI (entityWhite, 1, 0.5f);
 			entityBlack.AddResource ("Prefabs/PaddleBlack");
 
 
@@ -119,7 +135,8 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 #else
 			_systems = new EntitasSystems();
 #endif
-
+			
+			_systems.Add (_pool.CreateSystem<StartNextRoundSystem> ());
 			_systems.Add (_pool.CreateSystem<VelocitySystem> ());
 			_systems.Add (_pool.CreateSystem<ViewSystem> ());
 
@@ -128,6 +145,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 
 			_systems.Add (_pool.CreateSystem<InputSystem> ());
 			_systems.Add (_pool.CreateSystem<AISystem> ());
+			_systems.Add (_pool.CreateSystem<GoalSystem> ());
 			_systems.Add (_pool.CreateSystem<DestroySystem> ());
 
 			//	Not physics based - as an example
@@ -149,7 +167,11 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 			{
 				_poolObserver.Deactivate();
 				
-				Destroy (_poolObserver.entitiesContainer);
+				if (_poolObserver.entitiesContainer != null)
+				{
+					Destroy (_poolObserver.entitiesContainer);
+				}
+				
 				_poolObserver = null;
 			}
         }

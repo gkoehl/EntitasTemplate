@@ -30,32 +30,27 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 
         protected void Start()
         {
-			Debug.Log ("CC.Start()");
-            _scoreGroup = Pools.pool.GetGroup(Matcher.AllOf (Matcher.Game));
-			Debug.Log ("_scoreGroup: " + _scoreGroup.count);
+            _scoreGroup = Pools.pool.GetGroup(Matcher.AllOf (Matcher.Game, Matcher.Score));
 
-		// 	 pool.GetGroup(Matcher.Score).OnEntityAdded += (group, entity) => updateScore(entity.score.score);
-        // updateScore(pool.score.score);
+            //listen
+            _scoreGroup.GetSingleEntity().OnComponentReplaced += OnComponentReplaced;
 
-			//TODO: these listeners are not working
-            _scoreGroup.OnEntityUpdated += OnScoreUpdated;
-			_scoreGroup.OnEntityAdded += OnScoreAdded;
-
+            //set first value
 			var scoreComponent = _scoreGroup.GetSingleEntity().score;
 			SetScore (scoreComponent.whiteScore, scoreComponent.blackScore);
-
-			_scoreGroup.GetSingleEntity().ReplaceScore (10,10);
-			_scoreGroup.GetSingleEntity().ReplaceScore (11,11);
 
 			_restartButton.onClick.AddListener (OnRestartButtonClicked);
 			_pauseButton.onClick.AddListener (OnPauseButtonClicked);
         }
 
-
+        private void OnComponentReplaced(Entity entity, int index, IComponent previousComponent, IComponent newComponent)
+        {
+           	SetScore(entity.score.whiteScore, entity.score.blackScore);
+        }
 
         private void SetScore(int whiteScore, int blackScore)
         {
-            _scoreText.text = string.Format ("White: {0}    Black: {0}", whiteScore, blackScore);
+            _scoreText.text = string.Format ("White: {0}    Black: {1}", whiteScore, blackScore);
         }
 
         protected void OnDestroy()
@@ -64,16 +59,6 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 			_pauseButton.onClick.RemoveListener (OnPauseButtonClicked);
         }
 
-        private void OnScoreUpdated(Group group, Entity entity, int index, IComponent previousComponent, IComponent newComponent)
-        {
-            Debug.Log ("score updated");
-        }
-        private void OnScoreAdded(Group @group, Entity entity, int index, IComponent component)
-        {
-			Debug.Log ("score change");
-			//var scoreComponent = entity.score;
-           	//SetScore(scoreComponent.whiteScore, scoreComponent.blackScore);
-        }
 
 		private void OnRestartButtonClicked()
         {

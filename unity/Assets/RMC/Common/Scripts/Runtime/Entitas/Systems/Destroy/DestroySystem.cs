@@ -11,12 +11,6 @@ namespace RMC.Common.Entitas.Systems.Destroy
     {
         private Pool _pool;
 
-        public void Execute(List<Entity> entities)
-        {
-            foreach (var e in entities)
-                _pool.DestroyEntity(e);
-        }
-
         public TriggerOnEvent trigger
         {
             get { return Matcher.Destroy.OnEntityAdded(); }
@@ -26,5 +20,16 @@ namespace RMC.Common.Entitas.Systems.Destroy
         {
             _pool = pool;
         }
+
+        public void Execute(List<Entity> entities)
+        {
+            foreach (var e in entities)
+            {
+                _pool.DestroyEntity(e);
+            }
+               
+        }
+
+
     }
 }

@@ -1,15 +1,14 @@
 ﻿using Entitas;
-using Entitas.CodeGenerator;
 
-namespace RMC.EntitasTemplate.Entitas.Components
+namespace RMC.EntitasTemplate.Entitas.Components.GameState
 {
 	/// <summary>
 	/// Replace me with description.
 	/// </summary>
-	[CustomPrefix("Has")]
-	public class InputComponent : IComponent
+	public class GoalComponent : IComponent
 	{
 		// ------------------ Serialized fields and properties
+		public int pointsPerGoal = 1;
 
 	}
 }

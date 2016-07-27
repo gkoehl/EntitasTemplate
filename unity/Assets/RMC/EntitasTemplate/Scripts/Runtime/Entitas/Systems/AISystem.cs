@@ -18,7 +18,8 @@ namespace RMC.Common.Entitas.Systems
 		// ------------------ Serialized fields and properties
 
 		// ------------------ Non-serialized fields
-		private Group _group;
+		private Group _aiGroup;
+
 
 		// ------------------ Methods
 
@@ -27,27 +28,65 @@ namespace RMC.Common.Entitas.Systems
 		public void SetPool(Pool pool) 
 		{
 			// Get the group of entities that have a Move and Position component
-			_group = pool.GetGroup(Matcher.AllOf(Matcher.AI, Matcher.Position, Matcher.Velocity));
+			_aiGroup = pool.GetGroup(Matcher.AllOf(Matcher.AI, Matcher.Position, Matcher.Velocity));
+			
+			Group ballCreatedGroup = pool.GetGroup(Matcher.AllOf(Matcher.Goal, Matcher.BoundsBounce).NoneOf (Matcher.Destroy));
+			ballCreatedGroup.OnEntityAdded += OnBallEntityCreated;
 
+			Group ballDestroyGroup = pool.GetGroup(Matcher.AllOf(Matcher.Goal, Matcher.Destroy));
+			ballDestroyGroup.OnEntityAdded += OnBallEntityDestroyed;
+			
+	
+
+		}
+
+		//Whenever a new ball is created, follow it
+		protected virtual void OnBallEntityCreated(Group collection, Entity ballEntity, int index, IComponent component)
+		{
+			//Debug.Log ("created" + ballEntity);
+			foreach (var e in _aiGroup.GetEntities()) 
+			{
+				e.ReplaceAI (ballEntity, e.aI.deadZoneY, e.aI.velocityY);
+			}
+		}
+
+		//whenever a ball is destroyed, stop following it.
+		protected virtual void OnBallEntityDestroyed(Group collection, Entity ballEntity, int index, IComponent component)
+		{
+			//Debug.Log ("destroy" + ballEntity);
+			foreach (var e in _aiGroup.GetEntities()) 
+			{
+				e.ReplaceAI (null, e.aI.deadZoneY, e.aI.velocityY);
+				e.ReplaceVelocity ( new Vector3 (0,0,0));
+			}
 		}
 
 		public void Execute() 
 		{
-			foreach (var e in _group.GetEntities()) 
+
+			foreach (var e in _aiGroup.GetEntities()) 
 			{
 				Vector3 nextVelocity = Vector3.zero;
-				PositionComponent targetPositionComponent = (PositionComponent)e.aI.targetEntity.GetComponent (ComponentIds.Position);
-				Vector3 targetPosition = targetPositionComponent.position;
-				if (targetPosition.y > e.position.position.y + e.aI.deadZoneY) 
+		
+				Entity targetEntity = e.aI.targetEntity;
+				if (targetEntity != null)
 				{
-					nextVelocity = new Vector3 (0, e.aI.velocityY, 0);
-				} 
-				else if (targetPosition.y < e.position.position.y - e.aI.deadZoneY) 
-				{
-					nextVelocity = new Vector3 (0, -e.aI.velocityY, 0);
+
+					PositionComponent targetPositionComponent = (PositionComponent)targetEntity.GetComponent (ComponentIds.Position);
+
+					Vector3 targetPosition = targetPositionComponent.position;
+					if (targetPosition.y > e.position.position.y + e.aI.deadZoneY) 
+					{
+						nextVelocity = new Vector3 (0, e.aI.velocityY, 0);
+					} 
+					else if (targetPosition.y < e.position.position.y - e.aI.deadZoneY) 
+					{
+						nextVelocity = new Vector3 (0, -e.aI.velocityY, 0);
+					}
+
+					e.ReplaceVelocity(nextVelocity);
 				}
 
-				e.ReplaceVelocity(nextVelocity);
 			}
 		}
 

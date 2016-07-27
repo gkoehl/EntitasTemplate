@@ -42,32 +42,18 @@ namespace RMC.Common.Entitas.Systems
 				float bounceAmount = e.boundsBounce.bounceAmount;
 				Bounds bounds = _gameBounds.GetSingleEntity().bounds.bounds;
 
-					
-
 				if (e.position.position.y < bounds.min.y) 
 				{
 					nextVelocity = new Vector3 (nextVelocity.x, nextVelocity.y * bounceAmount, nextVelocity.z);
-
-					ChangeScore();
 				} 
 				else if (e.position.position.y > bounds.max.y)
 				{
 					nextVelocity = new Vector3 (nextVelocity.x, nextVelocity.y * bounceAmount, nextVelocity.z);
-					ChangeScore();
 				}
 
 				e.ReplaceVelocity(nextVelocity);
 			}
 		}
 
-        private void ChangeScore()
-        {
-			
-            var whiteScore = _gameScore.GetSingleEntity().score.whiteScore + 1;
-			var blackScore = _gameScore.GetSingleEntity().score.blackScore - 1;
-			_gameScore.GetSingleEntity().ReplaceScore (whiteScore, blackScore);
-
-			//Debug.Log ("is2 : " + _gameScore.GetSingleEntity().score.whiteScore);
-        }
     }
 }

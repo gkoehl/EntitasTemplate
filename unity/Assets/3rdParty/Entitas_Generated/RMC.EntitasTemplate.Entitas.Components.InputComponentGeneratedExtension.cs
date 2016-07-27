@@ -8,25 +8,24 @@
 //------------------------------------------------------------------------------
 namespace Entitas {
     public partial class Entity {
-        public RMC.EntitasTemplate.Entitas.Components.InputComponent input { get { return (RMC.EntitasTemplate.Entitas.Components.InputComponent)GetComponent(ComponentIds.Input); } }
+        static readonly RMC.EntitasTemplate.Entitas.Components.InputComponent inputComponent = new RMC.EntitasTemplate.Entitas.Components.InputComponent();
 
-        public bool hasInput { get { return HasComponent(ComponentIds.Input); } }
-
-        public Entity AddInput(int newDummy) {
-            var component = CreateComponent<RMC.EntitasTemplate.Entitas.Components.InputComponent>(ComponentIds.Input);
-            component.dummy = newDummy;
-            return AddComponent(ComponentIds.Input, component);
+        public bool hasInput {
+            get { return HasComponent(ComponentIds.Input); }
+            set {
+                if (value != hasInput) {
+                    if (value) {
+                        AddComponent(ComponentIds.Input, inputComponent);
+                    } else {
+                        RemoveComponent(ComponentIds.Input);
+                    }
+                }
+            }
         }
 
-        public Entity ReplaceInput(int newDummy) {
-            var component = CreateComponent<RMC.EntitasTemplate.Entitas.Components.InputComponent>(ComponentIds.Input);
-            component.dummy = newDummy;
-            ReplaceComponent(ComponentIds.Input, component);
+        public Entity HasInput(bool value) {
+            hasInput = value;
             return this;
-        }
-
-        public Entity RemoveInput() {
-            return RemoveComponent(ComponentIds.Input);
         }
     }
 

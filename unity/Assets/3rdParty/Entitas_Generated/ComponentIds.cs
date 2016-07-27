@@ -11,28 +11,34 @@ public static class ComponentIds {
     public const int BoundsBounce = 1;
     public const int Bounds = 2;
     public const int Collision = 3;
-    public const int Destroy = 4;
-    public const int Game = 5;
-    public const int Input = 6;
-    public const int Position = 7;
-    public const int Resource = 8;
-    public const int Score = 9;
-    public const int Velocity = 10;
-    public const int View = 11;
+    public const int CreateNextBall = 4;
+    public const int Destroy = 5;
+    public const int Game = 6;
+    public const int Goal = 7;
+    public const int Input = 8;
+    public const int Position = 9;
+    public const int Resource = 10;
+    public const int Score = 11;
+    public const int StartNextRound = 12;
+    public const int Velocity = 13;
+    public const int View = 14;
 
-    public const int TotalComponents = 12;
+    public const int TotalComponents = 15;
 
     public static readonly string[] componentNames = {
         "AI",
         "BoundsBounce",
         "Bounds",
         "Collision",
+        "CreateNextBall",
         "Destroy",
         "Game",
+        "Goal",
         "Input",
         "Position",
         "Resource",
         "Score",
+        "StartNextRound",
         "Velocity",
         "View"
     };
@@ -42,12 +48,15 @@ public static class ComponentIds {
         typeof(RMC.EntitasTemplate.Entitas.Components.BoundsBounceComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.BoundsComponent),
         typeof(RMC.Common.Entitas.Components.Collision.CollisionComponent),
+        typeof(RMC.EntitasTemplate.Entitas.Components.GameState.CreateNextBall),
         typeof(RMC.Common.Entitas.Components.Destroy.DestroyComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.GameComponent),
+        typeof(RMC.EntitasTemplate.Entitas.Components.GameState.GoalComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.InputComponent),
         typeof(RMC.Common.Entitas.Components.Transform.PositionComponent),
         typeof(RMC.Common.Entitas.Components.Render.ResourceComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.ScoreComponent),
+        typeof(RMC.EntitasTemplate.Entitas.Components.GameState.StartNextRoundComponent),
         typeof(RMC.Common.Entitas.Components.Transform.VelocityComponent),
         typeof(RMC.Common.Entitas.Components.Render.ViewComponent)
     };
