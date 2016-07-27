@@ -1,7 +1,7 @@
 ﻿using Entitas;
 using UnityEngine;
 
-namespace RMC.Common.Entitas.Components
+namespace RMC.Common.Entitas.Components.Render
 {
 	/// <summary>
 	/// Replace me with description.

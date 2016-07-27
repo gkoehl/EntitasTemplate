@@ -1,6 +1,7 @@
 ﻿using Entitas;
+using UnityEngine;
 
-namespace RMC.Common.Entitas.Components
+namespace RMC.Common.Entitas.Components.Transform
 {
 	/// <summary>
 	/// Replace me with description.
@@ -8,9 +9,7 @@ namespace RMC.Common.Entitas.Components
 	public class VelocityComponent : IComponent
 	{
 		// ------------------ Serialized fields and properties
-		public float x;
-		public float y;
-		public float z;
+		public Vector3 velocity;
 
 	}
 }

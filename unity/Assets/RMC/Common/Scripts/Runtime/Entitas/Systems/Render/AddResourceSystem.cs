@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using Entitas;
 using UnityEngine;
+using RMC.Common.Entitas.Components.Transform;
 
-
-namespace RMC.Common.Entitas.Systems
+namespace RMC.Common.Entitas.Systems.Render
 {
 	/// <summary>
 	/// Replace me with description.
@@ -26,7 +26,7 @@ namespace RMC.Common.Entitas.Systems
 
 
 		// ------------------ Non-serialized fields
-		private readonly Transform _viewContainer = new GameObject("Views").transform;
+		private readonly UnityEngine.Transform _viewContainer = new GameObject("Views").transform;
 
 		// ------------------ Methods
 
@@ -35,7 +35,6 @@ namespace RMC.Common.Entitas.Systems
 			foreach (var e in entities) 
 			{
 	            var res = Resources.Load<GameObject>(e.resource.name);
-				Debug.Log ("added");
 	            GameObject gameObject = null;
 	            try {
 	                gameObject = UnityEngine.Object.Instantiate(res);

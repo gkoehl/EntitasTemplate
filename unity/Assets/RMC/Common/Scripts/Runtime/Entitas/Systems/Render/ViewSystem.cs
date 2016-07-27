@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Entitas;
 using UnityEngine;
 
-namespace RMC.Common.Entitas.Systems
+namespace RMC.Common.Entitas.Systems.Render
 {
 	
 	public class ViewSystem : IReactiveSystem, IEnsureComponents 
@@ -24,8 +24,7 @@ namespace RMC.Common.Entitas.Systems
 			//Debug.Log ("pos ex");
 	        foreach (var e in entities) 
 			{
-	            var pos = e.position;
-	            e.view.gameObject.transform.position = new Vector3(pos.x, pos.y, pos.z);
+	            e.view.gameObject.transform.position = e.position.position;
 	        }
 	    }
 	}

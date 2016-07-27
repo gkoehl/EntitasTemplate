@@ -8,29 +8,47 @@
 //------------------------------------------------------------------------------
 public static class ComponentIds {
     public const int AI = 0;
-    public const int Input = 1;
-    public const int Position = 2;
-    public const int Resource = 3;
-    public const int Velocity = 4;
-    public const int View = 5;
+    public const int BoundsBounce = 1;
+    public const int Bounds = 2;
+    public const int Collision = 3;
+    public const int Destroy = 4;
+    public const int Game = 5;
+    public const int Input = 6;
+    public const int Position = 7;
+    public const int Resource = 8;
+    public const int Score = 9;
+    public const int Velocity = 10;
+    public const int View = 11;
 
-    public const int TotalComponents = 6;
+    public const int TotalComponents = 12;
 
     public static readonly string[] componentNames = {
         "AI",
+        "BoundsBounce",
+        "Bounds",
+        "Collision",
+        "Destroy",
+        "Game",
         "Input",
         "Position",
         "Resource",
+        "Score",
         "Velocity",
         "View"
     };
 
     public static readonly System.Type[] componentTypes = {
         typeof(RMC.EntitasTemplate.Entitas.Components.AIComponent),
+        typeof(RMC.EntitasTemplate.Entitas.Components.BoundsBounceComponent),
+        typeof(RMC.EntitasTemplate.Entitas.Components.BoundsComponent),
+        typeof(RMC.Common.Entitas.Components.Collision.CollisionComponent),
+        typeof(RMC.Common.Entitas.Components.Destroy.DestroyComponent),
+        typeof(RMC.EntitasTemplate.Entitas.Components.GameComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.InputComponent),
-        typeof(RMC.Common.Entitas.Components.PositionComponent),
-        typeof(RMC.Common.Entitas.Components.ResourceComponent),
-        typeof(RMC.Common.Entitas.Components.VelocityComponent),
-        typeof(RMC.Common.Entitas.Components.ViewComponent)
+        typeof(RMC.Common.Entitas.Components.Transform.PositionComponent),
+        typeof(RMC.Common.Entitas.Components.Render.ResourceComponent),
+        typeof(RMC.EntitasTemplate.Entitas.Components.ScoreComponent),
+        typeof(RMC.Common.Entitas.Components.Transform.VelocityComponent),
+        typeof(RMC.Common.Entitas.Components.Render.ViewComponent)
     };
 }

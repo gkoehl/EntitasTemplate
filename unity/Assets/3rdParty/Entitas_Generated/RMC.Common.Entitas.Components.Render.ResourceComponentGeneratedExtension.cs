@@ -8,18 +8,18 @@
 //------------------------------------------------------------------------------
 namespace Entitas {
     public partial class Entity {
-        public RMC.Common.Entitas.Components.ResourceComponent resource { get { return (RMC.Common.Entitas.Components.ResourceComponent)GetComponent(ComponentIds.Resource); } }
+        public RMC.Common.Entitas.Components.Render.ResourceComponent resource { get { return (RMC.Common.Entitas.Components.Render.ResourceComponent)GetComponent(ComponentIds.Resource); } }
 
         public bool hasResource { get { return HasComponent(ComponentIds.Resource); } }
 
         public Entity AddResource(string newName) {
-            var component = CreateComponent<RMC.Common.Entitas.Components.ResourceComponent>(ComponentIds.Resource);
+            var component = CreateComponent<RMC.Common.Entitas.Components.Render.ResourceComponent>(ComponentIds.Resource);
             component.name = newName;
             return AddComponent(ComponentIds.Resource, component);
         }
 
         public Entity ReplaceResource(string newName) {
-            var component = CreateComponent<RMC.Common.Entitas.Components.ResourceComponent>(ComponentIds.Resource);
+            var component = CreateComponent<RMC.Common.Entitas.Components.Render.ResourceComponent>(ComponentIds.Resource);
             component.name = newName;
             ReplaceComponent(ComponentIds.Resource, component);
             return this;

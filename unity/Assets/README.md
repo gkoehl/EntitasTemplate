@@ -20,6 +20,14 @@ Structure
 * "/Assets/RMC/Prototype/Common/Scripts/Runtime/" contains code that could be reused across various Entitas games<BR>
 * "/Assets/RMC/Prototype/EntitasTemplate/Scripts/Runtime/" contains game-specific code
 
+TODO
+=============
+* Destroy entities (e.g. collisions)
+* Add restart button
+* Add pause button
+* make this work ENTITAS_DISABLE_VISUAL_DEBUGGING
+* use 'private' explicitely everywhere
+
 
 
 

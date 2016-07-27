@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using Entitas;
 using UnityEngine;
-using RMC.Common.Entitas.Components;
+using RMC.Common.Entitas.Components.Render;
 
 
-namespace RMC.Common.Entitas.Systems
+namespace RMC.Common.Entitas.Systems.Render
 {
 		
 	public class RemoveResourceSystem : IMultiReactiveSystem, ISetPool, IEnsureComponents 
@@ -15,8 +15,8 @@ namespace RMC.Common.Entitas.Systems
 
 		// ------------------ Serialized fields and properties
 		public TriggerOnEvent[] triggers { get { return new [] {
-					Matcher.Resource.OnEntityRemoved(),
-					Matcher.AllOf(Matcher.Resource).OnEntityAdded()
+					Matcher.Resource.OnEntityRemoved() //,
+					//Matcher.AllOf(Matcher.Resource).OnEntityAdded()
 				}; } }
 
 		public IMatcher ensureComponents { get { return Matcher.View; } }
@@ -30,14 +30,17 @@ namespace RMC.Common.Entitas.Systems
 	    }
 
 	
-	    public void Execute(List<Entity> entities) {
-	        foreach (var e in entities) {
+	    public void Execute(List<Entity> entities) 
+		{
+	        foreach (var e in entities) 
+			{
 	            e.RemoveView();
 	        }
 	    }
 
 
-		private void onEntityRemoved(Group group, Entity entity, int index, IComponent component) {
+		private void onEntityRemoved(Group group, Entity entity, int index, IComponent component) 
+		{
 			var viewComponent = (ViewComponent)component;
 			Object.Destroy(viewComponent.gameObject);
 		}

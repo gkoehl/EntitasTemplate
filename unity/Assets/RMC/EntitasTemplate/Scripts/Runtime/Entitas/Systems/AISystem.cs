@@ -1,6 +1,8 @@
 ﻿using Entitas;
 using UnityEngine;
 using RMC.Common.Entitas.Components;
+using RMC.Common.Entitas.Components.Render;
+using RMC.Common.Entitas.Components.Transform;
 
 namespace RMC.Common.Entitas.Systems
 {
@@ -31,21 +33,21 @@ namespace RMC.Common.Entitas.Systems
 
 		public void Execute() 
 		{
-
 			foreach (var e in _group.GetEntities()) 
 			{
-				Vector3 velocity = Vector3.zero;
-				PositionComponent targetPosition = (PositionComponent)e.aI.targetEntity.GetComponent (ComponentIds.Position);
-				if (targetPosition.y > e.position.y + e.aI.deadZoneY) 
+				Vector3 nextVelocity = Vector3.zero;
+				PositionComponent targetPositionComponent = (PositionComponent)e.aI.targetEntity.GetComponent (ComponentIds.Position);
+				Vector3 targetPosition = targetPositionComponent.position;
+				if (targetPosition.y > e.position.position.y + e.aI.deadZoneY) 
 				{
-					velocity = new Vector3 (0, e.aI.velocityY, 0);
+					nextVelocity = new Vector3 (0, e.aI.velocityY, 0);
 				} 
-				else if (targetPosition.y < e.position.y - e.aI.deadZoneY) 
+				else if (targetPosition.y < e.position.position.y - e.aI.deadZoneY) 
 				{
-					velocity = new Vector3 (0, -e.aI.velocityY, 0);
+					nextVelocity = new Vector3 (0, -e.aI.velocityY, 0);
 				}
 
-				e.ReplaceVelocity(velocity.x, velocity.y, velocity.z);
+				e.ReplaceVelocity(nextVelocity);
 			}
 		}
 

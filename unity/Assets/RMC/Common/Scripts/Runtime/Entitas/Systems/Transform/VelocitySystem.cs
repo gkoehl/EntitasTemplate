@@ -1,7 +1,7 @@
 ﻿using Entitas;
 using UnityEngine;
 
-namespace RMC.Common.Entitas.Systems
+namespace RMC.Common.Entitas.Systems.Transform
 {
 	/// <summary>
 	/// Replace me with description.
@@ -13,9 +13,6 @@ namespace RMC.Common.Entitas.Systems
 		// ------------------ Events
 
 		// ------------------ Serialized fields and properties
-		public float x;
-		public float y;
-		public float z;
 
 		// ------------------ Non-serialized fields
 		private Group _group;
@@ -26,10 +23,9 @@ namespace RMC.Common.Entitas.Systems
 		// pool.CreateSystem<VelocitySystem>();
 		public void SetPool(Pool pool) 
 		{
-			// Get the group of entities that have a Move and Position component
+			// Get the group of entities that have a Move and position component
 			_group = pool.GetGroup(Matcher.AllOf(Matcher.Velocity, Matcher.Position));
 
-			Debug.Log ("Velocity.SetPool(), group.count : " + _group.count);
 		}
 
 		public void Execute() 
@@ -38,9 +34,14 @@ namespace RMC.Common.Entitas.Systems
 
 			foreach (var e in _group.GetEntities()) 
 			{
-				var velocity = e.velocity;
-				var pos = e.position;
-				e.ReplacePosition(pos.x + velocity.x, pos.y + velocity.y, pos.z + velocity.z);
+				Vector3 velocity = e.velocity.velocity;
+				Vector3 position = e.position.position;
+				e.ReplacePosition(new Vector3 (position.x + velocity.x, position.y + velocity.y, position.z + velocity.z));
+
+				// if (e.positionition.y > 1.2 && e.hasResource)
+				// {
+				// 	e.RemoveResource();
+				// }
 			}
 		}
 

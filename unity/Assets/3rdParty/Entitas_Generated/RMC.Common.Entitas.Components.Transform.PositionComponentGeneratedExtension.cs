@@ -8,23 +8,19 @@
 //------------------------------------------------------------------------------
 namespace Entitas {
     public partial class Entity {
-        public RMC.Common.Entitas.Components.PositionComponent position { get { return (RMC.Common.Entitas.Components.PositionComponent)GetComponent(ComponentIds.Position); } }
+        public RMC.Common.Entitas.Components.Transform.PositionComponent position { get { return (RMC.Common.Entitas.Components.Transform.PositionComponent)GetComponent(ComponentIds.Position); } }
 
         public bool hasPosition { get { return HasComponent(ComponentIds.Position); } }
 
-        public Entity AddPosition(float newX, float newY, float newZ) {
-            var component = CreateComponent<RMC.Common.Entitas.Components.PositionComponent>(ComponentIds.Position);
-            component.x = newX;
-            component.y = newY;
-            component.z = newZ;
+        public Entity AddPosition(UnityEngine.Vector3 newPosition) {
+            var component = CreateComponent<RMC.Common.Entitas.Components.Transform.PositionComponent>(ComponentIds.Position);
+            component.position = newPosition;
             return AddComponent(ComponentIds.Position, component);
         }
 
-        public Entity ReplacePosition(float newX, float newY, float newZ) {
-            var component = CreateComponent<RMC.Common.Entitas.Components.PositionComponent>(ComponentIds.Position);
-            component.x = newX;
-            component.y = newY;
-            component.z = newZ;
+        public Entity ReplacePosition(UnityEngine.Vector3 newPosition) {
+            var component = CreateComponent<RMC.Common.Entitas.Components.Transform.PositionComponent>(ComponentIds.Position);
+            component.position = newPosition;
             ReplaceComponent(ComponentIds.Position, component);
             return this;
         }

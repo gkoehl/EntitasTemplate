@@ -8,18 +8,18 @@
 //------------------------------------------------------------------------------
 namespace Entitas {
     public partial class Entity {
-        public RMC.Common.Entitas.Components.ViewComponent view { get { return (RMC.Common.Entitas.Components.ViewComponent)GetComponent(ComponentIds.View); } }
+        public RMC.Common.Entitas.Components.Render.ViewComponent view { get { return (RMC.Common.Entitas.Components.Render.ViewComponent)GetComponent(ComponentIds.View); } }
 
         public bool hasView { get { return HasComponent(ComponentIds.View); } }
 
         public Entity AddView(UnityEngine.GameObject newGameObject) {
-            var component = CreateComponent<RMC.Common.Entitas.Components.ViewComponent>(ComponentIds.View);
+            var component = CreateComponent<RMC.Common.Entitas.Components.Render.ViewComponent>(ComponentIds.View);
             component.gameObject = newGameObject;
             return AddComponent(ComponentIds.View, component);
         }
 
         public Entity ReplaceView(UnityEngine.GameObject newGameObject) {
-            var component = CreateComponent<RMC.Common.Entitas.Components.ViewComponent>(ComponentIds.View);
+            var component = CreateComponent<RMC.Common.Entitas.Components.Render.ViewComponent>(ComponentIds.View);
             component.gameObject = newGameObject;
             ReplaceComponent(ComponentIds.View, component);
             return this;

@@ -8,23 +8,19 @@
 //------------------------------------------------------------------------------
 namespace Entitas {
     public partial class Entity {
-        public RMC.Common.Entitas.Components.VelocityComponent velocity { get { return (RMC.Common.Entitas.Components.VelocityComponent)GetComponent(ComponentIds.Velocity); } }
+        public RMC.Common.Entitas.Components.Transform.VelocityComponent velocity { get { return (RMC.Common.Entitas.Components.Transform.VelocityComponent)GetComponent(ComponentIds.Velocity); } }
 
         public bool hasVelocity { get { return HasComponent(ComponentIds.Velocity); } }
 
-        public Entity AddVelocity(float newX, float newY, float newZ) {
-            var component = CreateComponent<RMC.Common.Entitas.Components.VelocityComponent>(ComponentIds.Velocity);
-            component.x = newX;
-            component.y = newY;
-            component.z = newZ;
+        public Entity AddVelocity(UnityEngine.Vector3 newVelocity) {
+            var component = CreateComponent<RMC.Common.Entitas.Components.Transform.VelocityComponent>(ComponentIds.Velocity);
+            component.velocity = newVelocity;
             return AddComponent(ComponentIds.Velocity, component);
         }
 
-        public Entity ReplaceVelocity(float newX, float newY, float newZ) {
-            var component = CreateComponent<RMC.Common.Entitas.Components.VelocityComponent>(ComponentIds.Velocity);
-            component.x = newX;
-            component.y = newY;
-            component.z = newZ;
+        public Entity ReplaceVelocity(UnityEngine.Vector3 newVelocity) {
+            var component = CreateComponent<RMC.Common.Entitas.Components.Transform.VelocityComponent>(ComponentIds.Velocity);
+            component.velocity = newVelocity;
             ReplaceComponent(ComponentIds.Velocity, component);
             return this;
         }
