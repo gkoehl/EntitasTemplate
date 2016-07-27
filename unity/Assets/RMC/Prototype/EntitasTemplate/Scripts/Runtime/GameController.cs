@@ -2,7 +2,7 @@
 using System.Collections;
 using Entitas;
 using Entitas.Unity.VisualDebugging;
-using RMC.EntitasTemplate.Entias.Systems;
+using RMC.Common.Entitas.Systems;
 
 
 namespace RMC.EntitasTemplate.Entitas
@@ -28,8 +28,9 @@ namespace RMC.EntitasTemplate.Entitas
 		protected void Start () {
 
 			SetupPools ();
-			SetupEntities ();
 			SetupSystems ();
+			SetupEntities ();
+
 		}
 
 		protected void Update () 
@@ -52,15 +53,37 @@ namespace RMC.EntitasTemplate.Entitas
 
 		private void SetupEntities ()
 		{
-			var e = _pool.CreateEntity ();
-			e.AddPosition (1, 2, 3);
-			e.AddMove (10, 10, 10);
-			Debug.Log ("Entity Position.y : " + e.position.y);
+
+
+			var entityWhite = _pool.CreateEntity ();
+			entityWhite.AddPosition (25, 0, 0);
+			entityWhite.AddVelocity (0, 0, 0);
+			entityWhite.AddInput (0);
+			entityWhite.AddResource ("Prefabs/PaddleWhite");
+
+			var entityBlack = _pool.CreateEntity ();
+			entityBlack.AddPosition (-25, 0, 0);
+			entityBlack.AddVelocity (0,0,0);
+			entityBlack.AddAI (entityWhite, 1, 0.5f);
+			entityBlack.AddResource ("Prefabs/PaddleBlack");
 		}
 
 		private void SetupSystems ()
 		{
-			_systems = new Systems ().Add (_pool.CreateSystem<MoveSystem> ());
+
+#if (UNITY_EDITOR)
+			_systems = new DebugSystems();
+#else
+			_systems = new Systems();
+#endif
+
+			_systems = new Systems ();
+			_systems.Add (_pool.CreateSystem<VelocitySystem> ());
+			_systems.Add (_pool.CreateSystem<ViewSystem> ());
+			_systems.Add (_pool.CreateSystem<AddResourceSystem> ());
+			_systems.Add (_pool.CreateSystem<InputSystem> ());
+			_systems.Add (_pool.CreateSystem<AISystem> ());
+			//_systems.Add (_pool.CreateSystem<RemoveResourceSystem> ());
 		}
 
 	}

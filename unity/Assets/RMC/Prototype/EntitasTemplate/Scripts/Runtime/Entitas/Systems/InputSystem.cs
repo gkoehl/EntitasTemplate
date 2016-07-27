@@ -1,21 +1,18 @@
 ﻿using Entitas;
 using UnityEngine;
 
-namespace RMC.EntitasTemplate.Entias.Systems
+namespace RMC.Common.Entitas.Systems
 {
 	/// <summary>
 	/// Replace me with description.
 	/// </summary>
-	public class MoveSystem : IExecuteSystem, ISetPool 
+	public class InputSystem : IExecuteSystem, ISetPool 
 	{
 		// ------------------ Constants and statics
 
 		// ------------------ Events
 
 		// ------------------ Serialized fields and properties
-		public float x;
-		public float y;
-		public float z;
 
 		// ------------------ Non-serialized fields
 		private Group _group;
@@ -27,18 +24,18 @@ namespace RMC.EntitasTemplate.Entias.Systems
 		public void SetPool(Pool pool) 
 		{
 			// Get the group of entities that have a Move and Position component
-			_group = pool.GetGroup(Matcher.AllOf(Matcher.Move, Matcher.Position));
+			_group = pool.GetGroup(Matcher.AllOf(Matcher.Input, Matcher.Position, Matcher.Velocity));
 
-			Debug.Log ("MoveSystem.SetPool(), group.count : " + _group.count);
 		}
 
 		public void Execute() 
 		{
+			//Debug.Log ("MoveSystem.SetPool(), group.count : " + _group.count);
+
 			foreach (var e in _group.GetEntities()) 
 			{
-				var move = e.move;
-				var pos = e.position;
-				e.ReplacePosition(pos.x, pos.y + move.y, pos.z);
+				var velocity = new Vector3 (0, Input.GetAxis ("Vertical"), 0);
+				e.ReplaceVelocity(velocity.x, velocity.y, velocity.z);
 			}
 		}
 

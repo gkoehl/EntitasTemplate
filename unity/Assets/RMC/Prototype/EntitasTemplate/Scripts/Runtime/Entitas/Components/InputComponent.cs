@@ -1,16 +1,14 @@
 ﻿using Entitas;
 
-namespace RMC.EntitasTemplate.Entias.Components
+namespace RMC.EntitasTemplate.Entitas.Components
 {
 	/// <summary>
 	/// Replace me with description.
 	/// </summary>
-	public class PositionComponent : IComponent
+	public class InputComponent : IComponent
 	{
 		// ------------------ Serialized fields and properties
-		public float x;
-		public float y;
-		public float z;
+		public int dummy;
 
 	}
 }

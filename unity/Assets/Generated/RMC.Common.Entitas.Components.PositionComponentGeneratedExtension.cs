@@ -8,12 +8,12 @@
 //------------------------------------------------------------------------------
 namespace Entitas {
     public partial class Entity {
-        public RMC.EntitasTemplate.Entias.Components.PositionComponent position { get { return (RMC.EntitasTemplate.Entias.Components.PositionComponent)GetComponent(ComponentIds.Position); } }
+        public RMC.Common.Entitas.Components.PositionComponent position { get { return (RMC.Common.Entitas.Components.PositionComponent)GetComponent(ComponentIds.Position); } }
 
         public bool hasPosition { get { return HasComponent(ComponentIds.Position); } }
 
         public Entity AddPosition(float newX, float newY, float newZ) {
-            var component = CreateComponent<RMC.EntitasTemplate.Entias.Components.PositionComponent>(ComponentIds.Position);
+            var component = CreateComponent<RMC.Common.Entitas.Components.PositionComponent>(ComponentIds.Position);
             component.x = newX;
             component.y = newY;
             component.z = newZ;
@@ -21,7 +21,7 @@ namespace Entitas {
         }
 
         public Entity ReplacePosition(float newX, float newY, float newZ) {
-            var component = CreateComponent<RMC.EntitasTemplate.Entias.Components.PositionComponent>(ComponentIds.Position);
+            var component = CreateComponent<RMC.Common.Entitas.Components.PositionComponent>(ComponentIds.Position);
             component.x = newX;
             component.y = newY;
             component.z = newZ;

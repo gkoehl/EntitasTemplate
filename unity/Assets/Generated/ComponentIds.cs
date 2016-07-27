@@ -7,18 +7,30 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 public static class ComponentIds {
-    public const int Move = 0;
-    public const int Position = 1;
+    public const int AI = 0;
+    public const int Input = 1;
+    public const int Position = 2;
+    public const int Resource = 3;
+    public const int Velocity = 4;
+    public const int View = 5;
 
-    public const int TotalComponents = 2;
+    public const int TotalComponents = 6;
 
     public static readonly string[] componentNames = {
-        "Move",
-        "Position"
+        "AI",
+        "Input",
+        "Position",
+        "Resource",
+        "Velocity",
+        "View"
     };
 
     public static readonly System.Type[] componentTypes = {
-        typeof(RMC.EntitasTemplate.Entias.Components.MoveComponent),
-        typeof(RMC.EntitasTemplate.Entias.Components.PositionComponent)
+        typeof(RMC.EntitasTemplate.Entitas.Components.AIComponent),
+        typeof(RMC.EntitasTemplate.Entitas.Components.InputComponent),
+        typeof(RMC.Common.Entitas.Components.PositionComponent),
+        typeof(RMC.Common.Entitas.Components.ResourceComponent),
+        typeof(RMC.Common.Entitas.Components.VelocityComponent),
+        typeof(RMC.Common.Entitas.Components.ViewComponent)
     };
 }

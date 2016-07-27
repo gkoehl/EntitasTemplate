@@ -1,11 +1,11 @@
 ﻿using Entitas;
 
-namespace RMC.EntitasTemplate.Entias.Components
+namespace RMC.Common.Entitas.Components
 {
 	/// <summary>
 	/// Replace me with description.
 	/// </summary>
-	public class MoveComponent : IComponent
+	public class VelocityComponent : IComponent
 	{
 		// ------------------ Serialized fields and properties
 		public float x;
