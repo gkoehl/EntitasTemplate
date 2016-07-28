@@ -31,17 +31,17 @@ namespace RMC.Common.Entitas.Systems
 			_aiGroup = pool.GetGroup(Matcher.AllOf(Matcher.AI, Matcher.Position, Matcher.Velocity));
 			
 			Group ballCreatedGroup = pool.GetGroup(Matcher.AllOf(Matcher.Goal, Matcher.BoundsBounce).NoneOf (Matcher.Destroy));
-			ballCreatedGroup.OnEntityAdded += OnBallEntityCreated;
+			ballCreatedGroup.OnEntityAdded += BallCreatedGroup_OnEntityAdded;
 
 			Group ballDestroyGroup = pool.GetGroup(Matcher.AllOf(Matcher.Goal, Matcher.Destroy));
-			ballDestroyGroup.OnEntityAdded += OnBallEntityDestroyed;
+			ballDestroyGroup.OnEntityAdded += BallDestroyGroup_OnEntityAdded;
 			
 	
 
 		}
 
 		//Whenever a new ball is created, follow it
-		protected virtual void OnBallEntityCreated(Group collection, Entity ballEntity, int index, IComponent component)
+		protected virtual void BallCreatedGroup_OnEntityAdded(Group collection, Entity ballEntity, int index, IComponent component)
 		{
 			//Debug.Log ("created" + ballEntity);
 			foreach (var e in _aiGroup.GetEntities()) 
@@ -51,7 +51,7 @@ namespace RMC.Common.Entitas.Systems
 		}
 
 		//whenever a ball is destroyed, stop following it.
-		protected virtual void OnBallEntityDestroyed(Group collection, Entity ballEntity, int index, IComponent component)
+		protected virtual void BallDestroyGroup_OnEntityAdded(Group collection, Entity ballEntity, int index, IComponent component)
 		{
 			//Debug.Log ("destroy" + ballEntity);
 			foreach (var e in _aiGroup.GetEntities()) 

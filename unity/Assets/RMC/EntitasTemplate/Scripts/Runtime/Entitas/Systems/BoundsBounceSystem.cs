@@ -1,5 +1,4 @@
 ﻿using Entitas;
-using Entitas;
 using UnityEngine;
 using RMC.Common.Entitas.Components;
 using System;
@@ -36,14 +35,14 @@ namespace RMC.Common.Entitas.Systems
         {
             _pool = pool;
             _group = _pool.GetGroup(Matcher.AllOf(Matcher.BoundsBounce, Matcher.Velocity, Matcher.Position, Matcher.View));
-            _group.OnEntityUpdated += OnPositionUpdated;
+            _group.OnEntityUpdated += Group_OnEntityUpdated;
 
             //By design: Systems created before Entities, so wait :)
-            _pool.GetGroup(Matcher.AllOf(Matcher.Game, Matcher.Bounds)).OnEntityAdded += OnGameEntityAdded;
+            _pool.GetGroup(Matcher.AllOf(Matcher.Game, Matcher.Bounds)).OnEntityAdded += GameGroup_OnEntityAdded;
 
         }
 
-        private void OnGameEntityAdded (Group group, Entity entity, int index, IComponent component)
+        private void GameGroup_OnEntityAdded (Group group, Entity entity, int index, IComponent component)
         {
             _gameEntity = group.GetSingleEntity();
             _bounds = _gameEntity.bounds.bounds;
@@ -53,7 +52,7 @@ namespace RMC.Common.Entitas.Systems
         //1. _group.OnEntityUpdated += OnPaddlePositionUpdated; I'm using this now.
         //2. I couldn't find a way to do it with "public TriggerOnEvent trigger". its more about entity add than components, yes?
         //3. _onPaddlePositionUpdated = _group.CreateObserver(GroupEventType.OnEntityAdded). its more about entity add than components, yes?
-        private void OnPositionUpdated (Group group, Entity entity, int index, IComponent previousComponent, IComponent newComponent)
+        private void Group_OnEntityUpdated (Group group, Entity entity, int index, IComponent previousComponent, IComponent newComponent)
         {
             float sizeY = entity.view.bounds.size.y / 2;
             Vector3 nextVelocity = entity.velocity.velocity;

@@ -46,6 +46,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 		{
 			base.Awake();
             AudioController.Instantiate();
+            InputController.Instantiate();
 			Debug.Log ("GC.Awake()");
 
 			Application.targetFrameRate = 30;
@@ -61,7 +62,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 			SetupEntities ();
 
 
-			GameController.OnDestroying += OnGameControllerDestroying;
+            GameController.OnDestroying += OnGameControllerDestroying;
 
 			//place a ball in the middle of the screen w/ velocity
 			_pool.CreateEntity().willStartNextRound = true;
@@ -89,10 +90,15 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
         private void OnGameControllerDestroying (GameController instance) 
         {
             Debug.Log ("OnGameControllerDestroying()");
+            GameController.OnDestroying -= OnGameControllerDestroying;
 
             if (AudioController.IsInstantiated())
             {
                 AudioController.Destroy();
+            }
+            if (InputController.IsInstantiated())
+            {
+                InputController.Destroy();
             }
             _pausableUpdateSystems.DeactivateReactiveSystems();
             _unpausableUpdateSystems.DeactivateReactiveSystems ();
@@ -175,7 +181,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
             entityWhite.AddPaddle(PaddleComponent.PaddleType.White);
             entityWhite.AddResource ("Prefabs/PaddleWhite");
             entityWhite.AddVelocity (Vector3.zero, Vector3.zero);
-			entityWhite.HasInput (true);
+            entityWhite.WillAcceptInput (true);
 
             //on left
 			Entity entityBlack = _pool.CreateEntity ();
@@ -211,7 +217,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 			_pausableUpdateSystems.Add (_pool.CreateSystem<AddResourceSystem> ());
 			_pausableUpdateSystems.Add (_pool.CreateSystem<RemoveResourceSystem> ());
 
-			_pausableUpdateSystems.Add (_pool.CreateSystem<InputSystem> ());
+            _pausableUpdateSystems.Add (_pool.CreateSystem<AcceptInputSystem> ());
 			_pausableUpdateSystems.Add (_pool.CreateSystem<AISystem> ());
 			_pausableUpdateSystems.Add (_pool.CreateSystem<GoalSystem> ());
 			_pausableUpdateSystems.Add (_pool.CreateSystem<DestroySystem> ());

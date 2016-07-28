@@ -1,13 +1,13 @@
 ﻿using Entitas;
 using Entitas.CodeGenerator;
 
-namespace RMC.EntitasTemplate.Entitas.Components
+namespace RMC.Common.Entitas.Components
 {
 	/// <summary>
 	/// Replace me with description.
 	/// </summary>
-	[CustomPrefix("Has")]
-	public class InputComponent : IComponent
+	[CustomPrefix("Will")]
+	public class AcceptInputComponent : IComponent
 	{
 		// ------------------ Serialized fields and properties
 

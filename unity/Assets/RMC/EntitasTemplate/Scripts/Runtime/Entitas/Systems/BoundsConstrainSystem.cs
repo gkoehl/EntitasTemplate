@@ -32,14 +32,14 @@ namespace RMC.Common.Entitas.Systems
         public void SetPool(Pool pool) 
         {
             _group = pool.GetGroup(Matcher.AllOf(Matcher.Paddle, Matcher.Position, Matcher.View));
-            _group.OnEntityUpdated += OnPaddlePositionUpdated;
+            _group.OnEntityUpdated += PaddleGroup_OnEntityAdded;
 
             //By design: Systems created before Entities, so wait :)
-            pool.GetGroup(Matcher.AllOf(Matcher.Game, Matcher.Bounds, Matcher.Score)).OnEntityAdded += OnGameEntityAdded;
+            pool.GetGroup(Matcher.AllOf(Matcher.Game, Matcher.Bounds, Matcher.Score)).OnEntityAdded += GameGroup_OnEntityAdded;
 
         }
 
-        private void OnGameEntityAdded (Group group, Entity entity, int index, IComponent component)
+        private void GameGroup_OnEntityAdded (Group group, Entity entity, int index, IComponent component)
         {
             //TODO: I expect this to be called on game start and game restart, but not every StartNextRound, why - srivello
             //Debug.Log("added _gameEntity: " + _gameEntity);
@@ -50,7 +50,7 @@ namespace RMC.Common.Entitas.Systems
         //1. _group.OnEntityUpdated += OnPaddlePositionUpdated; I'm using this now.
         //2. I couldn't find a way to do it with "public TriggerOnEvent trigger". its more about entity add than components, yes?
         //3. _onPaddlePositionUpdated = _group.CreateObserver(GroupEventType.OnEntityAdded). its more about entity add than components, yes?
-        private void OnPaddlePositionUpdated (Group group, Entity paddleEntity, int index, IComponent previousComponent, IComponent newComponent)
+        private void PaddleGroup_OnEntityAdded (Group group, Entity paddleEntity, int index, IComponent previousComponent, IComponent newComponent)
         {
 
             Bounds bounds = _gameEntity.bounds.bounds;

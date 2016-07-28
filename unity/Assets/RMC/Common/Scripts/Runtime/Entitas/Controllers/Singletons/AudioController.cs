@@ -30,6 +30,7 @@ namespace RMC.Common.Entitas.Controllers.Singleton
         {
             //NOTE: One AudioSource = Limitation of one sound playing concurrently. Ok for demo
             _audioSource = gameObject.AddComponent<AudioSource>();
+            AudioController.OnDestroying += AudioController_OnDestroying;
 
             //
             _audioClipDictionary = new Dictionary<string, AudioClip>();
@@ -38,8 +39,9 @@ namespace RMC.Common.Entitas.Controllers.Singleton
 
         }
 
-        protected void OnDestroy()
+        private void AudioController_OnDestroying (AudioController instance) 
         {
+            AudioController.OnDestroying -= AudioController_OnDestroying;
             _soundGroup.OnEntityAdded -= OnSoundEntityAdded;
         }
 

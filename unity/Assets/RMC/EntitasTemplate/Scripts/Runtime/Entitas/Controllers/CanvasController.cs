@@ -54,7 +54,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
             if (group.count == 1) 
             {
                 _gameEntity = group.GetSingleEntity();
-                _gameEntity.OnComponentReplaced += OnComponentReplaced;
+                _gameEntity.OnComponentReplaced += Entity_OnComponentReplaced;
 
                 //set first value
                 var scoreComponent = _gameEntity.score;
@@ -67,7 +67,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
             }
         }
 
-        private void OnComponentReplaced(Entity entity, int index, IComponent previousComponent, IComponent newComponent)
+        private void Entity_OnComponentReplaced(Entity entity, int index, IComponent previousComponent, IComponent newComponent)
         {
             SetText(entity.score.whiteScore, entity.score.blackScore, entity.time.timeSinceGameStartUnpaused);
         }
