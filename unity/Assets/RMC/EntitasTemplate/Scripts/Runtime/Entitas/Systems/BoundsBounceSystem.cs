@@ -4,6 +4,7 @@ using UnityEngine;
 using RMC.Common.Entitas.Components;
 using System;
 using System.Collections.Generic;
+using RMC.EntitasTemplate.Entitas;
 
 namespace RMC.Common.Entitas.Systems
 {
@@ -23,6 +24,7 @@ namespace RMC.Common.Entitas.Systems
         private Group _group;
         private Entity _gameEntity;
         private Bounds _bounds;
+        private Pool _pool;
 
         // ------------------ Methods
 
@@ -32,11 +34,12 @@ namespace RMC.Common.Entitas.Systems
         // pool.CreateSystem<MoveSystem>();
         public void SetPool(Pool pool) 
         {
-            _group = pool.GetGroup(Matcher.AllOf(Matcher.BoundsBounce, Matcher.Velocity, Matcher.Position, Matcher.View));
+            _pool = pool;
+            _group = _pool.GetGroup(Matcher.AllOf(Matcher.BoundsBounce, Matcher.Velocity, Matcher.Position, Matcher.View));
             _group.OnEntityUpdated += OnPositionUpdated;
 
             //By design: Systems created before Entities, so wait :)
-            pool.GetGroup(Matcher.AllOf(Matcher.Game, Matcher.Bounds)).OnEntityAdded += OnGameEntityAdded;
+            _pool.GetGroup(Matcher.AllOf(Matcher.Game, Matcher.Bounds)).OnEntityAdded += OnGameEntityAdded;
 
         }
 
@@ -61,6 +64,7 @@ namespace RMC.Common.Entitas.Systems
             if (entity.position.position.y - sizeY < _bounds.min.y) 
             {
                 nextVelocity = new Vector3 (nextVelocity.x, nextVelocity.y * bounceAmount, nextVelocity.z);
+                _pool.CreateEntity().AddAudio(GameConstants.Audio_Collision, 0.5f);
 
                 //order matters
                 //1
@@ -72,6 +76,7 @@ namespace RMC.Common.Entitas.Systems
             else if (entity.position.position.y + sizeY > _bounds.max.y)
             {
                 nextVelocity = new Vector3 (nextVelocity.x, nextVelocity.y * bounceAmount, nextVelocity.z);
+                _pool.CreateEntity().AddAudio(GameConstants.Audio_Collision, 0.5f);
 
                 //order matters
                 //1

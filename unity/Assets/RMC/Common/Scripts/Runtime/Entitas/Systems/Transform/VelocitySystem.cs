@@ -38,9 +38,9 @@ namespace RMC.Common.Entitas.Systems.Transform
 				Vector3 position = e.position.position;
                 Vector3 friction = e.velocity.friction;
                 e.ReplacePosition(new Vector3 (
-                    (position.x + velocity.x) * (1- friction.x), 
-                    (position.y + velocity.y) * (1- friction.y), 
-                    (position.z + velocity.z) * (1- friction.z)
+                    (position.x + velocity.x * Time.deltaTime) * (1- friction.x), 
+                    (position.y + velocity.y * Time.deltaTime) * (1- friction.y), 
+                    (position.z + velocity.z * Time.deltaTime) * (1- friction.z)
                 ));
 
 				// if (e.positionition.y > 1.2 && e.hasResource)

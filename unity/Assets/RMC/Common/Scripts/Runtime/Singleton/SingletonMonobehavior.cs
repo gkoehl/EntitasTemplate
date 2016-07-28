@@ -132,7 +132,13 @@ namespace RMC.Common.Singleton
 			
 			if (!IsInstantiated())
 			{
-				GameObject go  = GameObject.FindObjectOfType<T>().gameObject;
+				T t  = GameObject.FindObjectOfType<T>();
+                GameObject go = null;
+                if (t != null)
+                {
+                    go = t.gameObject;
+                }
+
 				if (go == null)
 				{
 					go 			= new GameObject ();

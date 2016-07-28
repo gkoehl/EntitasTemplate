@@ -5,6 +5,7 @@ using System;
 using RMC.EntitasTemplate.Entitas.Controllers;
 using System.Collections;
 using RMC.EntitasTemplate.Entitas.Controllers.Singleton;
+using RMC.EntitasTemplate.Entitas;
 
 namespace RMC.Common.Entitas.Systems.GameState
 {
@@ -58,6 +59,7 @@ namespace RMC.Common.Entitas.Systems.GameState
 					ChangeScore(e.goal.pointsPerGoal, 0);
 					e.willDestroy = true;
                     GameController.Instance.StartCoroutine(StartNextRound_Coroutine(1));
+                    _pool.CreateEntity().AddAudio(GameConstants.Audio_GoalSuccess, 0.5f);
 				} 
 				else if (e.position.position.x > bounds.max.x)
 				{
@@ -65,6 +67,7 @@ namespace RMC.Common.Entitas.Systems.GameState
 					ChangeScore(0, e.goal.pointsPerGoal);
 					e.willDestroy = true;
                     GameController.Instance.StartCoroutine(StartNextRound_Coroutine(1));
+                    _pool.CreateEntity().AddAudio(GameConstants.Audio_GoalFailure, 0.5f);
 					
 				}
 			}

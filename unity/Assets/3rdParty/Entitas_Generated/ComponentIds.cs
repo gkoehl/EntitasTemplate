@@ -8,27 +8,29 @@
 //------------------------------------------------------------------------------
 public static class ComponentIds {
     public const int AI = 0;
-    public const int BoundsBounce = 1;
-    public const int Bounds = 2;
-    public const int Collision = 3;
-    public const int CreateNextBall = 4;
-    public const int Destroy = 5;
-    public const int Game = 6;
-    public const int Goal = 7;
-    public const int Input = 8;
-    public const int Paddle = 9;
-    public const int Position = 10;
-    public const int Resource = 11;
-    public const int Score = 12;
-    public const int StartNextRound = 13;
-    public const int Time = 14;
-    public const int Velocity = 15;
-    public const int View = 16;
+    public const int Audio = 1;
+    public const int BoundsBounce = 2;
+    public const int Bounds = 3;
+    public const int Collision = 4;
+    public const int CreateNextBall = 5;
+    public const int Destroy = 6;
+    public const int Game = 7;
+    public const int Goal = 8;
+    public const int Input = 9;
+    public const int Paddle = 10;
+    public const int Position = 11;
+    public const int Resource = 12;
+    public const int Score = 13;
+    public const int StartNextRound = 14;
+    public const int Time = 15;
+    public const int Velocity = 16;
+    public const int View = 17;
 
-    public const int TotalComponents = 17;
+    public const int TotalComponents = 18;
 
     public static readonly string[] componentNames = {
         "AI",
+        "Audio",
         "BoundsBounce",
         "Bounds",
         "Collision",
@@ -49,6 +51,7 @@ public static class ComponentIds {
 
     public static readonly System.Type[] componentTypes = {
         typeof(RMC.EntitasTemplate.Entitas.Components.AIComponent),
+        typeof(RMC.Common.Entitas.Components.Audio.AudioComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.BoundsBounceComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.BoundsComponent),
         typeof(RMC.Common.Entitas.Components.Collision.CollisionComponent),

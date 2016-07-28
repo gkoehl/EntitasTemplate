@@ -26,16 +26,17 @@ namespace RMC.EntitasTemplate.Entitas.Systems.Collision
 
 
 		// ------------------ Non-serialized fields
+        private Pool _pool;
 		private Group _group;
-		private float _paddleFriction = 0.8f;
 
 		// ------------------ Methods
 		// Implement ISetPool to get the pool used when calling
 		// pool.CreateSystem<MoveSystem>();
 		public void SetPool(Pool pool) 
 		{
+            _pool = pool;
 			// Get the group of entities that have a Move and Position component
-			_group = pool.GetGroup(Matcher.AllOf(Matcher.Position, Matcher.Velocity));
+			_group = _pool.GetGroup(Matcher.AllOf(Matcher.Position, Matcher.Velocity));
 
 		}
 		public void Execute(List<Entity> entities) 
@@ -57,9 +58,10 @@ namespace RMC.EntitasTemplate.Entitas.Systems.Collision
 					Vector3 paddleVelocity = paddleEntity.velocity.velocity;
 					entity.ReplaceVelocity 
                     ( 
-                        new Vector3 (-nextVelocity.x, nextVelocity.y + paddleVelocity.y * _paddleFriction, nextVelocity.z),
+                        new Vector3 (-nextVelocity.x, nextVelocity.y + paddleVelocity.y * GameConstants.PaddleFriction, nextVelocity.z),
                         entity.velocity.friction
                     );
+                    _pool.CreateEntity().AddAudio(GameConstants.Audio_Collision, 0.5f);
 					
 				}
 				collisionEntity.willDestroy = true;

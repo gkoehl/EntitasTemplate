@@ -14,6 +14,8 @@ using RMC.Common.Singleton;
 using UnityEngine.SceneManagement;
 using RMC.Common.Entitas.Systems.GameState;
 using RMC.EntitasTemplate.Entitas.Components;
+using RMC.Common.Entitas.Controllers.Singleton;
+using System.Collections;
 
 namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 {
@@ -43,9 +45,10 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 		override protected void Awake () 
 		{
 			base.Awake();
+            AudioController.Instantiate();
 			Debug.Log ("GC.Awake()");
 
-			Application.targetFrameRate = 60;
+			Application.targetFrameRate = 30;
 
 			SetupPools ();
 			SetupPoolObserver();
@@ -80,6 +83,27 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
             {
                 _pausableFixedUpdateSystems.Execute ();
             }
+        }
+
+        //Called during GameController.Destroy();
+        private void OnGameControllerDestroying (GameController instance) 
+        {
+            Debug.Log ("OnGameControllerDestroying()");
+
+            if (AudioController.IsInstantiated())
+            {
+                AudioController.Destroy();
+            }
+            _pausableUpdateSystems.DeactivateReactiveSystems();
+            _unpausableUpdateSystems.DeactivateReactiveSystems ();
+
+            Pools.pool.Reset ();
+            DestroyPoolObserver();
+
+            Group _scoreGroup = Pools.pool.GetGroup(Matcher.AllOf (Matcher.Game, Matcher.Score));
+            Debug.LogWarning ("DESTROY should have zero and : " + _scoreGroup.count);
+
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         private static Bounds GetOrthographicBounds(Camera camera)
@@ -220,17 +244,23 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 
 		public void TogglePause ()
 		{
-			_gameEntity.ReplaceTime
-			(
-				_gameEntity.time.timeSinceGameStartUnpaused, 
-				_gameEntity.time.timeSinceGameStartTotal, 
-				!_gameEntity.time.isPaused
-			);
+            _pool.CreateEntity().AddAudio(GameConstants.Audio_ButtonClickSuccess, 0.5f);
+            SetPause(!_gameEntity.time.isPaused);
 
 			//Keep
 			//Debug.Log ("TogglePause() isPaused: " + _gameEntity.time.isPaused);	
 
 		}
+
+        private void SetPause (bool isPaused)
+        {
+            _gameEntity.ReplaceTime
+            (
+                _gameEntity.time.timeSinceGameStartUnpaused, 
+                _gameEntity.time.timeSinceGameStartTotal, 
+                isPaused
+            );
+        }
 
 
 
@@ -238,26 +268,21 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 		//TODO: Restart is not complete. It doesn't truely represent a fresh start yet - srivello
 		public void Restart ()
 		{
-			GameController.Destroy();
+            
+            SetPause(true);
+            StartCoroutine(Restart_Coroutine());
+			
 		}
 
+        //Add small pause so we hear the click sound
+        private IEnumerator Restart_Coroutine ()
+        {
+            _pool.CreateEntity().AddAudio(GameConstants.Audio_ButtonClickSuccess, 0.5f);
+            yield return new WaitForSeconds(0.25f);
+            GameController.Destroy();
+        }
 
-		//Called during GameController.Destroy();
-		private void OnGameControllerDestroying (GameController instance) 
-		{
-			Debug.Log ("OnGameControllerDestroying()");
 
-			_pausableUpdateSystems.DeactivateReactiveSystems();
-			_unpausableUpdateSystems.DeactivateReactiveSystems ();
-
-			Pools.pool.Reset ();
-			DestroyPoolObserver();
-
-			Group _scoreGroup = Pools.pool.GetGroup(Matcher.AllOf (Matcher.Game, Matcher.Score));
-			Debug.LogWarning ("DESTROY should have zero and : " + _scoreGroup.count);
-
-			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-		}
 
 		private void DestroyPoolObserver()
 		{
