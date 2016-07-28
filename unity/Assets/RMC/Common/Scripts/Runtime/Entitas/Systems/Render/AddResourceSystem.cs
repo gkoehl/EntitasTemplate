@@ -46,7 +46,20 @@ namespace RMC.Common.Entitas.Systems.Render
 	            if (gameObject != null) 
 				{
 	                gameObject.transform.parent = _viewContainer;
-	                e.AddView(gameObject);
+
+                    //We want the size here. So store the bounds.
+                    //null is ok
+                    Collider collider = gameObject.GetComponent<Collider>();
+                    if (collider != null)
+                    {
+                        e.AddView(gameObject, collider.bounds);
+                    }
+                    else
+                    {
+                        e.AddView(gameObject, new Bounds ());
+                    }
+
+
 	            }
 	        }
 	   }

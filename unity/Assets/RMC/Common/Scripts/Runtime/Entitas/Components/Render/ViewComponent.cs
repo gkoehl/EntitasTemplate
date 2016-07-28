@@ -11,6 +11,8 @@ namespace RMC.Common.Entitas.Components.Render
 		// ------------------ Serialized fields and properties
 		public GameObject gameObject;
 
+        //null is ok
+        public Bounds bounds;
 
 	}
 }

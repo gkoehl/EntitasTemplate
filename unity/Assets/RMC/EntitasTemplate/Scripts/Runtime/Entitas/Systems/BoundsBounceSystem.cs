@@ -19,7 +19,6 @@ namespace RMC.Common.Entitas.Systems
 		// ------------------ Non-serialized fields
 		private Group _group;
 		private Group _gameBounds;
-		private Group _gameScore;
 
 		// ------------------ Methods
 
@@ -30,7 +29,6 @@ namespace RMC.Common.Entitas.Systems
 			// Get the group of entities that have a Move and Position component
 			_group = pool.GetGroup(Matcher.AllOf(Matcher.BoundsBounce, Matcher.Position, Matcher.Velocity));
 			_gameBounds = pool.GetGroup(Matcher.AllOf(Matcher.Game, Matcher.Bounds));
-			_gameScore = pool.GetGroup(Matcher.AllOf(Matcher.Game, Matcher.Score));
 
 		}
 

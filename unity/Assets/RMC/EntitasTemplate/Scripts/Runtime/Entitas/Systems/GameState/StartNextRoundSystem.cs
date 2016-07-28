@@ -18,8 +18,6 @@ namespace RMC.Common.Entitas.Systems.GameState
 		// ------------------ Serialized fields and properties
 
 		// ------------------ Non-serialized fields
-		private Group _startNextRoundGroup;
-		private Group _aiGroup;
 		private Pool _pool;
 
 		// ------------------ Methods
@@ -30,8 +28,6 @@ namespace RMC.Common.Entitas.Systems.GameState
 		{
 			// Get the group of entities that have a Move and Position component
 			_pool = pool;
-			_startNextRoundGroup = _pool.GetGroup(Matcher.AllOf(Matcher.StartNextRound));
-			_aiGroup = _pool.GetGroup(Matcher.AllOf(Matcher.AI));
 		}
 
 		public TriggerOnEvent trigger

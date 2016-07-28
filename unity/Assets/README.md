@@ -27,6 +27,7 @@ TODO
 * Add pause button
 * make this work ENTITAS_DISABLE_VISUAL_DEBUGGING
 * use 'private' explicitely everywhere
+* make all systems reactive that should be
 
 
 

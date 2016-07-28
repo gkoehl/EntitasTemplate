@@ -8,6 +8,8 @@ namespace RMC.EntitasTemplate.Entitas.Components
 	public class BoundsBounceComponent : IComponent
 	{
 		// ------------------ Serialized fields and properties
+
+        //negative required, "-1" means bounce at same speed as you entered. Default.
 		public float bounceAmount = -1;		
 	}
 }

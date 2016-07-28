@@ -25,41 +25,58 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 		public Button _pauseButton;
 
 		// ------------------ Non-serialized fields
-		private Group _scoreGroup;
+        private Entity _gameEntity;
 		// ------------------ Methods
 
         protected void Start()
         {
-            _scoreGroup = Pools.pool.GetGroup(Matcher.AllOf (Matcher.Game, Matcher.Score));
 
-            //listen
-            _scoreGroup.GetSingleEntity().OnComponentReplaced += OnComponentReplaced;
+            Group group = Pools.pool.GetGroup(Matcher.AllOf(Matcher.Game, Matcher.Bounds, Matcher.Score));
+            SetGameGroup(group);
 
-            //set first value
-			var scoreComponent = _scoreGroup.GetSingleEntity().score;
-			SetScore (scoreComponent.whiteScore, scoreComponent.blackScore);
+            _restartButton.onClick.AddListener (OnRestartButtonClicked);
+            _pauseButton.onClick.AddListener (OnPauseButtonClicked);
 
-			_restartButton.onClick.AddListener (OnRestartButtonClicked);
-			_pauseButton.onClick.AddListener (OnPauseButtonClicked);
-        }
-
-        private void OnComponentReplaced(Entity entity, int index, IComponent previousComponent, IComponent newComponent)
-        {
-           	SetScore(entity.score.whiteScore, entity.score.blackScore);
-        }
-
-        private void SetScore(int whiteScore, int blackScore)
-        {
-            _scoreText.text = string.Format ("White: {0}    Black: {1}", whiteScore, blackScore);
         }
 
         protected void OnDestroy()
         {
-			_restartButton.onClick.RemoveListener (OnRestartButtonClicked);
-			_pauseButton.onClick.RemoveListener (OnPauseButtonClicked);
+            _restartButton.onClick.RemoveListener (OnRestartButtonClicked);
+            _pauseButton.onClick.RemoveListener (OnPauseButtonClicked);
+
         }
 
+        private void SetGameGroup (Group group)
+        {
+            Debug.Log("ad: " + group.count);
+            //The group should have 1 thing, always, but...
+            //FIXME: after multiple restarts (via 'r' button in HUD) this fails - srivello
+            if (group.count == 1) 
+            {
+                _gameEntity = group.GetSingleEntity();
+                _gameEntity.OnComponentReplaced += OnComponentReplaced;
 
+                //set first value
+                var scoreComponent = _gameEntity.score;
+                SetText (scoreComponent.whiteScore, scoreComponent.blackScore, _gameEntity.time.timeSinceGameStartUnpaused);
+
+            }
+            else
+            {
+                Debug.LogWarning ("CC _scoreGroup failed, should have one entity, has count: " + group.count);    
+            }
+        }
+
+        private void OnComponentReplaced(Entity entity, int index, IComponent previousComponent, IComponent newComponent)
+        {
+            SetText(entity.score.whiteScore, entity.score.blackScore, entity.time.timeSinceGameStartUnpaused);
+        }
+
+        private void SetText(int whiteScore, int blackScore, float time)
+        {
+            _scoreText.text = string.Format ("White: {0}\t\tBlack: {1}\t\tTime: {2:000}", whiteScore, blackScore, time);
+        }
+            
 		private void OnRestartButtonClicked()
         {
            GameController.Instance.Restart();

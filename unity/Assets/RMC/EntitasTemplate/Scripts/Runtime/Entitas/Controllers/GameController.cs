@@ -7,12 +7,13 @@ using RMC.EntitasTemplate.Entitas.Systems.Collision;
 using RMC.Common.Entitas.Systems;
 
 // This is required because the entitas class path is similar to my namespaces. This prevents collision - srivello
-using EntitasSystems = Entitas.Systems;
+using Feature = Entitas.Systems;
 //
 using RMC.Common.Entitas.Systems.Destroy;
 using RMC.Common.Singleton;
 using UnityEngine.SceneManagement;
 using RMC.Common.Entitas.Systems.GameState;
+using RMC.EntitasTemplate.Entitas.Components;
 
 namespace RMC.EntitasTemplate.Entitas.Controllers
 {
@@ -28,11 +29,11 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 		// ------------------ Serialized fields and properties
 
 		// ------------------ Non-serialized fields
-		private EntitasSystems _systems;
+		private Feature _pausableSystems;
+		private Feature _unpausableSystems;
 		private Pool _pool;
 		private PoolObserver _poolObserver;
-
-		private bool _isPaused = false;
+		private Entity _gameEntity;
 
 
 		// ------------------ Methods
@@ -46,25 +47,32 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 
 			SetupPools ();
 			SetupPoolObserver();
+
+			//order matters
+			//1 - Systems that depend on entities will internally listen for entity creation before reacting - nice!
 			SetupSystems ();
+
+			//2
 			SetupEntities ();
 
 
+			GameController.OnDestroying += OnGameControllerDestroying;
+
+			//place a ball in the middle of the screen w/ velocity
 			_pool.CreateEntity().willStartNextRound = true;
 
 		}
 
 		protected void Update () 
 		{
-			if (!_isPaused)
+			if (!_gameEntity.time.isPaused)
 			{
-				_systems.Execute ();
+				_pausableSystems.Execute ();
 			}
+			_unpausableSystems.Execute();
 		}
-		protected void OnDestroy () 
-		{
-			DestroyPoolObserver();
-		}
+
+
 
         private Bounds GetBounds()
         {
@@ -74,7 +82,6 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 
 		private void SetupPools ()
 		{
-			Debug.Log ("SetupPools()");
 			_pool = new Pool (ComponentIds.TotalComponents, 0, new PoolMetaData ("Pool", ComponentIds.componentNames, ComponentIds.componentTypes));
 			
 			//	TODO: Not sure why I must do this, but I must or other classes can't do pool lookups - srivello
@@ -104,25 +111,35 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 			
 		}
 
+
 		private void SetupEntities ()
 		{
+
 			var bounds = GetBounds();
-			Entity gameEntity = _pool.CreateEntity();
-			gameEntity.AddGame(0);
-			gameEntity.AddBounds(bounds);
-			gameEntity.AddScore(0,0);
+			_gameEntity = _pool.CreateEntity();
+			_gameEntity.AddGame(0);
+			_gameEntity.AddBounds(bounds);
+			_gameEntity.AddScore(0,0);
+			_gameEntity.AddTime (0, 0, false);
 
 			Entity entityWhite = _pool.CreateEntity ();
+            entityWhite.AddPaddle(PaddleComponent.PaddleType.White);
+            entityWhite.AddResource ("Prefabs/PaddleWhite");
 			entityWhite.AddPosition (new Vector3 (25, 0, 0));
 			entityWhite.AddVelocity (Vector3.zero);
 			entityWhite.HasInput (true);
-			entityWhite.AddResource ("Prefabs/PaddleWhite");
+			
 
 			Entity entityBlack = _pool.CreateEntity ();
+            entityBlack.AddPaddle(PaddleComponent.PaddleType.Black);
+            entityBlack.AddResource ("Prefabs/PaddleBlack");
 			entityBlack.AddPosition (new Vector3 (-25, 0, 0));
 			entityBlack.AddVelocity (Vector3.zero);
 			entityBlack.AddAI (entityWhite, 1, 0.5f);
-			entityBlack.AddResource ("Prefabs/PaddleBlack");
+			
+
+			Group _scoreGroup = Pools.pool.GetGroup(Matcher.AllOf (Matcher.Game, Matcher.Score));
+			Debug.LogWarning ("START should have zero and : " + _scoreGroup.count);
 
 
 		}
@@ -130,74 +147,100 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 		private void SetupSystems ()
 		{
 
-#if (!ENTITAS_DISABLE_VISUAL_DEBUGGING && UNITY_EDITOR)
-			_systems = new DebugSystems();
-#else
-			_systems = new EntitasSystems();
-#endif
+			//a feature is a group of systems
+			_pausableSystems = new Feature ();
 			
-			_systems.Add (_pool.CreateSystem<StartNextRoundSystem> ());
-			_systems.Add (_pool.CreateSystem<VelocitySystem> ());
-			_systems.Add (_pool.CreateSystem<ViewSystem> ());
+			_pausableSystems.Add (_pool.CreateSystem<StartNextRoundSystem> ());
+			_pausableSystems.Add (_pool.CreateSystem<VelocitySystem> ());
+			_pausableSystems.Add (_pool.CreateSystem<ViewSystem> ());
 
-			_systems.Add (_pool.CreateSystem<AddResourceSystem> ());
-			_systems.Add (_pool.CreateSystem<RemoveResourceSystem> ());
+			_pausableSystems.Add (_pool.CreateSystem<AddResourceSystem> ());
+			_pausableSystems.Add (_pool.CreateSystem<RemoveResourceSystem> ());
 
-			_systems.Add (_pool.CreateSystem<InputSystem> ());
-			_systems.Add (_pool.CreateSystem<AISystem> ());
-			_systems.Add (_pool.CreateSystem<GoalSystem> ());
-			_systems.Add (_pool.CreateSystem<DestroySystem> ());
+			_pausableSystems.Add (_pool.CreateSystem<InputSystem> ());
+			_pausableSystems.Add (_pool.CreateSystem<AISystem> ());
+			_pausableSystems.Add (_pool.CreateSystem<GoalSystem> ());
+			_pausableSystems.Add (_pool.CreateSystem<DestroySystem> ());
 
 			//	Not physics based - as an example
-			_systems.Add (_pool.CreateSystem<BoundsBounceSystem> ());
+			_pausableSystems.Add (_pool.CreateSystem<BoundsBounceSystem> ());
+            _pausableSystems.Add (_pool.CreateSystem<BoundsConstrainSystem> ());
 
 			//	Physics based - as an example.
-			_systems.Add (_pool.CreateSystem<CollisionSystem> ());
+			_pausableSystems.Add (_pool.CreateSystem<CollisionSystem> ());
 
-			_systems.Initialize();
-			_systems.ActivateReactiveSystems();
+			_pausableSystems.Initialize();
+			_pausableSystems.ActivateReactiveSystems();
+
+
+			//for demo only, an example of an unpausable system
+			_unpausableSystems = new Feature ();
+			_unpausableSystems.Add (_pool.CreateSystem<TimeSystem> ());
+			_unpausableSystems.Initialize();
+			_unpausableSystems.ActivateReactiveSystems();
+
+
+
+		}
+
+
+		public void TogglePause ()
+		{
+			_gameEntity.ReplaceTime
+			(
+				_gameEntity.time.timeSinceGameStartUnpaused, 
+				_gameEntity.time.timeSinceGameStartTotal, 
+				!_gameEntity.time.isPaused
+			);
+
+			//Keep
+			//Debug.Log ("TogglePause() isPaused: " + _gameEntity.time.isPaused);	
 
 		}
 
 
 
-        private void DestroyPoolObserver()
-        {
+		//ADVICE ON RESTARTING: https://github.com/sschmid/Entitas-CSharp/issues/82
+		//TODO: Restart is not complete. It doesn't truely represent a fresh start yet - srivello
+		public void Restart ()
+		{
+			GameController.Destroy();
+		}
+
+
+		//Called during GameController.Destroy();
+		private void OnGameControllerDestroying (GameController instance) 
+		{
+			Debug.Log ("OnGameControllerDestroying()");
+
+			_pausableSystems.DeactivateReactiveSystems();
+			_unpausableSystems.DeactivateReactiveSystems ();
+
+			Pools.pool.Reset ();
+			DestroyPoolObserver();
+
+			Group _scoreGroup = Pools.pool.GetGroup(Matcher.AllOf (Matcher.Game, Matcher.Score));
+			Debug.LogWarning ("DESTROY should have zero and : " + _scoreGroup.count);
+
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		}
+
+		private void DestroyPoolObserver()
+		{
 			if (_poolObserver != null)
 			{
 				_poolObserver.Deactivate();
-				
+
 				if (_poolObserver.entitiesContainer != null)
 				{
 					Destroy (_poolObserver.entitiesContainer);
 				}
-				
+
 				_poolObserver = null;
 			}
-        }
-
-
-		//TODO: Restart is not complete. It doesn't truely represent a fresh start yet - srivello
-		public void Restart ()
-		{
-			Debug.Log ("Restart()");
-			DestroyPoolObserver();
-
-			_systems.DeactivateReactiveSystems();
-			_pool.Reset();
-
-			GameController.Destroy();
-			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 
 
-		//TODO: Pause is not working - srivello
-        public void TogglePause ()
-		{
-			_isPaused = !_isPaused;	
-			Debug.Log ("TogglePause() _isPaused: " + _isPaused);	
-
-		}
 
 	}
 

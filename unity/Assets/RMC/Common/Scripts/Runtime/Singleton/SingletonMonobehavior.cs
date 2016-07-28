@@ -104,11 +104,11 @@ namespace RMC.Common.Singleton
 		
 		// 	PUBLIC
 
-		/// <summary>
-		/// The on instantiate completed.
-		/// </summary>
 		public delegate void OnInstantiateCompletedDelegate (T instance);
 		public static OnInstantiateCompletedDelegate OnInstantiateCompleted;
+
+		public delegate void OnDestroyingDelegate (T instance);
+		public static OnDestroyingDelegate OnDestroying;
 		
 		
 		// 	PRIVATE
@@ -167,8 +167,14 @@ namespace RMC.Common.Singleton
 			
 			if (IsInstantiated())
 			{
+				if (OnDestroying != null)
+				{
+					OnDestroying (_Instance);
+				}
+
 				// NOTE: Use 'DestroyImmediate'. At runtime its less important, but occasionally editor classes will call Destroy();
 				DestroyImmediate (_Instance.gameObject);
+
 				_Instance = null;
 			}
 		}
@@ -183,10 +189,15 @@ namespace RMC.Common.Singleton
 		//--------------------------------------
 
 		//	PUBLIC
-		
+
+
 		
 		//	PRIVATE
-		
+		public void OnDestroy ()
+		{
+			//override as needed
+		}
+
 		
 		//--------------------------------------
 		// 	Event Handlers
