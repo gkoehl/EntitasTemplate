@@ -2,6 +2,7 @@
 using Entitas;
 using UnityEngine.UI;
 using System;
+using RMC.EntitasTemplate.Entitas.Controllers.Singleton;
 
 namespace RMC.EntitasTemplate.Entitas.Controllers
 {
@@ -48,7 +49,6 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 
         private void SetGameGroup (Group group)
         {
-            Debug.Log("ad: " + group.count);
             //The group should have 1 thing, always, but...
             //FIXME: after multiple restarts (via 'r' button in HUD) this fails - srivello
             if (group.count == 1) 

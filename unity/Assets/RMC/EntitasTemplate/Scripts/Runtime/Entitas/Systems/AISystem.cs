@@ -57,7 +57,7 @@ namespace RMC.Common.Entitas.Systems
 			foreach (var e in _aiGroup.GetEntities()) 
 			{
 				e.ReplaceAI (null, e.aI.deadZoneY, e.aI.velocityY);
-				e.ReplaceVelocity ( new Vector3 (0,0,0));
+                e.ReplaceVelocity ( new Vector3 (0,0,0), e.velocity.friction);
 			}
 		}
 
@@ -84,7 +84,7 @@ namespace RMC.Common.Entitas.Systems
 						nextVelocity = new Vector3 (0, -e.aI.velocityY, 0);
 					}
 
-					e.ReplaceVelocity(nextVelocity);
+                    e.ReplaceVelocity(nextVelocity, e.velocity.friction);
 				}
 
 			}

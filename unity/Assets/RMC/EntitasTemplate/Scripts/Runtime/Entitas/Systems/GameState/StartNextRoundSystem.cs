@@ -3,6 +3,7 @@ using UnityEngine;
 using RMC.Common.Entitas.Components;
 using System;
 using System.Collections.Generic;
+using RMC.EntitasTemplate.Entitas;
 
 namespace RMC.Common.Entitas.Systems.GameState
 {
@@ -41,7 +42,9 @@ namespace RMC.Common.Entitas.Systems.GameState
 			{
 				Entity entityBall = _pool.CreateEntity ();
 				entityBall.AddPosition (new Vector3 (0,0,0));
-				entityBall.AddVelocity (new Vector3 (1f, 1f, 0));
+
+                //Friction added in the y only
+                entityBall.AddVelocity (new Vector3 (1f, 1f, 0), GameConstants.BallFriction);
 				entityBall.AddResource ("Prefabs/Ball");
 				entityBall.AddGoal(1);
 				entityBall.AddBoundsBounce(-1);

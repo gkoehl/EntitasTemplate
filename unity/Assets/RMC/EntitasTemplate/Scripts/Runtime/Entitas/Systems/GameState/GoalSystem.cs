@@ -4,6 +4,7 @@ using RMC.Common.Entitas.Components;
 using System;
 using RMC.EntitasTemplate.Entitas.Controllers;
 using System.Collections;
+using RMC.EntitasTemplate.Entitas.Controllers.Singleton;
 
 namespace RMC.Common.Entitas.Systems.GameState
 {

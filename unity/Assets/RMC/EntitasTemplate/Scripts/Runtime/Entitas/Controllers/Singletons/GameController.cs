@@ -15,7 +15,7 @@ using UnityEngine.SceneManagement;
 using RMC.Common.Entitas.Systems.GameState;
 using RMC.EntitasTemplate.Entitas.Components;
 
-namespace RMC.EntitasTemplate.Entitas.Controllers
+namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 {
 	/// <summary>
 	/// Replace me with description.
@@ -23,14 +23,16 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 	public class GameController : SingletonMonobehavior<GameController> 
 	{
 		// ------------------ Constants and statics
+        private const float PaddleOffsetToEdgeX = 3;
 
 		// ------------------ Events
 
 		// ------------------ Serialized fields and properties
 
 		// ------------------ Non-serialized fields
-		private Feature _pausableSystems;
-		private Feature _unpausableSystems;
+		private Feature _pausableUpdateSystems;
+		private Feature _unpausableUpdateSystems;
+        private Feature _pausableFixedUpdateSystems;
 		private Pool _pool;
 		private PoolObserver _poolObserver;
 		private Entity _gameEntity;
@@ -43,7 +45,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 			base.Awake();
 			Debug.Log ("GC.Awake()");
 
-			Application.targetFrameRate = 30;
+			Application.targetFrameRate = 60;
 
 			SetupPools ();
 			SetupPoolObserver();
@@ -67,17 +69,36 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 		{
 			if (!_gameEntity.time.isPaused)
 			{
-				_pausableSystems.Execute ();
+                _pausableUpdateSystems.Execute ();
 			}
-			_unpausableSystems.Execute();
+            _unpausableUpdateSystems.Execute();
 		}
 
-
-
-        private Bounds GetBounds()
+        protected void FixedUpdate () 
         {
-            var size = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
-            return new Bounds(Vector3.zero, new Vector3(size.x * 2, size.y * 2));
+            if (!_gameEntity.time.isPaused)
+            {
+                _pausableFixedUpdateSystems.Execute ();
+            }
+        }
+
+        private static Bounds GetOrthographicBounds(Camera camera)
+        {
+            float screenAspect = (float)Screen.width / (float)Screen.height;
+            float cameraHeight = camera.orthographicSize * 2;
+            Bounds bounds = new Bounds(
+                camera.transform.position,
+                new Vector3(cameraHeight * screenAspect, cameraHeight, 0));
+            return bounds;
+        }
+
+        private static Bounds GetBounds(Camera camera)
+        {
+            //TODO: Why is this needed? Without it the lower bound is offscreen
+            float offsetY = 2;
+
+            var size = camera.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+            return new Bounds(Vector3.zero, new Vector3(size.x * 2, size.y * 2 - offsetY));
         }
 
 		private void SetupPools ()
@@ -115,27 +136,36 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 		private void SetupEntities ()
 		{
 
-			var bounds = GetBounds();
+            var bounds = GetOrthographicBounds(Camera.main);
+            //Debug.Log(bounds.min.y + " and " + bounds.max.y);
+
+
 			_gameEntity = _pool.CreateEntity();
 			_gameEntity.AddGame(0);
 			_gameEntity.AddBounds(bounds);
 			_gameEntity.AddScore(0,0);
 			_gameEntity.AddTime (0, 0, false);
 
+            //on Right
 			Entity entityWhite = _pool.CreateEntity ();
             entityWhite.AddPaddle(PaddleComponent.PaddleType.White);
             entityWhite.AddResource ("Prefabs/PaddleWhite");
-			entityWhite.AddPosition (new Vector3 (25, 0, 0));
-			entityWhite.AddVelocity (Vector3.zero);
+            entityWhite.AddVelocity (Vector3.zero, Vector3.zero);
 			entityWhite.HasInput (true);
-			
 
+            //on left
 			Entity entityBlack = _pool.CreateEntity ();
             entityBlack.AddPaddle(PaddleComponent.PaddleType.Black);
             entityBlack.AddResource ("Prefabs/PaddleBlack");
-			entityBlack.AddPosition (new Vector3 (-25, 0, 0));
-			entityBlack.AddVelocity (Vector3.zero);
-			entityBlack.AddAI (entityWhite, 1, 0.5f);
+            entityBlack.AddVelocity (Vector3.zero, Vector3.zero);
+            entityBlack.AddAI(entityWhite, 1, 0.5f);
+
+
+
+            //Tick the systems once so the 'View' is added by the AddResourceSystem()
+            _pausableUpdateSystems.Execute();
+            entityWhite.AddPosition (new Vector3 (bounds.max.x - entityWhite.view.bounds.size.x/2 - PaddleOffsetToEdgeX, 0, 0));
+            entityBlack.AddPosition (new Vector3 (bounds.min.x + entityBlack.view.bounds.size.x/2 + PaddleOffsetToEdgeX, 0, 0));
 			
 
 			Group _scoreGroup = Pools.pool.GetGroup(Matcher.AllOf (Matcher.Game, Matcher.Score));
@@ -148,36 +178,40 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 		{
 
 			//a feature is a group of systems
-			_pausableSystems = new Feature ();
+			_pausableUpdateSystems = new Feature ();
 			
-			_pausableSystems.Add (_pool.CreateSystem<StartNextRoundSystem> ());
-			_pausableSystems.Add (_pool.CreateSystem<VelocitySystem> ());
-			_pausableSystems.Add (_pool.CreateSystem<ViewSystem> ());
+			_pausableUpdateSystems.Add (_pool.CreateSystem<StartNextRoundSystem> ());
+			_pausableUpdateSystems.Add (_pool.CreateSystem<VelocitySystem> ());
+			_pausableUpdateSystems.Add (_pool.CreateSystem<ViewSystem> ());
 
-			_pausableSystems.Add (_pool.CreateSystem<AddResourceSystem> ());
-			_pausableSystems.Add (_pool.CreateSystem<RemoveResourceSystem> ());
+			_pausableUpdateSystems.Add (_pool.CreateSystem<AddResourceSystem> ());
+			_pausableUpdateSystems.Add (_pool.CreateSystem<RemoveResourceSystem> ());
 
-			_pausableSystems.Add (_pool.CreateSystem<InputSystem> ());
-			_pausableSystems.Add (_pool.CreateSystem<AISystem> ());
-			_pausableSystems.Add (_pool.CreateSystem<GoalSystem> ());
-			_pausableSystems.Add (_pool.CreateSystem<DestroySystem> ());
+			_pausableUpdateSystems.Add (_pool.CreateSystem<InputSystem> ());
+			_pausableUpdateSystems.Add (_pool.CreateSystem<AISystem> ());
+			_pausableUpdateSystems.Add (_pool.CreateSystem<GoalSystem> ());
+			_pausableUpdateSystems.Add (_pool.CreateSystem<DestroySystem> ());
 
 			//	Not physics based - as an example
-			_pausableSystems.Add (_pool.CreateSystem<BoundsBounceSystem> ());
-            _pausableSystems.Add (_pool.CreateSystem<BoundsConstrainSystem> ());
+			_pausableUpdateSystems.Add (_pool.CreateSystem<BoundsBounceSystem> ());
+            _pausableUpdateSystems.Add (_pool.CreateSystem<BoundsConstrainSystem> ());
+			_pausableUpdateSystems.Initialize();
+			_pausableUpdateSystems.ActivateReactiveSystems();
 
-			//	Physics based - as an example.
-			_pausableSystems.Add (_pool.CreateSystem<CollisionSystem> ());
 
-			_pausableSystems.Initialize();
-			_pausableSystems.ActivateReactiveSystems();
+            _pausableFixedUpdateSystems = new Feature ();
+            //  Physics based - as an example.
+            _pausableFixedUpdateSystems.Add (_pool.CreateSystem<CollisionSystem> ());
+            _pausableFixedUpdateSystems.Initialize();
+            _pausableFixedUpdateSystems.ActivateReactiveSystems();
+
 
 
 			//for demo only, an example of an unpausable system
-			_unpausableSystems = new Feature ();
-			_unpausableSystems.Add (_pool.CreateSystem<TimeSystem> ());
-			_unpausableSystems.Initialize();
-			_unpausableSystems.ActivateReactiveSystems();
+			_unpausableUpdateSystems = new Feature ();
+			_unpausableUpdateSystems.Add (_pool.CreateSystem<TimeSystem> ());
+			_unpausableUpdateSystems.Initialize();
+			_unpausableUpdateSystems.ActivateReactiveSystems();
 
 
 
@@ -213,8 +247,8 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 		{
 			Debug.Log ("OnGameControllerDestroying()");
 
-			_pausableSystems.DeactivateReactiveSystems();
-			_unpausableSystems.DeactivateReactiveSystems ();
+			_pausableUpdateSystems.DeactivateReactiveSystems();
+			_unpausableUpdateSystems.DeactivateReactiveSystems ();
 
 			Pools.pool.Reset ();
 			DestroyPoolObserver();

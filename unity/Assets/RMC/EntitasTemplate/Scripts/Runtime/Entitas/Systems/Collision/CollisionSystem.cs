@@ -42,18 +42,24 @@ namespace RMC.EntitasTemplate.Entitas.Systems.Collision
 		{
 			foreach (var collisionEntity in entities) 
 			{
-				if (collisionEntity.collision.collisionType == CollisionComponent.CollisionType.TriggerEnter)
+                //The collision may happen on the same frame as the ball is removed after a goal
+                var entity = _group.GetEntities().FirstOrDefault(e2 => e2.view.gameObject == collisionEntity.collision.gameObject);
+                if (collisionEntity.collision.collisionType == CollisionComponent.CollisionType.TriggerEnter && entity != null)
 				{
 					//Find entities from the unity data
-					var ballEntity = _group.GetEntities().FirstOrDefault(e2 => e2.view.gameObject == collisionEntity.collision.gameObject);
+					
 					var paddleEntity = _group.GetEntities().FirstOrDefault(e2 => e2.view.gameObject == collisionEntity.collision.collider.gameObject);
 					
 					//Debug.Log (collisionEntity.collision.collider.gameObject);
 					
 					//Move the ball and include some of the paddle's y velocity to 'steer' the ball
-					Vector3 nextBallVelocity = ballEntity.velocity.velocity;
+                    Vector3 nextVelocity = entity.velocity.velocity;
 					Vector3 paddleVelocity = paddleEntity.velocity.velocity;
-					ballEntity.ReplaceVelocity ( new Vector3 (-nextBallVelocity.x, nextBallVelocity.y + paddleVelocity.y * _paddleFriction, nextBallVelocity.z) );
+					entity.ReplaceVelocity 
+                    ( 
+                        new Vector3 (-nextVelocity.x, nextVelocity.y + paddleVelocity.y * _paddleFriction, nextVelocity.z),
+                        entity.velocity.friction
+                    );
 					
 				}
 				collisionEntity.willDestroy = true;

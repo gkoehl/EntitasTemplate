@@ -59,6 +59,9 @@ namespace RMC.Common.Entitas.Systems.Render
                         e.AddView(gameObject, new Bounds ());
                     }
 
+                    //Keep
+                    //Debug.Log("View Added: " + e.view);
+
 
 	            }
 	        }

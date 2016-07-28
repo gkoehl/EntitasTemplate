@@ -35,7 +35,7 @@ namespace RMC.Common.Entitas.Systems
 			foreach (var e in _group.GetEntities()) 
 			{
 				Vector3 nextVelocity = new Vector3 (0, Input.GetAxis ("Vertical"), 0);
-				e.ReplaceVelocity(nextVelocity);
+                e.ReplaceVelocity(nextVelocity, e.velocity.friction);
 			}
 		}
 
