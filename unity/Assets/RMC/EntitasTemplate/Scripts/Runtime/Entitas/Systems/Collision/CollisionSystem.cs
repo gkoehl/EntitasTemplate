@@ -58,8 +58,7 @@ namespace RMC.EntitasTemplate.Entitas.Systems.Collision
 					Vector3 paddleVelocity = paddleEntity.velocity.velocity;
 					entity.ReplaceVelocity 
                     ( 
-                        new Vector3 (-nextVelocity.x, nextVelocity.y + paddleVelocity.y * GameConstants.PaddleFriction, nextVelocity.z),
-                        entity.velocity.friction
+                        new Vector3 (-nextVelocity.x, nextVelocity.y + paddleVelocity.y * GameConstants.PaddleFriction, nextVelocity.z)
                     );
                     _pool.CreateEntity().AddAudio(GameConstants.Audio_Collision, 0.5f);
 					

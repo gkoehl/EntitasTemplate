@@ -62,7 +62,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 			SetupEntities ();
 
 
-            GameController.OnDestroying += OnGameControllerDestroying;
+            GameController.OnDestroying += GameController_OnDestroying;
 
 			//place a ball in the middle of the screen w/ velocity
 			_pool.CreateEntity().willStartNextRound = true;
@@ -87,10 +87,10 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
         }
 
         //Called during GameController.Destroy();
-        private void OnGameControllerDestroying (GameController instance) 
+        private void GameController_OnDestroying (GameController instance) 
         {
             Debug.Log ("OnGameControllerDestroying()");
-            GameController.OnDestroying -= OnGameControllerDestroying;
+            GameController.OnDestroying -= GameController_OnDestroying;
 
             if (AudioController.IsInstantiated())
             {
@@ -180,15 +180,15 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 			Entity entityWhite = _pool.CreateEntity ();
             entityWhite.AddPaddle(PaddleComponent.PaddleType.White);
             entityWhite.AddResource ("Prefabs/PaddleWhite");
-            entityWhite.AddVelocity (Vector3.zero, Vector3.zero);
+            entityWhite.AddVelocity (Vector3.zero);
             entityWhite.WillAcceptInput (true);
 
             //on left
 			Entity entityBlack = _pool.CreateEntity ();
             entityBlack.AddPaddle(PaddleComponent.PaddleType.Black);
             entityBlack.AddResource ("Prefabs/PaddleBlack");
-            entityBlack.AddVelocity (Vector3.zero, Vector3.zero);
-            entityBlack.AddAI(entityWhite, 1, 0.5f);
+            entityBlack.AddVelocity (Vector3.zero);
+            entityBlack.AddAI(entityWhite, 1, 25f);
 
 
 

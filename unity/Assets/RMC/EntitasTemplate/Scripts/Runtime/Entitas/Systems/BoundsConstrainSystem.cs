@@ -63,12 +63,14 @@ namespace RMC.Common.Entitas.Systems
             {
                 nextPosition = new Vector3(nextPosition.x, bounds.min.y + sizeY, nextPosition.z);
                 paddleEntity.ReplacePosition(nextPosition);
+                paddleEntity.ReplaceVelocity(Vector3.zero);
             }
             //Top
             else if (paddleEntity.position.position.y + sizeY > bounds.max.y)
             {
                 nextPosition = new Vector3(nextPosition.x, bounds.max.y - sizeY, nextPosition.z);
                 paddleEntity.ReplacePosition(nextPosition);
+                paddleEntity.ReplaceVelocity(Vector3.zero);
             }
 
 

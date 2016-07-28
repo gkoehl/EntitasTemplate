@@ -35,17 +35,17 @@ namespace RMC.Common.Entitas.Controllers.Singleton
             //
             _audioClipDictionary = new Dictionary<string, AudioClip>();
             _soundGroup = Pools.pool.GetGroup(Matcher.AllOf(Matcher.Audio));
-            _soundGroup.OnEntityAdded += OnSoundEntityAdded;
+            _soundGroup.OnEntityAdded += SoundGroup_OnEntityAdded;
 
         }
 
         private void AudioController_OnDestroying (AudioController instance) 
         {
             AudioController.OnDestroying -= AudioController_OnDestroying;
-            _soundGroup.OnEntityAdded -= OnSoundEntityAdded;
+            _soundGroup.OnEntityAdded -= SoundGroup_OnEntityAdded;
         }
 
-        private void OnSoundEntityAdded (Group group, Entity entity, int index, IComponent component) 
+        private void SoundGroup_OnEntityAdded (Group group, Entity entity, int index, IComponent component) 
         {
             PlaySound(entity.audio.audioClipName, entity.audio.volume);
         }

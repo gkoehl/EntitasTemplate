@@ -69,7 +69,7 @@ namespace RMC.Common.Entitas.Systems
                 //1
                 entity.ReplacePosition(new Vector3 (nextPosition.x, _bounds.min.y + sizeY, nextPosition.z));
                 //2
-                entity.ReplaceVelocity(nextVelocity, entity.velocity.friction);
+                entity.ReplaceVelocity(nextVelocity);
             } 
             //Top
             else if (entity.position.position.y + sizeY > _bounds.max.y)
@@ -81,7 +81,7 @@ namespace RMC.Common.Entitas.Systems
                 //1
                 entity.ReplacePosition(new Vector3 (nextPosition.x, _bounds.max.y - sizeY, nextPosition.z));
                 //2
-                entity.ReplaceVelocity(nextVelocity, entity.velocity.friction);
+                entity.ReplaceVelocity(nextVelocity);
             }
 
 

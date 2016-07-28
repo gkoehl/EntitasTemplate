@@ -12,17 +12,15 @@ namespace Entitas {
 
         public bool hasVelocity { get { return HasComponent(ComponentIds.Velocity); } }
 
-        public Entity AddVelocity(UnityEngine.Vector3 newVelocity, UnityEngine.Vector3 newFriction) {
+        public Entity AddVelocity(UnityEngine.Vector3 newVelocity) {
             var component = CreateComponent<RMC.Common.Entitas.Components.Transform.VelocityComponent>(ComponentIds.Velocity);
             component.velocity = newVelocity;
-            component.friction = newFriction;
             return AddComponent(ComponentIds.Velocity, component);
         }
 
-        public Entity ReplaceVelocity(UnityEngine.Vector3 newVelocity, UnityEngine.Vector3 newFriction) {
+        public Entity ReplaceVelocity(UnityEngine.Vector3 newVelocity) {
             var component = CreateComponent<RMC.Common.Entitas.Components.Transform.VelocityComponent>(ComponentIds.Velocity);
             component.velocity = newVelocity;
-            component.friction = newFriction;
             ReplaceComponent(ComponentIds.Velocity, component);
             return this;
         }

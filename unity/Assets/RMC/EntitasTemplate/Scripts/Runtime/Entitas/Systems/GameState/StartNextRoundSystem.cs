@@ -44,7 +44,8 @@ namespace RMC.Common.Entitas.Systems.GameState
 				entityBall.AddPosition (new Vector3 (0,0,0));
 
                 //Friction added in the y only
-                entityBall.AddVelocity (new Vector3 (30f, 30f, 0), GameConstants.BallFriction);
+                entityBall.AddVelocity (new Vector3 (30f, 30f, 0));
+                entityBall.AddFriction (GameConstants.BallFriction);
 				entityBall.AddResource ("Prefabs/Ball");
 				entityBall.AddGoal(1);
 				entityBall.AddBoundsBounce(-1);

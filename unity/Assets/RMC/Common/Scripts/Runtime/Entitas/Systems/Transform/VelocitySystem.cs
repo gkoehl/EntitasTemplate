@@ -36,7 +36,12 @@ namespace RMC.Common.Entitas.Systems.Transform
 			{
 				Vector3 velocity = e.velocity.velocity;
 				Vector3 position = e.position.position;
-                Vector3 friction = e.velocity.friction;
+                Vector3 friction = Vector3.zero;
+                if (e.hasFriction)
+                {
+                    friction = e.friction.friction;
+                }
+
                 e.ReplacePosition(new Vector3 (
                     (position.x + velocity.x * Time.deltaTime) * (1- friction.x), 
                     (position.y + velocity.y * Time.deltaTime) * (1- friction.y), 

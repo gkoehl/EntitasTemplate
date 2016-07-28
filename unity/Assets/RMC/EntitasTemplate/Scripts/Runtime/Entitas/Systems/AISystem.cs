@@ -30,10 +30,10 @@ namespace RMC.Common.Entitas.Systems
 			// Get the group of entities that have a Move and Position component
 			_aiGroup = pool.GetGroup(Matcher.AllOf(Matcher.AI, Matcher.Position, Matcher.Velocity));
 			
-			Group ballCreatedGroup = pool.GetGroup(Matcher.AllOf(Matcher.Goal, Matcher.BoundsBounce).NoneOf (Matcher.Destroy));
+            Group ballCreatedGroup = pool.GetGroup(Matcher.AllOf(Matcher.Goal, Matcher.Position).NoneOf (Matcher.Destroy));
 			ballCreatedGroup.OnEntityAdded += BallCreatedGroup_OnEntityAdded;
 
-			Group ballDestroyGroup = pool.GetGroup(Matcher.AllOf(Matcher.Goal, Matcher.Destroy));
+            Group ballDestroyGroup = pool.GetGroup(Matcher.AllOf(Matcher.Goal, Matcher.Position, Matcher.Destroy));
 			ballDestroyGroup.OnEntityAdded += BallDestroyGroup_OnEntityAdded;
 			
 	
@@ -57,7 +57,7 @@ namespace RMC.Common.Entitas.Systems
 			foreach (var e in _aiGroup.GetEntities()) 
 			{
 				e.ReplaceAI (null, e.aI.deadZoneY, e.aI.velocityY);
-                e.ReplaceVelocity ( new Vector3 (0,0,0), e.velocity.friction);
+                e.ReplaceVelocity ( new Vector3 (0,0,0));
 			}
 		}
 
@@ -68,23 +68,26 @@ namespace RMC.Common.Entitas.Systems
 			{
 				Vector3 nextVelocity = Vector3.zero;
 		
+
+                //THe ball is destroyed after each goal, so we do some checks to NOT follow it at that moment - srivello
 				Entity targetEntity = e.aI.targetEntity;
 				if (targetEntity != null)
 				{
+                    if (targetEntity.hasPosition)
+                    {
 
-					PositionComponent targetPositionComponent = (PositionComponent)targetEntity.GetComponent (ComponentIds.Position);
+                        Vector3 targetPosition = targetEntity.position.position;
+                        if (targetPosition.y > e.position.position.y + e.aI.deadZoneY)
+                        {
+                            nextVelocity = new Vector3(0, e.aI.velocityY, 0);
+                        }
+                        else if (targetPosition.y < e.position.position.y - e.aI.deadZoneY)
+                        {
+                            nextVelocity = new Vector3(0, -e.aI.velocityY, 0);
+                        }
 
-					Vector3 targetPosition = targetPositionComponent.position;
-					if (targetPosition.y > e.position.position.y + e.aI.deadZoneY) 
-					{
-						nextVelocity = new Vector3 (0, e.aI.velocityY, 0);
-					} 
-					else if (targetPosition.y < e.position.position.y - e.aI.deadZoneY) 
-					{
-						nextVelocity = new Vector3 (0, -e.aI.velocityY, 0);
-					}
-
-                    e.ReplaceVelocity(nextVelocity, e.velocity.friction);
+                        e.ReplaceVelocity(nextVelocity);
+                    }
 				}
 
 			}
