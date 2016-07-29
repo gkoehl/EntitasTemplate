@@ -24,6 +24,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
         public Text _scoreText;
         public Button _restartButton;
 		public Button _pauseButton;
+        public Button _muteButton;
 
 		// ------------------ Non-serialized fields
         private Entity _gameEntity;
@@ -37,6 +38,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 
             _restartButton.onClick.AddListener (OnRestartButtonClicked);
             _pauseButton.onClick.AddListener (OnPauseButtonClicked);
+            _muteButton.onClick.AddListener (OnMuteButtonClicked);
 
         }
 
@@ -44,6 +46,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
         {
             _restartButton.onClick.RemoveListener (OnRestartButtonClicked);
             _pauseButton.onClick.RemoveListener (OnPauseButtonClicked);
+            _muteButton.onClick.RemoveListener (OnMuteButtonClicked);
 
         }
 
@@ -85,6 +88,12 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
         {
            GameController.Instance.TogglePause();
         }
+        private void OnMuteButtonClicked()
+        {
+            GameController.Instance.ToggleMute();
+        }
+
+
 
 	}
 }

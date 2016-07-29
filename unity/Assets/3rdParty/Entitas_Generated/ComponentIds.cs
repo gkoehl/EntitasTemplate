@@ -9,7 +9,7 @@
 public static class ComponentIds {
     public const int AcceptInput = 0;
     public const int AI = 1;
-    public const int Audio = 2;
+    public const int AudioSettings = 2;
     public const int BoundsBounce = 3;
     public const int Bounds = 4;
     public const int Collision = 5;
@@ -20,20 +20,21 @@ public static class ComponentIds {
     public const int Goal = 10;
     public const int Input = 11;
     public const int Paddle = 12;
-    public const int Position = 13;
-    public const int Resource = 14;
-    public const int Score = 15;
-    public const int StartNextRound = 16;
-    public const int Time = 17;
-    public const int Velocity = 18;
-    public const int View = 19;
+    public const int PlayAudio = 13;
+    public const int Position = 14;
+    public const int Resource = 15;
+    public const int Score = 16;
+    public const int StartNextRound = 17;
+    public const int Time = 18;
+    public const int Velocity = 19;
+    public const int View = 20;
 
-    public const int TotalComponents = 20;
+    public const int TotalComponents = 21;
 
     public static readonly string[] componentNames = {
         "AcceptInput",
         "AI",
-        "Audio",
+        "AudioSettings",
         "BoundsBounce",
         "Bounds",
         "Collision",
@@ -44,6 +45,7 @@ public static class ComponentIds {
         "Goal",
         "Input",
         "Paddle",
+        "PlayAudio",
         "Position",
         "Resource",
         "Score",
@@ -56,7 +58,7 @@ public static class ComponentIds {
     public static readonly System.Type[] componentTypes = {
         typeof(RMC.Common.Entitas.Components.AcceptInputComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.AIComponent),
-        typeof(RMC.Common.Entitas.Components.Audio.AudioComponent),
+        typeof(RMC.Common.Entitas.Components.Audio.AudioSettingsComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.BoundsBounceComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.BoundsComponent),
         typeof(RMC.Common.Entitas.Components.Collision.CollisionComponent),
@@ -67,6 +69,7 @@ public static class ComponentIds {
         typeof(RMC.EntitasTemplate.Entitas.Components.GameState.GoalComponent),
         typeof(RMC.Common.Entitas.Components.Input.InputComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.PaddleComponent),
+        typeof(RMC.Common.Entitas.Components.Audio.PlayAudioComponent),
         typeof(RMC.Common.Entitas.Components.Transform.PositionComponent),
         typeof(RMC.Common.Entitas.Components.Render.ResourceComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.GameState.ScoreComponent),

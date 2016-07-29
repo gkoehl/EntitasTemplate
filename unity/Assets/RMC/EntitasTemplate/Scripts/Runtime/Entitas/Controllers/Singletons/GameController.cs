@@ -16,6 +16,7 @@ using RMC.Common.Entitas.Systems.GameState;
 using RMC.EntitasTemplate.Entitas.Components;
 using RMC.Common.Entitas.Controllers.Singleton;
 using System.Collections;
+using RMC.Common.Entitas.Helpers;
 
 namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 {
@@ -110,25 +111,6 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
-        private static Bounds GetOrthographicBounds(Camera camera)
-        {
-            float screenAspect = (float)Screen.width / (float)Screen.height;
-            float cameraHeight = camera.orthographicSize * 2;
-            Bounds bounds = new Bounds(
-                camera.transform.position,
-                new Vector3(cameraHeight * screenAspect, cameraHeight, 0));
-            return bounds;
-        }
-
-        private static Bounds GetBounds(Camera camera)
-        {
-            //TODO: Why is this needed? Without it the lower bound is offscreen
-            float offsetY = 2;
-
-            var size = camera.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
-            return new Bounds(Vector3.zero, new Vector3(size.x * 2, size.y * 2 - offsetY));
-        }
-
 		private void SetupPools ()
 		{
 			_pool = new Pool (ComponentIds.TotalComponents, 0, new PoolMetaData ("Pool", ComponentIds.componentNames, ComponentIds.componentTypes));
@@ -164,36 +146,37 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 		private void SetupEntities ()
 		{
 
-            var bounds = GetOrthographicBounds(Camera.main);
+            var bounds = GameHelper.GetOrthographicBounds(Camera.main);
             //Debug.Log(bounds.min.y + " and " + bounds.max.y);
 
 
+            //  Create game with data. This is non-visual.
 			_gameEntity = _pool.CreateEntity();
 			_gameEntity.AddGame(0);
 			_gameEntity.AddBounds(bounds);
 			_gameEntity.AddScore(0,0);
 			_gameEntity.AddTime (0, 0, false);
+            _gameEntity.AddAudioSettings(false);
 
-            //on Right
-			Entity entityWhite = _pool.CreateEntity ();
-            entityWhite.AddPaddle(PaddleComponent.PaddleType.White);
-            entityWhite.AddResource ("Prefabs/PaddleWhite");
-            entityWhite.AddVelocity (Vector3.zero);
-            entityWhite.WillAcceptInput (true);
+            //  Create human player on the right
+            Entity whitePaddleEntity            = _pool.CreateEntity ();
+            whitePaddleEntity.AddPaddle         (PaddleComponent.PaddleType.White);
+            whitePaddleEntity.AddResource       ("Prefabs/PaddleWhite");
+            whitePaddleEntity.AddVelocity       (Vector3.zero);
+            whitePaddleEntity.WillAcceptInput   (true);
 
-            //on left
-			Entity entityBlack = _pool.CreateEntity ();
-            entityBlack.AddPaddle(PaddleComponent.PaddleType.Black);
-            entityBlack.AddResource ("Prefabs/PaddleBlack");
-            entityBlack.AddVelocity (Vector3.zero);
-            entityBlack.AddAI(entityWhite, 1, 25f);
-
+            //  Create computer player on the left
+            Entity blackPaddleEntity        = _pool.CreateEntity ();
+            blackPaddleEntity.AddPaddle     (PaddleComponent.PaddleType.Black);
+            blackPaddleEntity.AddResource   ("Prefabs/PaddleBlack");
+            blackPaddleEntity.AddVelocity   (Vector3.zero);
+            blackPaddleEntity.AddAI         (whitePaddleEntity, 1, 25f);
 
 
             //Tick the systems once so the 'View' is added by the AddResourceSystem()
             _pausableUpdateSystems.Execute();
-            entityWhite.AddPosition (new Vector3 (bounds.max.x - entityWhite.view.bounds.size.x/2 - PaddleOffsetToEdgeX, 0, 0));
-            entityBlack.AddPosition (new Vector3 (bounds.min.x + entityBlack.view.bounds.size.x/2 + PaddleOffsetToEdgeX, 0, 0));
+            whitePaddleEntity.AddPosition (new Vector3 (bounds.max.x - whitePaddleEntity.view.bounds.size.x/2 - PaddleOffsetToEdgeX, 0, 0));
+            blackPaddleEntity.AddPosition (new Vector3 (bounds.min.x + blackPaddleEntity.view.bounds.size.x/2 + PaddleOffsetToEdgeX, 0, 0));
 			
 
 			Group _scoreGroup = Pools.pool.GetGroup(Matcher.AllOf (Matcher.Game, Matcher.Score));
@@ -248,13 +231,36 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 
 		public void TogglePause ()
 		{
-            _pool.CreateEntity().AddAudio(GameConstants.Audio_ButtonClickSuccess, 0.5f);
+            _pool.CreateEntity().AddPlayAudio(GameConstants.Audio_ButtonClickSuccess, 0.5f);
             SetPause(!_gameEntity.time.isPaused);
 
 			//Keep
 			//Debug.Log ("TogglePause() isPaused: " + _gameEntity.time.isPaused);	
 
 		}
+
+        public void ToggleMute ()
+        {
+
+            bool isMuted = _gameEntity.audioSettings.isMuted;
+
+            if (isMuted)
+            {
+                //unmute first
+                SetMute(!isMuted);
+                _pool.CreateEntity().AddPlayAudio(GameConstants.Audio_ButtonClickSuccess, 0.5f);
+
+            }
+            else
+            {
+                //play sound first
+                _pool.CreateEntity().AddPlayAudio(GameConstants.Audio_ButtonClickSuccess, 0.5f);
+                SetMute(!isMuted);
+            }
+
+        }
+
+
 
         private void SetPause (bool isPaused)
         {
@@ -263,6 +269,14 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
                 _gameEntity.time.timeSinceGameStartUnpaused, 
                 _gameEntity.time.timeSinceGameStartTotal, 
                 isPaused
+            );
+        }
+
+        private void SetMute (bool isMute)
+        {
+            _gameEntity.ReplaceAudioSettings
+            (
+                isMute
             );
         }
 
@@ -281,7 +295,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
         //Add small pause so we hear the click sound
         private IEnumerator Restart_Coroutine ()
         {
-            _pool.CreateEntity().AddAudio(GameConstants.Audio_ButtonClickSuccess, 0.5f);
+            _pool.CreateEntity().AddPlayAudio(GameConstants.Audio_ButtonClickSuccess, 0.5f);
             yield return new WaitForSeconds(0.25f);
             GameController.Destroy();
         }

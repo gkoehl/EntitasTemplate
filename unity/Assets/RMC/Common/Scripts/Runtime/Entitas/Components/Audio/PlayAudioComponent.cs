@@ -6,7 +6,7 @@ namespace RMC.Common.Entitas.Components.Audio
 	/// <summary>
 	/// Replace me with description.
 	/// </summary>
-	public class AudioComponent : IComponent
+	public class PlayAudioComponent : IComponent
 	{
 		// ------------------ Serialized fields and properties
 		public string audioClipName;

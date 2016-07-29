@@ -17,6 +17,7 @@ namespace RMC.Common.Entitas.Controllers.Singleton
 
         // ------------------ Serialized fields and properties
         private Group _soundGroup;
+        private Entity _gameEntity;
         private AudioSource _audioSource;
         private Dictionary<string, AudioClip> _audioClipDictionary;
 
@@ -31,12 +32,14 @@ namespace RMC.Common.Entitas.Controllers.Singleton
             //NOTE: One AudioSource = Limitation of one sound playing concurrently. Ok for demo
             _audioSource = gameObject.AddComponent<AudioSource>();
             AudioController.OnDestroying += AudioController_OnDestroying;
+            _audioClipDictionary = new Dictionary<string, AudioClip>();
 
             //
-            _audioClipDictionary = new Dictionary<string, AudioClip>();
-            _soundGroup = Pools.pool.GetGroup(Matcher.AllOf(Matcher.Audio));
+            _soundGroup = Pools.pool.GetGroup(Matcher.AllOf(Matcher.PlayAudio));
             _soundGroup.OnEntityAdded += SoundGroup_OnEntityAdded;
 
+            //By design: Start() happens after core entities are created, so no need to wait to access
+            _gameEntity = Pools.pool.GetGroup(Matcher.AllOf(Matcher.Game, Matcher.AudioSettings)).GetSingleEntity();
         }
 
         private void AudioController_OnDestroying (AudioController instance) 
@@ -47,7 +50,11 @@ namespace RMC.Common.Entitas.Controllers.Singleton
 
         private void SoundGroup_OnEntityAdded (Group group, Entity entity, int index, IComponent component) 
         {
-            PlaySound(entity.audio.audioClipName, entity.audio.volume);
+            if (!_gameEntity.audioSettings.isMuted)
+            {
+                PlaySound(entity.playAudio.audioClipName, entity.playAudio.volume);
+            }
+            entity.WillDestroy(true);
         }
 
         private void PlaySound (string audioClipName, float volume)
