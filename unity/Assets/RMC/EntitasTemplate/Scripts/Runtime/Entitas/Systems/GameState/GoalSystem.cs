@@ -58,21 +58,26 @@ namespace RMC.Common.Entitas.Systems.GameState
 					//white
 					ChangeScore(e.goal.pointsPerGoal, 0);
 					e.willDestroy = true;
-                    GameController.Instance.StartCoroutine(StartNextRound_Coroutine(1));
-                    _pool.CreateEntity().AddPlayAudio(GameConstants.Audio_GoalSuccess, 0.5f);
+                    GameController.Instance.StartCoroutine(StartNextRound_Coroutine(0.25f));
+                    _pool.CreateEntity().AddPlayAudio(GameConstants.Audio_GoalSuccess, 0.25f);
 				} 
 				else if (e.position.position.x > bounds.max.x)
 				{
 					//black
 					ChangeScore(0, e.goal.pointsPerGoal);
 					e.willDestroy = true;
-                    GameController.Instance.StartCoroutine(StartNextRound_Coroutine(1));
+                    GameController.Instance.StartCoroutine(StartNextRound_Coroutine(0.25f));
                     _pool.CreateEntity().AddPlayAudio(GameConstants.Audio_GoalFailure, 0.5f);
 					
 				}
 			}
 		}
 
+        /// <summary>
+        /// I considered doing a longer delay here, but instead,...
+        /// I'll do the delay in the StartNextRoundSystem AFTER the ball is put on the screen
+        /// and BEFORE I start it moving
+        /// </summary>
         private IEnumerator StartNextRound_Coroutine (float delayInSeconds)
         {
             yield return new WaitForSeconds(delayInSeconds);

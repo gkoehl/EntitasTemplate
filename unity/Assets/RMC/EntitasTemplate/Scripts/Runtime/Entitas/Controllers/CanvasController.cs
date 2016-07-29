@@ -16,24 +16,23 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 		// ------------------ Events
 
 		// ------------------ Serialized fields and properties
-				private Group _gameScore;
-
-		// ------------------ Methods
-
-
         public Text _scoreText;
         public Button _restartButton;
-		public Button _pauseButton;
+        public Button _pauseButton;
         public Button _muteButton;
+		
 
 		// ------------------ Non-serialized fields
         private Entity _gameEntity;
+        private Group _gameScore;
+
 		// ------------------ Methods
 
         protected void Start()
         {
 
             Group group = Pools.pool.GetGroup(Matcher.AllOf(Matcher.Game, Matcher.Bounds, Matcher.Score));
+
             SetGameGroup(group);
 
             _restartButton.onClick.AddListener (OnRestartButtonClicked);
@@ -41,6 +40,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
             _muteButton.onClick.AddListener (OnMuteButtonClicked);
 
         }
+
 
         protected void OnDestroy()
         {
@@ -73,11 +73,45 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
         private void Entity_OnComponentReplaced(Entity entity, int index, IComponent previousComponent, IComponent newComponent)
         {
             SetText(entity.score.whiteScore, entity.score.blackScore, entity.time.timeSinceGameStartUnpaused);
+            SetPauseButtonColor(entity.time.isPaused);
+            SetMuteButtonColor(entity.audioSettings.isMuted);
         }
 
         private void SetText(int whiteScore, int blackScore, float time)
         {
             _scoreText.text = string.Format ("White: {0}\t\tBlack: {1}\t\tTime: {2:000}", whiteScore, blackScore, time);
+        }
+
+
+        /// <summary>
+        /// We update the View (GUI) only when the model changes. Best practice!
+        /// </summary>
+        private void SetPauseButtonColor (bool isDark)
+        {
+            if (isDark)
+            {
+                _pauseButton.GetComponent<Image>().color = Color.gray;
+            }
+            else
+            {
+                _pauseButton.GetComponent<Image>().color = Color.white;
+            }
+
+        }
+
+        /// <summary>
+        /// We update the View (GUI) only when the model changes. Best practice!
+        /// </summary>
+        private void SetMuteButtonColor (bool isDark)
+        {
+            if (isDark)
+            {
+                _muteButton.GetComponent<Image>().color = Color.gray;
+            }
+            else
+            {
+                _muteButton.GetComponent<Image>().color = Color.white;
+            }
         }
             
 		private void OnRestartButtonClicked()

@@ -12,8 +12,8 @@ namespace RMC.EntitasTemplate.Entitas
 		// ------------------ Constants and statics
         public static readonly Vector3 BallFriction = new Vector3 (0, 0.03f, 0);
         public static readonly float PaddleFriction = 0.5f;
-        public static readonly float BallInitialVelocityMinX = 20;
-        public static readonly float BallInitialVelocityMaxX = 30;
+        public static readonly float BallInitialVelocityMinX = 30;
+        public static readonly float BallInitialVelocityMaxX = 50;
         public static readonly float BallInitialVelocityMinY = 0;
         public static readonly float BallInitialVelocityMaxY = 20;
 

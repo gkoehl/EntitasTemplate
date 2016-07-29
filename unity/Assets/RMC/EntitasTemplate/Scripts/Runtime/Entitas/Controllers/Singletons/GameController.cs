@@ -46,10 +46,12 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 		override protected void Awake () 
 		{
 			base.Awake();
+            Debug.Log ("GameController.Awake()");
+
+
             GameController.OnDestroying += GameController_OnDestroying;
             AudioController.Instantiate();
             InputController.Instantiate();
-			Debug.Log ("GC.Awake()");
 
 			Application.targetFrameRate = 30;
 
@@ -88,7 +90,8 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
         //Called during GameController.Destroy();
         private void GameController_OnDestroying (GameController instance) 
         {
-            Debug.Log ("OnGameControllerDestroying()");
+            Debug.Log ("GameController.Destroy()");
+
             GameController.OnDestroying -= GameController_OnDestroying;
 
             if (AudioController.IsInstantiated())
@@ -104,9 +107,6 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 
             Pools.pool.Reset ();
             DestroyPoolObserver();
-
-            Group _scoreGroup = Pools.pool.GetGroup(Matcher.AllOf (Matcher.Game, Matcher.Score));
-            Debug.LogWarning ("DESTROY should have zero and : " + _scoreGroup.count);
 
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
@@ -178,10 +178,6 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
             whitePaddleEntity.AddPosition (new Vector3 (bounds.max.x - whitePaddleEntity.view.bounds.size.x/2 - PaddleOffsetToEdgeX, 0, 0));
             blackPaddleEntity.AddPosition (new Vector3 (bounds.min.x + blackPaddleEntity.view.bounds.size.x/2 + PaddleOffsetToEdgeX, 0, 0));
 			
-
-			Group _scoreGroup = Pools.pool.GetGroup(Matcher.AllOf (Matcher.Game, Matcher.Score));
-			Debug.LogWarning ("START should have zero and : " + _scoreGroup.count);
-
 
 		}
 

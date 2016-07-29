@@ -4,6 +4,8 @@ using RMC.Common.Entitas.Components;
 using System;
 using System.Collections.Generic;
 using RMC.EntitasTemplate.Entitas;
+using RMC.EntitasTemplate.Entitas.Controllers.Singleton;
+using System.Collections;
 
 namespace RMC.Common.Entitas.Systems.GameState
 {
@@ -44,15 +46,25 @@ namespace RMC.Common.Entitas.Systems.GameState
 				entityBall.AddPosition (new Vector3 (0,0,0));
 
                 //Friction added in the y only
-                entityBall.AddVelocity (GameConstants.GetBallInitialVelocity());
+
                 entityBall.AddFriction (GameConstants.BallFriction);
 				entityBall.AddResource ("Prefabs/Ball");
 				entityBall.AddGoal(1);
 				entityBall.AddBoundsBounce(-1);
+                GameController.Instance.StartCoroutine(StartNextRound_Coroutine(entityBall, 0.5f));
 
 				e.willDestroy = true;
 			}
 		}
+
+        /// <summary>
+        /// Add a delay AFTER creating the ball visuall and BEFORE moving it. A courtesy to player.
+        /// </summary>
+        private IEnumerator StartNextRound_Coroutine (Entity entityBall, float delayInSeconds)
+        {
+            yield return new WaitForSeconds(delayInSeconds);
+             entityBall.AddVelocity (GameConstants.GetBallInitialVelocity());
+        }
 
     }
 }
