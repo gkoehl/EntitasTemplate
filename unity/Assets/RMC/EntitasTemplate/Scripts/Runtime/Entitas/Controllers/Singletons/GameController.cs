@@ -22,7 +22,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 	/// <summary>
 	/// Replace me with description.
 	/// </summary>
-	public class GameController : SingletonMonobehavior<GameController> 
+    public class GameController : SingletonMonobehavior<GameController> 
 	{
 		// ------------------ Constants and statics
         private const float PaddleOffsetToEdgeX = 3;
@@ -45,6 +45,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 		override protected void Awake () 
 		{
 			base.Awake();
+            GameController.OnDestroying += GameController_OnDestroying;
             AudioController.Instantiate();
             InputController.Instantiate();
 			Debug.Log ("GC.Awake()");
@@ -61,9 +62,6 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 			//2
 			SetupEntities ();
 
-
-            GameController.OnDestroying += GameController_OnDestroying;
-
 			//place a ball in the middle of the screen w/ velocity
 			_pool.CreateEntity().willStartNextRound = true;
 
@@ -78,7 +76,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
             _unpausableUpdateSystems.Execute();
 		}
 
-        protected void FixedUpdate () 
+        protected void LateUpdate () 
         {
             if (!_gameEntity.time.isPaused)
             {

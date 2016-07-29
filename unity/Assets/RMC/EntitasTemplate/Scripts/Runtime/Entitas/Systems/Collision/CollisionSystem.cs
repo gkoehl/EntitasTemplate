@@ -51,16 +51,19 @@ namespace RMC.EntitasTemplate.Entitas.Systems.Collision
 					
 					var paddleEntity = _group.GetEntities().FirstOrDefault(e2 => e2.view.gameObject == collisionEntity.collision.collider.gameObject);
 					
-					//Debug.Log (collisionEntity.collision.collider.gameObject);
+                    if (paddleEntity != null)
+                    {
+                        //Debug.Log (collisionEntity.collision.collider.gameObject);
 					
-					//Move the ball and include some of the paddle's y velocity to 'steer' the ball
-                    Vector3 nextVelocity = entity.velocity.velocity;
-					Vector3 paddleVelocity = paddleEntity.velocity.velocity;
-					entity.ReplaceVelocity 
-                    ( 
-                        new Vector3 (-nextVelocity.x, nextVelocity.y + paddleVelocity.y * GameConstants.PaddleFriction, nextVelocity.z)
-                    );
-                    _pool.CreateEntity().AddAudio(GameConstants.Audio_Collision, 0.5f);
+                        //Move the ball and include some of the paddle's y velocity to 'steer' the ball
+                        Vector3 nextVelocity = entity.velocity.velocity;
+                        Vector3 paddleVelocity = paddleEntity.velocity.velocity;
+                        entity.ReplaceVelocity 
+                        (
+                            new Vector3(-nextVelocity.x, nextVelocity.y + paddleVelocity.y * GameConstants.PaddleFriction, nextVelocity.z)
+                        );
+                        _pool.CreateEntity().AddAudio(GameConstants.Audio_Collision, 0.5f);
+                    }
 					
 				}
 				collisionEntity.willDestroy = true;
