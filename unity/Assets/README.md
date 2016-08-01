@@ -4,39 +4,41 @@
 
 ---
 
-* <a href="http://www.RivelloMultimediaConsulting.com/unity/">Rivello Multimedia Consulting</a> (RMC) created this simple template, designed as a starting point for new Entitas projects.
+<a href="http://www.RivelloMultimediaConsulting.com/unity/">Rivello Multimedia Consulting</a> (RMC) created this simple template, designed as a starting point for new Entitas projects.
 * Entitas is an ECS (Entity Component System) which presents a new way to think about architecting your Unity projects. Thanks to the amazing work of <a href="http://github.com/sschmid/Entitas-CSharp/">https://github.com/sschmid/Entitas-CSharp/</a>
 
 </p>
 
+
 Instructions
 =============
-* Replace the /Unity/Assets/3rdParty/Entitas folder contents with the latest download from <a href="http://github.com/sschmid/Entitas-CSharp/">github.com</a></BR>
-* Open the /Unity/ folder in Unity3D. </BR>
-* Open the EntitasTemplate.scene file. Play.
+* Replace the /unity/Assets/3rdParty/Entitas folder contents with the latest download from <a href="http://github.com/sschmid/Entitas-CSharp/">github.com</a></BR>
+* Open the /unity/ folder in Unity3D. </BR>
+* Open the EntitasTemplate.unity file. Play.
 
 Structure Overview
 =============
-* **/Assets/RMC/Prototype/Common/Scripts/Runtime/** contains code that could be reused across various Entitas games<BR>
-* **/Assets/RMC/Prototype/EntitasTemplate/Scripts/Runtime/** contains game-specific code
+* **/Assets/RMC/Common/Scripts/Runtime/** contains code that could be reused across various Entitas games<BR>
+* **/Assets/RMC/EntitasTemplate/Scripts/Runtime/** contains game-specific code
 
 Code Overview
 =============
 * **GameController.cs** is the main entry point
 * **GameConstants.cs** has some easy to edit values
-* **StartNextRoundSystem.cs** is called before every round.
+round.
+
+Open Questions
+=============
+* I added `ENTITAS_HELP_REQUEST` comments in the code where I have questions about best practices. Help? :)
 
 TODO
 =============
-* make this work ENTITAS_DISABLE_VISUAL_DEBUGGING
-* use 'private' explicitely everywhere
-* make all systems reactive that should be
+* Done
 
 
-
-
-Created BY
+Created By
 =============
 
-- Samuel Asher Rivello <a href="https://twitter.com/srivello/">@srivello</a>, <a href="https://github.com/RivelloMultimediaConsulting">Github</a>, <a href="www.rivellomultimediaconsulting.com/unity/">Rivellomultimediaconsulting.com</a>
+- Samuel Asher Rivello <a href="https://twitter.com/srivello/">@srivello</a>, <a href="http://www.github.com/RivelloMultimediaConsulting/">Github</a>, <a href="http://www.rivellomultimediaconsulting.com/unity/">Rivellomultimediaconsulting.com</a>
+
 

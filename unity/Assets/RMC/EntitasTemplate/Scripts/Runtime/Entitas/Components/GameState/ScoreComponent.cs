@@ -10,8 +10,7 @@ namespace RMC.EntitasTemplate.Entitas.Components.GameState
 	public class ScoreComponent : IComponent
 	{
 		// ------------------ Serialized fields and properties
-		public int whiteScore;
-        public int blackScore;
+		public int score;
 
 	}
 }

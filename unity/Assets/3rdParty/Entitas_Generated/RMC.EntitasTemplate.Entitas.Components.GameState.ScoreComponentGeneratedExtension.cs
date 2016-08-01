@@ -12,17 +12,15 @@ namespace Entitas {
 
         public bool hasScore { get { return HasComponent(ComponentIds.Score); } }
 
-        public Entity AddScore(int newWhiteScore, int newBlackScore) {
+        public Entity AddScore(int newScore) {
             var component = CreateComponent<RMC.EntitasTemplate.Entitas.Components.GameState.ScoreComponent>(ComponentIds.Score);
-            component.whiteScore = newWhiteScore;
-            component.blackScore = newBlackScore;
+            component.score = newScore;
             return AddComponent(ComponentIds.Score, component);
         }
 
-        public Entity ReplaceScore(int newWhiteScore, int newBlackScore) {
+        public Entity ReplaceScore(int newScore) {
             var component = CreateComponent<RMC.EntitasTemplate.Entitas.Components.GameState.ScoreComponent>(ComponentIds.Score);
-            component.whiteScore = newWhiteScore;
-            component.blackScore = newBlackScore;
+            component.score = newScore;
             ReplaceComponent(ComponentIds.Score, component);
             return this;
         }
@@ -39,22 +37,22 @@ namespace Entitas {
 
         public bool hasScore { get { return scoreEntity != null; } }
 
-        public Entity SetScore(int newWhiteScore, int newBlackScore) {
+        public Entity SetScore(int newScore) {
             if (hasScore) {
                 throw new EntitasException("Could not set score!\n" + this + " already has an entity with RMC.EntitasTemplate.Entitas.Components.GameState.ScoreComponent!",
                     "You should check if the pool already has a scoreEntity before setting it or use pool.ReplaceScore().");
             }
             var entity = CreateEntity();
-            entity.AddScore(newWhiteScore, newBlackScore);
+            entity.AddScore(newScore);
             return entity;
         }
 
-        public Entity ReplaceScore(int newWhiteScore, int newBlackScore) {
+        public Entity ReplaceScore(int newScore) {
             var entity = scoreEntity;
             if (entity == null) {
-                entity = SetScore(newWhiteScore, newBlackScore);
+                entity = SetScore(newScore);
             } else {
-                entity.ReplaceScore(newWhiteScore, newBlackScore);
+                entity.ReplaceScore(newScore);
             }
 
             return entity;

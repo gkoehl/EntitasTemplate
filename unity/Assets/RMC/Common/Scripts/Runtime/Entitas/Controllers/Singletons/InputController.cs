@@ -48,8 +48,13 @@ namespace RMC.Common.Entitas.Controllers.Singleton
                 _pool.CreateEntity().AddInput(InputComponent.InputType.Axis, KeyCode.None, new Vector2(horizontalAxis, verticalAxis));
             }
 
-            //TODO: Add button support
-            //_pool.CreateEntity().AddInput (InputComponent.InputType.KeyCode, KeyCode.Return, Vector2.zero);
+
+            //TODO: Support all keys here
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _pool.CreateEntity().AddInput (InputComponent.InputType.KeyCode, KeyCode.Space, Vector2.zero);
+            }
+           
 
         }
 

@@ -39,7 +39,7 @@ namespace RMC.Common.Entitas.Controllers.Singleton
             _soundGroup.OnEntityAdded += SoundGroup_OnEntityAdded;
 
             //By design: Start() happens after core entities are created, so no need to wait to access
-            _gameEntity = Pools.pool.GetGroup(Matcher.AllOf(Matcher.Game, Matcher.AudioSettings)).GetSingleEntity();
+            _gameEntity = Pools.pool.GetGroup(Matcher.AllOf(Matcher.AudioSettings)).GetSingleEntity();
         }
 
         private void AudioController_OnDestroying (AudioController instance) 

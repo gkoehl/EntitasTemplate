@@ -16,11 +16,8 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 		// ------------------ Events
 
 		// ------------------ Serialized fields and properties
-        public Text _scoreText;
-        public Button _restartButton;
-        public Button _pauseButton;
-        public Button _muteButton;
-		
+        [SerializeField] private Text _scoreText;
+        [SerializeField] private Text _instructionsText;
 
 		// ------------------ Non-serialized fields
         private Entity _gameEntity;
@@ -31,22 +28,16 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
         protected void Start()
         {
 
-            Group group = Pools.pool.GetGroup(Matcher.AllOf(Matcher.Game, Matcher.Bounds, Matcher.Score));
+            Group group = Pools.pool.GetGroup(Matcher.AllOf(Matcher.Score));
+            _instructionsText.text = "Use the 4 arrow keys to move. Space to restart.";
 
             SetGameGroup(group);
-
-            _restartButton.onClick.AddListener (OnRestartButtonClicked);
-            _pauseButton.onClick.AddListener (OnPauseButtonClicked);
-            _muteButton.onClick.AddListener (OnMuteButtonClicked);
 
         }
 
 
         protected void OnDestroy()
         {
-            _restartButton.onClick.RemoveListener (OnRestartButtonClicked);
-            _pauseButton.onClick.RemoveListener (OnPauseButtonClicked);
-            _muteButton.onClick.RemoveListener (OnMuteButtonClicked);
 
         }
 
@@ -61,7 +52,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 
                 //set first value
                 var scoreComponent = _gameEntity.score;
-                SetText (scoreComponent.whiteScore, scoreComponent.blackScore, _gameEntity.time.timeSinceGameStartUnpaused);
+                SetText (scoreComponent.score);
 
             }
             else
@@ -72,61 +63,13 @@ namespace RMC.EntitasTemplate.Entitas.Controllers
 
         private void Entity_OnComponentReplaced(Entity entity, int index, IComponent previousComponent, IComponent newComponent)
         {
-            SetText(entity.score.whiteScore, entity.score.blackScore, entity.time.timeSinceGameStartUnpaused);
-            SetPauseButtonColor(entity.time.isPaused);
-            SetMuteButtonColor(entity.audioSettings.isMuted);
+            SetText(entity.score.score);
         }
 
-        private void SetText(int whiteScore, int blackScore, float time)
+        private void SetText(int score)
         {
-            _scoreText.text = string.Format ("White: {0}\t\tBlack: {1}\t\tTime: {2:000}", whiteScore, blackScore, time);
+            _scoreText.text = string.Format ("Score: {0}", score);
         }
-
-
-        /// <summary>
-        /// We update the View (GUI) only when the model changes. Best practice!
-        /// </summary>
-        private void SetPauseButtonColor (bool isDark)
-        {
-            if (isDark)
-            {
-                _pauseButton.GetComponent<Image>().color = Color.gray;
-            }
-            else
-            {
-                _pauseButton.GetComponent<Image>().color = Color.white;
-            }
-
-        }
-
-        /// <summary>
-        /// We update the View (GUI) only when the model changes. Best practice!
-        /// </summary>
-        private void SetMuteButtonColor (bool isDark)
-        {
-            if (isDark)
-            {
-                _muteButton.GetComponent<Image>().color = Color.gray;
-            }
-            else
-            {
-                _muteButton.GetComponent<Image>().color = Color.white;
-            }
-        }
-            
-		private void OnRestartButtonClicked()
-        {
-           GameController.Instance.Restart();
-        }
-		private void OnPauseButtonClicked()
-        {
-           GameController.Instance.TogglePause();
-        }
-        private void OnMuteButtonClicked()
-        {
-            GameController.Instance.ToggleMute();
-        }
-
 
 
 	}

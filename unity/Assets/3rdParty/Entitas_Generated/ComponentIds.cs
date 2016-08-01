@@ -8,76 +8,52 @@
 //------------------------------------------------------------------------------
 public static class ComponentIds {
     public const int AcceptInput = 0;
-    public const int AI = 1;
-    public const int AudioSettings = 2;
-    public const int BoundsBounce = 3;
-    public const int Bounds = 4;
-    public const int Collision = 5;
-    public const int Destroy = 6;
-    public const int Entitas = 7;
-    public const int Friction = 8;
-    public const int Game = 9;
-    public const int Goal = 10;
-    public const int Input = 11;
-    public const int Paddle = 12;
-    public const int PlayAudio = 13;
-    public const int Position = 14;
-    public const int Resource = 15;
-    public const int Score = 16;
-    public const int StartNextRound = 17;
-    public const int Tick = 18;
-    public const int Time = 19;
-    public const int Velocity = 20;
-    public const int View = 21;
+    public const int AudioSettings = 1;
+    public const int Collision = 2;
+    public const int Destroy = 3;
+    public const int Entitas = 4;
+    public const int Friction = 5;
+    public const int Input = 6;
+    public const int PlayAudio = 7;
+    public const int Position = 8;
+    public const int Resource = 9;
+    public const int Score = 10;
+    public const int Tick = 11;
+    public const int Velocity = 12;
+    public const int View = 13;
 
-    public const int TotalComponents = 22;
+    public const int TotalComponents = 14;
 
     public static readonly string[] componentNames = {
         "AcceptInput",
-        "AI",
         "AudioSettings",
-        "BoundsBounce",
-        "Bounds",
         "Collision",
         "Destroy",
         "Entitas",
         "Friction",
-        "Game",
-        "Goal",
         "Input",
-        "Paddle",
         "PlayAudio",
         "Position",
         "Resource",
         "Score",
-        "StartNextRound",
         "Tick",
-        "Time",
         "Velocity",
         "View"
     };
 
     public static readonly System.Type[] componentTypes = {
         typeof(RMC.Common.Entitas.Components.Input.AcceptInputComponent),
-        typeof(RMC.EntitasTemplate.Entitas.Components.AIComponent),
         typeof(RMC.Common.Entitas.Components.Audio.AudioSettingsComponent),
-        typeof(RMC.EntitasTemplate.Entitas.Components.BoundsBounceComponent),
-        typeof(RMC.EntitasTemplate.Entitas.Components.GameState.BoundsComponent),
         typeof(RMC.Common.Entitas.Components.Collision.CollisionComponent),
         typeof(RMC.Common.Entitas.Components.Destroy.DestroyComponent),
         typeof(RMC.Common.Entitas.Components.Entitas.EntitasComponent),
         typeof(RMC.Common.Entitas.Components.Transform.FrictionComponent),
-        typeof(RMC.EntitasTemplate.Entitas.Components.GameState.GameComponent),
-        typeof(RMC.EntitasTemplate.Entitas.Components.GameState.GoalComponent),
         typeof(RMC.Common.Entitas.Components.Input.InputComponent),
-        typeof(RMC.EntitasTemplate.Entitas.Components.PaddleComponent),
         typeof(RMC.Common.Entitas.Components.Audio.PlayAudioComponent),
         typeof(RMC.Common.Entitas.Components.Transform.PositionComponent),
         typeof(RMC.Common.Entitas.Components.Render.ResourceComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.GameState.ScoreComponent),
-        typeof(RMC.EntitasTemplate.Entitas.Components.GameState.StartNextRoundComponent),
         typeof(RMC.Common.Entitas.Components.Tick.TickComponent),
-        typeof(RMC.EntitasTemplate.Entitas.Components.GameState.TimeComponent),
         typeof(RMC.Common.Entitas.Components.Transform.VelocityComponent),
         typeof(RMC.Common.Entitas.Components.Render.ViewComponent)
     };

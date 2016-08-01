@@ -1,6 +1,7 @@
 ﻿using Entitas;
 using UnityEngine;
 using RMC.Common.Entitas.Components.Input;
+using RMC.EntitasTemplate.Entitas.Controllers.Singleton;
 
 namespace RMC.EntitasTemplate.Entitas.Systems
 {
@@ -17,6 +18,7 @@ namespace RMC.EntitasTemplate.Entitas.Systems
 
 		// ------------------ Non-serialized fields
 		private Group _inputGroup;
+        private Entity _gameEntity;
         private Group _acceptInputGroup;
 
 		// ------------------ Methods
@@ -29,7 +31,16 @@ namespace RMC.EntitasTemplate.Entitas.Systems
             _inputGroup = pool.GetGroup(Matcher.AllOf(Matcher.Input));
             _acceptInputGroup = pool.GetGroup(Matcher.AllOf(Matcher.AcceptInput));
 
-		}
+            //By design: Systems created before Entities, so wait :)
+            pool.GetGroup(Matcher.AllOf(Matcher.Score)).OnEntityAdded += OnGameEntityAdded;
+
+        }
+
+        private void OnGameEntityAdded (Group group, Entity entity, int index, IComponent component)
+        {
+            _gameEntity = group.GetSingleEntity();
+        }
+
 
 		public void Execute() 
 		{
@@ -42,9 +53,25 @@ namespace RMC.EntitasTemplate.Entitas.Systems
                 {
                     foreach (var acceptInputEntity in _acceptInputGroup.GetEntities())
                     {
-                        //Debug.Log ("inputEntity.input.inputAxis.y : " + inputEntity.input.inputAxis.y);
-                        Vector3 nextVelocity = new Vector3(0, inputEntity.input.inputAxis.y * 50, 0);
+                        //Debug.Log("inputEntity.input.inputAxis.y : " + inputEntity.input.inputAxis.y);
+                        Vector3 nextVelocity = new Vector3
+                            (
+                                inputEntity.input.inputAxis.x * GameConstants.VelocityPerInputAxisSpeed,
+                                inputEntity.input.inputAxis.y * GameConstants.VelocityPerInputAxisSpeed, 
+                                0
+                            );
                         acceptInputEntity.ReplaceVelocity(nextVelocity);
+                        AddScore();
+
+
+                    }
+                }
+                else if (inputEntity.input.inputType == InputComponent.InputType.KeyCode)
+                {
+                    if (inputEntity.input.inputKeyCode == KeyCode.Space)
+                    {
+                        //Debug.Log("inputEntity.input.inputKeyCode : " + inputEntity.input.inputKeyCode);
+                        GameController.Instance.Restart();
                     }
                 }
 
@@ -52,6 +79,15 @@ namespace RMC.EntitasTemplate.Entitas.Systems
             }
 
 		}
+
+        /// <summary>
+        /// Give points while moving. For fun!
+        /// </summary>
+        private void AddScore()
+        {
+            int nextScore = _gameEntity.score.score + 1;
+            _gameEntity.ReplaceScore(nextScore);
+        }
 
 
 	}
