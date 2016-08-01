@@ -12,15 +12,15 @@
 Screenshot
 =============
 
-![Alt text](/entitas_template_screenshot.png?raw=true "Optional Title")
+![Alt text](/entitas_template_screenshot.png?raw=true "Screenshot")
 
 
 Instructions
 =============
 * Replace the /unity/Assets/3rdParty/Entitas folder contents with the latest download from <a href="http://github.com/sschmid/Entitas-CSharp/">github.com</a></BR>
 * Open the /unity/ folder in Unity3D. </BR>
-* Open the EntitasPong.unity file. Play.
-* Use the up and down arrows to move your paddle. Prevent the ball from passing your paddle. Bounce the ball to pass behind the opponents paddle to score. There is no end to the game :)
+* Open the EntitasTemplate.unity file. Play.
+
 
 Structure Overview
 =============
