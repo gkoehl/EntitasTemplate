@@ -4,7 +4,7 @@
 
 ---
 
-<a href="http://www.RivelloMultimediaConsulting.com/unity/">Rivello Multimedia Consulting</a> (RMC) created this simple template, designed as a starting point for new Entitas projects.
+* <a href="http://www.RivelloMultimediaConsulting.com/unity/">Rivello Multimedia Consulting</a> (RMC) created this simple template, designed as a starting point for new Entitas projects.
 * Entitas is an ECS (Entity Component System) which presents a new way to think about architecting your Unity projects. Thanks to the amazing work of <a href="http://github.com/sschmid/Entitas-CSharp/">https://github.com/sschmid/Entitas-CSharp/</a>
 
 </p>
