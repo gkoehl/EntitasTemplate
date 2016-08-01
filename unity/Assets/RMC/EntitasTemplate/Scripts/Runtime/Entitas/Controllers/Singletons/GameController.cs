@@ -17,6 +17,7 @@ using RMC.EntitasTemplate.Entitas.Components;
 using RMC.Common.Entitas.Controllers.Singleton;
 using System.Collections;
 using RMC.Common.Entitas.Helpers;
+using EntitasSystems = Entitas.Systems;
 
 namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 {
@@ -33,9 +34,9 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 		// ------------------ Serialized fields and properties
 
 		// ------------------ Non-serialized fields
-		private Feature _pausableUpdateSystems;
-		private Feature _unpausableUpdateSystems;
-        private Feature _pausableFixedUpdateSystems;
+        private EntitasSystems _pausableUpdateSystems;
+        private EntitasSystems _unpausableUpdateSystems;
+        private EntitasSystems _pausableFixedUpdateSystems;
 		private Pool _pool;
 		private PoolObserver _poolObserver;
 		private Entity _gameEntity;
@@ -164,6 +165,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
             whitePaddleEntity.AddResource       ("Prefabs/PaddleWhite");
             whitePaddleEntity.AddVelocity       (Vector3.zero);
             whitePaddleEntity.WillAcceptInput   (true);
+            whitePaddleEntity.AddTick           (Time.deltaTime);
 
             //  Create computer player on the left
             Entity blackPaddleEntity        = _pool.CreateEntity ();
@@ -171,6 +173,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
             blackPaddleEntity.AddResource   ("Prefabs/PaddleBlack");
             blackPaddleEntity.AddVelocity   (Vector3.zero);
             blackPaddleEntity.AddAI         (whitePaddleEntity, 1, 25f);
+            blackPaddleEntity.AddTick       (Time.deltaTime);
 
 
             //Tick the systems once so the 'View' is added by the AddResourceSystem()
@@ -199,7 +202,7 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 			_pausableUpdateSystems.Add (_pool.CreateSystem<GoalSystem> ());
 			_pausableUpdateSystems.Add (_pool.CreateSystem<DestroySystem> ());
 
-			//	Not physics based - as an example
+			//	'Collision' as NOT physics based - as an example
 			_pausableUpdateSystems.Add (_pool.CreateSystem<BoundsBounceSystem> ());
             _pausableUpdateSystems.Add (_pool.CreateSystem<BoundsConstrainSystem> ());
 			_pausableUpdateSystems.Initialize();
@@ -207,11 +210,10 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 
 
             _pausableFixedUpdateSystems = new Feature ();
-            //  Physics based - as an example.
+            //  'Collision as Physics based - as an example.
             _pausableFixedUpdateSystems.Add (_pool.CreateSystem<CollisionSystem> ());
             _pausableFixedUpdateSystems.Initialize();
             _pausableFixedUpdateSystems.ActivateReactiveSystems();
-
 
 
 			//for demo only, an example of an unpausable system
@@ -220,6 +222,16 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 			_unpausableUpdateSystems.Initialize();
 			_unpausableUpdateSystems.ActivateReactiveSystems();
 
+            // This is custom and optional. I use it to store the systems in case I need them again. 
+            // This is the only place I put a component directly on a _pool. It is supported.
+            // I'm not sure this is useful, but I saw something similar in Entitas presentation slides - srivello
+            _pool.SetEntitas
+            (
+                _pausableUpdateSystems,
+                _unpausableUpdateSystems,
+                _pausableUpdateSystems
+            );
+            //Debug.Log("pausableUpdateSystems: " + Pools.pool.entitas.pausableUpdateSystems);
 
 
 		}

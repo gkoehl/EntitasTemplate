@@ -16,7 +16,9 @@ namespace RMC.Common.Entitas.Systems.Transform
 
 		// ------------------ Non-serialized fields
 		private Group _group;
-
+        float _deltaTime;
+        Vector3 _friction;
+            
 		// ------------------ Methods
 
 		// Implement ISetPool to get the pool used when calling
@@ -30,28 +32,43 @@ namespace RMC.Common.Entitas.Systems.Transform
 
 		public void Execute() 
 		{
-			//Debug.Log ("MoveSystem.SetPool(), group.count : " + _group.count);
+            //Debug.Log ("VelocitySystem.Execute(), _group.count : " + _group.count);
 
 			foreach (var e in _group.GetEntities()) 
 			{
 				Vector3 velocity = e.velocity.velocity;
 				Vector3 position = e.position.position;
-                Vector3 friction = Vector3.zero;
+
+                //TickComponent is optional
+                if (e.hasTick)
+                {
+                    _deltaTime = e.tick.deltaTime;
+                }
+                else
+                {
+                    //default
+                    _deltaTime = 1;
+                }
+                  
+
+                //FrictionComponent is optional
+                _friction = Vector3.zero;
                 if (e.hasFriction)
                 {
-                    friction = e.friction.friction;
+                    _friction = e.friction.friction;
+                }
+                else
+                {
+                    //default
+                    _friction = Vector3.zero;
                 }
 
                 e.ReplacePosition(new Vector3 (
-                    (position.x + velocity.x * Time.deltaTime) * (1- friction.x), 
-                    (position.y + velocity.y * Time.deltaTime) * (1- friction.y), 
-                    (position.z + velocity.z * Time.deltaTime) * (1- friction.z)
+                    (position.x + velocity.x * _deltaTime) * (1- _friction.x), 
+                    (position.y + velocity.y * _deltaTime) * (1- _friction.y), 
+                    (position.z + velocity.z * _deltaTime) * (1- _friction.z)
                 ));
 
-				// if (e.positionition.y > 1.2 && e.hasResource)
-				// {
-				// 	e.RemoveResource();
-				// }
 			}
 		}
 

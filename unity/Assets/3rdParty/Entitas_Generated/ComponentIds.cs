@@ -15,21 +15,23 @@ public static class ComponentIds {
     public const int Collision = 5;
     public const int CreateNextBall = 6;
     public const int Destroy = 7;
-    public const int Friction = 8;
-    public const int Game = 9;
-    public const int Goal = 10;
-    public const int Input = 11;
-    public const int Paddle = 12;
-    public const int PlayAudio = 13;
-    public const int Position = 14;
-    public const int Resource = 15;
-    public const int Score = 16;
-    public const int StartNextRound = 17;
-    public const int Time = 18;
-    public const int Velocity = 19;
-    public const int View = 20;
+    public const int Entitas = 8;
+    public const int Friction = 9;
+    public const int Game = 10;
+    public const int Goal = 11;
+    public const int Input = 12;
+    public const int Paddle = 13;
+    public const int PlayAudio = 14;
+    public const int Position = 15;
+    public const int Resource = 16;
+    public const int Score = 17;
+    public const int StartNextRound = 18;
+    public const int Tick = 19;
+    public const int Time = 20;
+    public const int Velocity = 21;
+    public const int View = 22;
 
-    public const int TotalComponents = 21;
+    public const int TotalComponents = 23;
 
     public static readonly string[] componentNames = {
         "AcceptInput",
@@ -40,6 +42,7 @@ public static class ComponentIds {
         "Collision",
         "CreateNextBall",
         "Destroy",
+        "Entitas",
         "Friction",
         "Game",
         "Goal",
@@ -50,6 +53,7 @@ public static class ComponentIds {
         "Resource",
         "Score",
         "StartNextRound",
+        "Tick",
         "Time",
         "Velocity",
         "View"
@@ -64,6 +68,7 @@ public static class ComponentIds {
         typeof(RMC.Common.Entitas.Components.Collision.CollisionComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.GameState.CreateNextBall),
         typeof(RMC.Common.Entitas.Components.Destroy.DestroyComponent),
+        typeof(RMC.Common.Entitas.Components.Entitas.EntitasComponent),
         typeof(RMC.Common.Entitas.Components.Transform.FrictionComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.GameState.GameComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.GameState.GoalComponent),
@@ -74,6 +79,7 @@ public static class ComponentIds {
         typeof(RMC.Common.Entitas.Components.Render.ResourceComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.GameState.ScoreComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.GameState.StartNextRoundComponent),
+        typeof(RMC.Common.Entitas.Components.Tick.TickComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.GameState.TimeComponent),
         typeof(RMC.Common.Entitas.Components.Transform.VelocityComponent),
         typeof(RMC.Common.Entitas.Components.Render.ViewComponent)

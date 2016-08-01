@@ -51,9 +51,11 @@ namespace RMC.Common.Entitas.Systems.GameState
 				entityBall.AddResource ("Prefabs/Ball");
 				entityBall.AddGoal(1);
 				entityBall.AddBoundsBounce(-1);
-                GameController.Instance.StartCoroutine(StartNextRound_Coroutine(entityBall, 0.5f));
+                entityBall.AddTick       (Time.deltaTime);
 
 				e.willDestroy = true;
+
+                GameController.Instance.StartCoroutine(StartNextRound_Coroutine(entityBall, 0.5f));
 			}
 		}
 
