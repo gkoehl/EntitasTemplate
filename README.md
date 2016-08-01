@@ -35,7 +35,7 @@ round.
 
 Open Questions
 =============
-* I added `ENTITAS_HELP_REQUEST` comments in the code where I have questions about best practices. Help? :)
+* None
 
 TODO
 =============
