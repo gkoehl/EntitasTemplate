@@ -4,11 +4,11 @@ using RMC.Common.Entitas.Components;
 using RMC.Common.Entitas.Components.Render;
 using RMC.Common.Entitas.Components.Transform;
 
-namespace RMC.Common.Entitas.Systems
+namespace RMC.EntitasTemplate.Entitas.Systems
 {
-	/// <summary>
-	/// Replace me with description.
-	/// </summary>
+    /// <summary>
+    /// Stores how the computer Paddle responds to the ball
+    /// </summary>
 	public class AISystem : IExecuteSystem, ISetPool 
 	{
 		// ------------------ Constants and statics

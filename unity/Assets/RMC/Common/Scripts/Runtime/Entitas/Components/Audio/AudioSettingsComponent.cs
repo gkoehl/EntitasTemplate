@@ -5,7 +5,7 @@ using Entitas.CodeGenerator;
 namespace RMC.Common.Entitas.Components.Audio
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Control high-level audio configuration
 	/// </summary>
     [SingleEntity]
 	public class AudioSettingsComponent : IComponent

@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 namespace Entitas {
     public partial class Entity {
-        static readonly RMC.Common.Entitas.Components.AcceptInputComponent acceptInputComponent = new RMC.Common.Entitas.Components.AcceptInputComponent();
+        static readonly RMC.Common.Entitas.Components.Input.AcceptInputComponent acceptInputComponent = new RMC.Common.Entitas.Components.Input.AcceptInputComponent();
 
         public bool willAcceptInput {
             get { return HasComponent(ComponentIds.AcceptInput); }

@@ -3,7 +3,7 @@
 namespace RMC.EntitasTemplate.Entitas.Components
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Flags Entity as a Paddle. 
 	/// </summary>
 	public class PaddleComponent : IComponent
 	{

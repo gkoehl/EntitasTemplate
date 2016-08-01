@@ -7,6 +7,9 @@ using RMC.Common.Entitas.Components.Render;
 namespace RMC.Common.Entitas.Systems.Render
 {
 		
+    /// <summary>
+    /// Destroys the Unity gameObject related to an Entity when the Entity is destroyed
+    /// </summary>
 	public class RemoveResourceSystem : IMultiReactiveSystem, ISetPool, IEnsureComponents 
 	{
 		// ------------------ Constants and statics
@@ -14,10 +17,13 @@ namespace RMC.Common.Entitas.Systems.Render
 		// ------------------ Events
 
 		// ------------------ Serialized fields and properties
-		public TriggerOnEvent[] triggers { get { return new [] {
+		public TriggerOnEvent[] triggers 
+        { 
+            get { return new [] {
 					Matcher.Resource.OnEntityRemoved() //,
 					//Matcher.AllOf(Matcher.Resource).OnEntityAdded()
-				}; } }
+				}; } 
+        }
 
 		public IMatcher ensureComponents { get { return Matcher.View; } }
 

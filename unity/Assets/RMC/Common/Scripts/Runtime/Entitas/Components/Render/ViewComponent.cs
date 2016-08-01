@@ -4,14 +4,12 @@ using UnityEngine;
 namespace RMC.Common.Entitas.Components.Render
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Stores the gameObject and similar info to render the Entity 
 	/// </summary>
 	public class ViewComponent : IComponent
 	{
 		// ------------------ Serialized fields and properties
 		public GameObject gameObject;
-
-        //null is ok
         public Bounds bounds;
 
 	}

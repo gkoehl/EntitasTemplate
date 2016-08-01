@@ -4,7 +4,7 @@ using Entitas.CodeGenerator;
 namespace RMC.EntitasTemplate.Entitas.Components.GameState
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Stores score
 	/// </summary>
 	[SingleEntity]
 	public class ScoreComponent : IComponent

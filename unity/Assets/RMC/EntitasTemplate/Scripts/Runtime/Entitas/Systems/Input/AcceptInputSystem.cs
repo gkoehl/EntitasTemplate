@@ -2,10 +2,10 @@
 using UnityEngine;
 using RMC.Common.Entitas.Components.Input;
 
-namespace RMC.Common.Entitas.Systems
+namespace RMC.EntitasTemplate.Entitas.Systems
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Process input
 	/// </summary>
 	public class AcceptInputSystem : IExecuteSystem, ISetPool 
 	{

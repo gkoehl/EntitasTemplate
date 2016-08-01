@@ -12,15 +12,15 @@ namespace Entitas {
 
         public bool hasResource { get { return HasComponent(ComponentIds.Resource); } }
 
-        public Entity AddResource(string newName) {
+        public Entity AddResource(string newResourcePath) {
             var component = CreateComponent<RMC.Common.Entitas.Components.Render.ResourceComponent>(ComponentIds.Resource);
-            component.name = newName;
+            component.resourcePath = newResourcePath;
             return AddComponent(ComponentIds.Resource, component);
         }
 
-        public Entity ReplaceResource(string newName) {
+        public Entity ReplaceResource(string newResourcePath) {
             var component = CreateComponent<RMC.Common.Entitas.Components.Render.ResourceComponent>(ComponentIds.Resource);
-            component.name = newName;
+            component.resourcePath = newResourcePath;
             ReplaceComponent(ComponentIds.Resource, component);
             return this;
         }

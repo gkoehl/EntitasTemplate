@@ -4,7 +4,7 @@ using UnityEngine;
 namespace RMC.Common.Entitas.Components.Audio
 {
 	/// <summary>
-	/// Replace me with description.
+    /// Sent like an event: Plays one sound, one time
 	/// </summary>
 	public class PlayAudioComponent : IComponent
 	{

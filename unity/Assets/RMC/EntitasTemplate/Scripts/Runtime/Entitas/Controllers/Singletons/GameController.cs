@@ -16,13 +16,15 @@ using RMC.Common.Entitas.Systems.GameState;
 using RMC.EntitasTemplate.Entitas.Components;
 using RMC.Common.Entitas.Controllers.Singleton;
 using System.Collections;
-using RMC.Common.Entitas.Helpers;
+using RMC.Common.Entitas.Utilities;
 using EntitasSystems = Entitas.Systems;
+using RMC.EntitasTemplate.Entitas.Systems.GameState;
+using RMC.EntitasTemplate.Entitas.Systems;
 
 namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 {
 	/// <summary>
-	/// Replace me with description.
+	/// The main entry point for the game. Creates the Entitas setup
 	/// </summary>
     public class GameController : SingletonMonobehavior<GameController> 
 	{
@@ -147,13 +149,13 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 		private void SetupEntities ()
 		{
 
-            var bounds = GameHelper.GetOrthographicBounds(Camera.main);
+            var bounds = GameUtility.GetOrthographicBounds(Camera.main);
             //Debug.Log(bounds.min.y + " and " + bounds.max.y);
 
 
             //  Create game with data. This is non-visual.
 			_gameEntity = _pool.CreateEntity();
-			_gameEntity.AddGame(0);
+            _gameEntity.IsGame(true);
 			_gameEntity.AddBounds(bounds);
 			_gameEntity.AddScore(0,0);
 			_gameEntity.AddTime (0, 0, false);

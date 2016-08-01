@@ -4,7 +4,7 @@ using Entitas.CodeGenerator;
 namespace RMC.EntitasTemplate.Entitas.Components.GameState
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Centralizes pause functionality and time data
 	/// </summary>
 	[SingleEntity]
 	public class TimeComponent : IComponent

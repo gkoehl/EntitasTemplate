@@ -30,6 +30,39 @@ namespace Entitas {
         }
     }
 
+    public partial class Pool {
+        public Entity goalEntity { get { return GetGroup(Matcher.Goal).GetSingleEntity(); } }
+
+        public RMC.EntitasTemplate.Entitas.Components.GameState.GoalComponent goal { get { return goalEntity.goal; } }
+
+        public bool hasGoal { get { return goalEntity != null; } }
+
+        public Entity SetGoal(int newPointsPerGoal) {
+            if (hasGoal) {
+                throw new EntitasException("Could not set goal!\n" + this + " already has an entity with RMC.EntitasTemplate.Entitas.Components.GameState.GoalComponent!",
+                    "You should check if the pool already has a goalEntity before setting it or use pool.ReplaceGoal().");
+            }
+            var entity = CreateEntity();
+            entity.AddGoal(newPointsPerGoal);
+            return entity;
+        }
+
+        public Entity ReplaceGoal(int newPointsPerGoal) {
+            var entity = goalEntity;
+            if (entity == null) {
+                entity = SetGoal(newPointsPerGoal);
+            } else {
+                entity.ReplaceGoal(newPointsPerGoal);
+            }
+
+            return entity;
+        }
+
+        public void RemoveGoal() {
+            DestroyEntity(goalEntity);
+        }
+    }
+
     public partial class Matcher {
         static IMatcher _matcherGoal;
 

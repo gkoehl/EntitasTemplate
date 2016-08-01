@@ -4,7 +4,7 @@ using UnityEngine;
 namespace RMC.Common.Entitas.Components.Transform
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Stores entities current velocity
 	/// </summary>
 	public class VelocityComponent : IComponent
 	{

@@ -1,7 +1,7 @@
 ﻿using Entitas;
 using UnityEngine;
 
-namespace RMC.Common.Entitas.Systems.Transform
+namespace RMC.Common.Entitas.Systems.Tick
 {
 	/// <summary>
 	/// Replace me with description.

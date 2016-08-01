@@ -1,10 +1,10 @@
 ﻿using Entitas;
 using Entitas.CodeGenerator;
 
-namespace RMC.Common.Entitas.Components
+namespace RMC.Common.Entitas.Components.Input
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Flags Entity to accept the stream of input
 	/// </summary>
 	[CustomPrefix("Will")]
 	public class AcceptInputComponent : IComponent

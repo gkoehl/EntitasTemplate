@@ -7,10 +7,10 @@ using RMC.EntitasTemplate.Entitas;
 using RMC.EntitasTemplate.Entitas.Controllers.Singleton;
 using System.Collections;
 
-namespace RMC.Common.Entitas.Systems.GameState
+namespace RMC.EntitasTemplate.Entitas.Systems.GameState
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Called at game start and after every goal
 	/// </summary>
 	public class StartNextRoundSystem : IReactiveSystem, ISetPool 
 	{

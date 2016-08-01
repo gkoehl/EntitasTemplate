@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace RMC.Common.Entitas.Systems.Destroy
 {
+    /// <summary>
+    /// Destroy's the Entity
+    /// </summary>
     public class DestroySystem : IReactiveSystem, ISetPool
     {
         private Pool _pool;

@@ -9,7 +9,7 @@ using RMC.Common.Entitas.Components.Input;
 namespace RMC.Common.Entitas.Controllers.Singleton
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Converts Unity Input to related Entity's
 	/// </summary>
     public class InputController : SingletonMonobehavior<InputController> 
 	{

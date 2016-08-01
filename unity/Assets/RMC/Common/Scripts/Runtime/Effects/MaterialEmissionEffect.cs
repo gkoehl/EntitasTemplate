@@ -3,7 +3,7 @@
 namespace RMC.Common.Effects
 {
     /// <summary>
-    /// Replace me with description.
+    /// Pulsate the material
     /// </summary>
     public class MaterialEmissionEffect : MonoBehaviour
     {

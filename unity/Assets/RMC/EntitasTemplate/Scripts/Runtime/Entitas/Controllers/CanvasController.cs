@@ -7,7 +7,7 @@ using RMC.EntitasTemplate.Entitas.Controllers.Singleton;
 namespace RMC.EntitasTemplate.Entitas.Controllers
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Bridges the Unity GUI and the Entitas
 	/// </summary>
 	public class CanvasController : MonoBehaviour
 	{

@@ -3,7 +3,7 @@
 namespace RMC.EntitasTemplate.Entitas.Components
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Stores how the computer Paddle responds to the ball
 	/// </summary>
 	public class AIComponent : IComponent
 	{

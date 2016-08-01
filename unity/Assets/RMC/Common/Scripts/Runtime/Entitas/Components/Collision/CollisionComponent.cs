@@ -4,7 +4,7 @@ using UnityEngine;
 namespace RMC.Common.Entitas.Components.Collision
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Sent like an event: When collisions occur
 	/// </summary>
 	public class CollisionComponent : IComponent
 	{

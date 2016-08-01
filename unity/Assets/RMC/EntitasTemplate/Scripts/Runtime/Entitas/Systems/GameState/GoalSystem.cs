@@ -10,7 +10,7 @@ using RMC.EntitasTemplate.Entitas;
 namespace RMC.Common.Entitas.Systems.GameState
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Processess each goal that is scored
 	/// </summary>
 	public class GoalSystem : IExecuteSystem, ISetPool 
 	{

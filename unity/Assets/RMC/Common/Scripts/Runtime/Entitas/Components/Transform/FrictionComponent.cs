@@ -4,7 +4,7 @@ using UnityEngine;
 namespace RMC.Common.Entitas.Components.Transform
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Stores Entity's friction to be applied against the velocity
 	/// </summary>
 	public class FrictionComponent : IComponent
 	{

@@ -3,12 +3,12 @@
 namespace RMC.Common.Entitas.Components.Render
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Stores the Resource path
 	/// </summary>
 	public class ResourceComponent : IComponent 
 	{
 		// ------------------ Serialized fields and properties
-	    public string name;
+	    public string resourcePath;
 	}
 }
 

@@ -5,7 +5,7 @@ using RMC.Common.Entitas.Components.Collision;
 namespace RMC.Common.Entitas.Controllers.Collision
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Converts Unity Collision to Entity's with related Component
 	/// </summary>
 	public class CollisionController : MonoBehaviour 
 	{

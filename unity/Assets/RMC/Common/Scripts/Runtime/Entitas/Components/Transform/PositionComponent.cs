@@ -4,7 +4,7 @@ using UnityEngine;
 namespace RMC.Common.Entitas.Components.Transform
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Stores entity's current position
 	/// </summary>
 	public class PositionComponent : IComponent
 	{

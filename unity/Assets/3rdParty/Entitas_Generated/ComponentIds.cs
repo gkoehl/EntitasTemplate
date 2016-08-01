@@ -13,25 +13,24 @@ public static class ComponentIds {
     public const int BoundsBounce = 3;
     public const int Bounds = 4;
     public const int Collision = 5;
-    public const int CreateNextBall = 6;
-    public const int Destroy = 7;
-    public const int Entitas = 8;
-    public const int Friction = 9;
-    public const int Game = 10;
-    public const int Goal = 11;
-    public const int Input = 12;
-    public const int Paddle = 13;
-    public const int PlayAudio = 14;
-    public const int Position = 15;
-    public const int Resource = 16;
-    public const int Score = 17;
-    public const int StartNextRound = 18;
-    public const int Tick = 19;
-    public const int Time = 20;
-    public const int Velocity = 21;
-    public const int View = 22;
+    public const int Destroy = 6;
+    public const int Entitas = 7;
+    public const int Friction = 8;
+    public const int Game = 9;
+    public const int Goal = 10;
+    public const int Input = 11;
+    public const int Paddle = 12;
+    public const int PlayAudio = 13;
+    public const int Position = 14;
+    public const int Resource = 15;
+    public const int Score = 16;
+    public const int StartNextRound = 17;
+    public const int Tick = 18;
+    public const int Time = 19;
+    public const int Velocity = 20;
+    public const int View = 21;
 
-    public const int TotalComponents = 23;
+    public const int TotalComponents = 22;
 
     public static readonly string[] componentNames = {
         "AcceptInput",
@@ -40,7 +39,6 @@ public static class ComponentIds {
         "BoundsBounce",
         "Bounds",
         "Collision",
-        "CreateNextBall",
         "Destroy",
         "Entitas",
         "Friction",
@@ -60,13 +58,12 @@ public static class ComponentIds {
     };
 
     public static readonly System.Type[] componentTypes = {
-        typeof(RMC.Common.Entitas.Components.AcceptInputComponent),
+        typeof(RMC.Common.Entitas.Components.Input.AcceptInputComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.AIComponent),
         typeof(RMC.Common.Entitas.Components.Audio.AudioSettingsComponent),
         typeof(RMC.EntitasTemplate.Entitas.Components.BoundsBounceComponent),
-        typeof(RMC.EntitasTemplate.Entitas.Components.BoundsComponent),
+        typeof(RMC.EntitasTemplate.Entitas.Components.GameState.BoundsComponent),
         typeof(RMC.Common.Entitas.Components.Collision.CollisionComponent),
-        typeof(RMC.EntitasTemplate.Entitas.Components.GameState.CreateNextBall),
         typeof(RMC.Common.Entitas.Components.Destroy.DestroyComponent),
         typeof(RMC.Common.Entitas.Components.Entitas.EntitasComponent),
         typeof(RMC.Common.Entitas.Components.Transform.FrictionComponent),

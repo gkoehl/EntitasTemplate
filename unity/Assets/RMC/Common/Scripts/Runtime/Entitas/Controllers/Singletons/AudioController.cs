@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace RMC.Common.Entitas.Controllers.Singleton
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Converts Entity's with related Component to Unity Audio
 	/// </summary>
     public class AudioController : SingletonMonobehavior<AudioController> 
 	{

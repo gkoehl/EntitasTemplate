@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 
-namespace RMC.Common.Entitas.Helpers
+namespace RMC.Common.Entitas.Utilities
 {
     /// <summary>
-    /// Replace me with description.
+    /// Some potentially reusable utilities
+    /// Can be separated intos more specific classes later - srivello
     /// </summary>
-    public class GameHelper
+    public class GameUtility
     {
         // ------------------ Constants and statics
 
@@ -30,6 +31,22 @@ namespace RMC.Common.Entitas.Helpers
                 new Vector3(cameraHeight * screenAspect, cameraHeight, 0)
             );
             return bounds;
+        }
+
+
+        /// <summary>
+        /// Gets a random within range with equal odds of being positive or negative
+        /// </summary>
+        public static float GetRandomRangePosNeg (float positiveMin, float positiveMax)
+        {
+            //start with only positive
+            float randomResult = Random.Range(Mathf.Abs (positiveMin), Mathf.Abs(positiveMax));
+            if (Random.value > 0.5)
+            {
+                randomResult *= -1;   
+            }
+            return randomResult;
+
         }
 
 

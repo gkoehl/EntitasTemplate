@@ -8,18 +8,18 @@
 //------------------------------------------------------------------------------
 namespace Entitas {
     public partial class Entity {
-        public RMC.EntitasTemplate.Entitas.Components.BoundsComponent bounds { get { return (RMC.EntitasTemplate.Entitas.Components.BoundsComponent)GetComponent(ComponentIds.Bounds); } }
+        public RMC.EntitasTemplate.Entitas.Components.GameState.BoundsComponent bounds { get { return (RMC.EntitasTemplate.Entitas.Components.GameState.BoundsComponent)GetComponent(ComponentIds.Bounds); } }
 
         public bool hasBounds { get { return HasComponent(ComponentIds.Bounds); } }
 
         public Entity AddBounds(UnityEngine.Bounds newBounds) {
-            var component = CreateComponent<RMC.EntitasTemplate.Entitas.Components.BoundsComponent>(ComponentIds.Bounds);
+            var component = CreateComponent<RMC.EntitasTemplate.Entitas.Components.GameState.BoundsComponent>(ComponentIds.Bounds);
             component.bounds = newBounds;
             return AddComponent(ComponentIds.Bounds, component);
         }
 
         public Entity ReplaceBounds(UnityEngine.Bounds newBounds) {
-            var component = CreateComponent<RMC.EntitasTemplate.Entitas.Components.BoundsComponent>(ComponentIds.Bounds);
+            var component = CreateComponent<RMC.EntitasTemplate.Entitas.Components.GameState.BoundsComponent>(ComponentIds.Bounds);
             component.bounds = newBounds;
             ReplaceComponent(ComponentIds.Bounds, component);
             return this;

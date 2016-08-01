@@ -4,7 +4,7 @@ using Entitas.CodeGenerator;
 namespace RMC.EntitasTemplate.Entitas.Components.GameState
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Sent like an event: Starts the next round
 	/// </summary>
 	[CustomPrefix("Will")]
 	public class StartNextRoundComponent : IComponent

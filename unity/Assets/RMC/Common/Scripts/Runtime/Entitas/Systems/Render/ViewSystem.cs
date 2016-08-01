@@ -5,6 +5,9 @@ using UnityEngine;
 namespace RMC.Common.Entitas.Systems.Render
 {
 	
+    /// <summary>
+    /// Updates the View to reflect the data
+    /// </summary>
 	public class ViewSystem : IReactiveSystem, IEnsureComponents 
 	{
 		// ------------------ Constants and statics
@@ -25,6 +28,8 @@ namespace RMC.Common.Entitas.Systems.Render
 	        foreach (var e in entities) 
 			{
 	            e.view.gameObject.transform.position = e.position.position;
+
+                //TODO: Add rotation and scale as needed.
 	        }
 	    }
 	}

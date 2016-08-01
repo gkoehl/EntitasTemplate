@@ -4,7 +4,7 @@ using UnityEngine;
 namespace RMC.Common.Entitas.Systems.Transform
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Update PositionComponent via VelocityComponent
 	/// </summary>
 	public class VelocitySystem : IExecuteSystem, ISetPool 
 	{
@@ -16,8 +16,8 @@ namespace RMC.Common.Entitas.Systems.Transform
 
 		// ------------------ Non-serialized fields
 		private Group _group;
-        float _deltaTime;
-        Vector3 _friction;
+        private float _deltaTime;
+        private Vector3 _friction;
             
 		// ------------------ Methods
 
@@ -30,6 +30,10 @@ namespace RMC.Common.Entitas.Systems.Transform
 
 		}
 
+
+        /// <summary>
+        /// ENTITAS_HELP_REQUEST: What is the best way to address OPTIONAL components like Tick and Friction below
+        /// </summary>
 		public void Execute() 
 		{
             //Debug.Log ("VelocitySystem.Execute(), _group.count : " + _group.count);

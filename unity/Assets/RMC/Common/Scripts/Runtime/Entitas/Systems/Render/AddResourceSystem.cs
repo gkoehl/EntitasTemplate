@@ -7,7 +7,7 @@ using RMC.Common.Entitas.Components.Transform;
 namespace RMC.Common.Entitas.Systems.Render
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Adds a prefab to the Unity Hierarchy for related Entity's
 	/// </summary>
 	public class AddResourceSystem : IReactiveSystem 
 	{
@@ -34,7 +34,7 @@ namespace RMC.Common.Entitas.Systems.Render
 		{
 			foreach (var e in entities) 
 			{
-	            var res = Resources.Load<GameObject>(e.resource.name);
+	            var res = Resources.Load<GameObject>(e.resource.resourcePath);
 	            GameObject gameObject = null;
 	            try {
 	                gameObject = UnityEngine.Object.Instantiate(res);

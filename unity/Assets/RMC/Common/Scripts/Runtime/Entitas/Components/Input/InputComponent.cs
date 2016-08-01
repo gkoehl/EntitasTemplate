@@ -4,7 +4,7 @@ using UnityEngine;
 namespace RMC.Common.Entitas.Components.Input
 {
 	/// <summary>
-	/// Replace me with description.
+    /// Sent like an event: Indicating input has occurred
 	/// </summary>
 	public class InputComponent : IComponent
 	{

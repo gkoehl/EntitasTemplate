@@ -4,7 +4,7 @@ using UnityEngine;
 namespace RMC.Common.Entitas.Components.Tick
 {
     /// <summary>
-    /// Replace me with description.
+    /// Every 'tick' (typically each monoBehavior.Update() or FixedUpdate() Time.deltaTime is stored
     /// </summary>
     public class TickComponent : IComponent
     {

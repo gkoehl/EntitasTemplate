@@ -1,9 +1,9 @@
 ﻿using Entitas;
 
-namespace RMC.EntitasTemplate.Entitas.Components
+namespace RMC.EntitasTemplate.Entitas.Components.GameState
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Stores the screen bounds
 	/// </summary>
 	public class BoundsComponent : IComponent
 	{

@@ -11,7 +11,7 @@ namespace RMC.Common.Entitas.Systems
     /// Constains the balls's y position within the screenbounds with a bounce.
     /// Great example of a system that operates ONLY when a component (position) is changed. Efficient!
     /// </summary>
-    public class BoundsBounceSystem : ISystem, ISetPool//, IEnsureComponents
+    public class BoundsBounceSystem : ISystem, ISetPool
     {
         // ------------------ Constants and statics
 
@@ -26,8 +26,6 @@ namespace RMC.Common.Entitas.Systems
         private Pool _pool;
 
         // ------------------ Methods
-
-        //public IMatcher ensureComponents { get { return Matcher.AllOf (Matcher.Position, Matcher.View, Matcher.Velocity); } }
 
         // Implement ISetPool to get the pool used when calling
         // pool.CreateSystem<MoveSystem>();

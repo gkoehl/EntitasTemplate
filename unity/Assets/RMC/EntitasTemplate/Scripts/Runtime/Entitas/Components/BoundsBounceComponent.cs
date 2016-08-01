@@ -3,7 +3,7 @@
 namespace RMC.EntitasTemplate.Entitas.Components
 {
 	/// <summary>
-	/// Replace me with description.
+	/// Flags Entity to bounce off top/bottom of screen.
 	/// </summary>
 	public class BoundsBounceComponent : IComponent
 	{
