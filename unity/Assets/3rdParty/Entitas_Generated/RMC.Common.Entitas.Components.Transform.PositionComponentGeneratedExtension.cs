@@ -12,13 +12,13 @@ namespace Entitas {
 
         public bool hasPosition { get { return HasComponent(ComponentIds.Position); } }
 
-        public Entity AddPosition(UnityEngine.Vector3 newPosition) {
+        public Entity AddPosition(RMC.Common.UnityEngineReplacement.Vector3 newPosition) {
             var component = CreateComponent<RMC.Common.Entitas.Components.Transform.PositionComponent>(ComponentIds.Position);
             component.position = newPosition;
             return AddComponent(ComponentIds.Position, component);
         }
 
-        public Entity ReplacePosition(UnityEngine.Vector3 newPosition) {
+        public Entity ReplacePosition(RMC.Common.UnityEngineReplacement.Vector3 newPosition) {
             var component = CreateComponent<RMC.Common.Entitas.Components.Transform.PositionComponent>(ComponentIds.Position);
             component.position = newPosition;
             ReplaceComponent(ComponentIds.Position, component);

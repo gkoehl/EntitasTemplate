@@ -1,5 +1,5 @@
 ﻿using Entitas;
-using UnityEngine;
+using RMC.Common.UnityEngineReplacement;
 
 namespace RMC.Common.Entitas.Components.Render
 {
@@ -9,7 +9,7 @@ namespace RMC.Common.Entitas.Components.Render
 	public class ViewComponent : IComponent
 	{
 		// ------------------ Serialized fields and properties
-		public GameObject gameObject;
+		public object gameObject;
         public Bounds bounds;
 
 	}

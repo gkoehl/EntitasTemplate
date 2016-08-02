@@ -1,5 +1,4 @@
 ﻿using Entitas;
-using UnityEngine;
 
 namespace RMC.Common.Entitas.Components.Collision
 {
@@ -16,8 +15,8 @@ namespace RMC.Common.Entitas.Components.Collision
 
 		}
 		// ------------------ Serialized fields and properties
-		public GameObject gameObject;
-		public Collider collider;
+		public object localGameObject;
+		public object otherGameObject;
 		public CollisionType collisionType;
 
 

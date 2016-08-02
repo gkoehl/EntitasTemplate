@@ -1,5 +1,5 @@
 ﻿using Entitas;
-using UnityEngine;
+using RMC.Common.UnityEngineReplacement;
 
 namespace RMC.Common.Entitas.Components.Transform
 {

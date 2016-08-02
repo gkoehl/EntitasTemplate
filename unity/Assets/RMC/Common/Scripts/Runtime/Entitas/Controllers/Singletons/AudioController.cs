@@ -54,6 +54,8 @@ namespace RMC.Common.Entitas.Controllers.Singleton
             {
                 PlaySound(entity.playAudio.audioClipName, entity.playAudio.volume);
             }
+
+            //  The sound has been processed, so destroy the related Entity
             entity.WillDestroy(true);
         }
 

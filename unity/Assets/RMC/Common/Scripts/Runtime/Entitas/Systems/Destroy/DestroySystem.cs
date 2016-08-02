@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Entitas;
-using UnityEngine;
 
 namespace RMC.Common.Entitas.Systems.Destroy
 {
@@ -26,9 +25,9 @@ namespace RMC.Common.Entitas.Systems.Destroy
 
         public void Execute(List<Entity> entities)
         {
-            foreach (var e in entities)
+            foreach (var entity in entities)
             {
-                _pool.DestroyEntity(e);
+                _pool.DestroyEntity(entity);
             }
                
         }

@@ -12,18 +12,18 @@ namespace Entitas {
 
         public bool hasCollision { get { return HasComponent(ComponentIds.Collision); } }
 
-        public Entity AddCollision(UnityEngine.GameObject newGameObject, UnityEngine.Collider newCollider, RMC.Common.Entitas.Components.Collision.CollisionComponent.CollisionType newCollisionType) {
+        public Entity AddCollision(object newLocalGameObject, object newOtherGameObject, RMC.Common.Entitas.Components.Collision.CollisionComponent.CollisionType newCollisionType) {
             var component = CreateComponent<RMC.Common.Entitas.Components.Collision.CollisionComponent>(ComponentIds.Collision);
-            component.gameObject = newGameObject;
-            component.collider = newCollider;
+            component.localGameObject = newLocalGameObject;
+            component.otherGameObject = newOtherGameObject;
             component.collisionType = newCollisionType;
             return AddComponent(ComponentIds.Collision, component);
         }
 
-        public Entity ReplaceCollision(UnityEngine.GameObject newGameObject, UnityEngine.Collider newCollider, RMC.Common.Entitas.Components.Collision.CollisionComponent.CollisionType newCollisionType) {
+        public Entity ReplaceCollision(object newLocalGameObject, object newOtherGameObject, RMC.Common.Entitas.Components.Collision.CollisionComponent.CollisionType newCollisionType) {
             var component = CreateComponent<RMC.Common.Entitas.Components.Collision.CollisionComponent>(ComponentIds.Collision);
-            component.gameObject = newGameObject;
-            component.collider = newCollider;
+            component.localGameObject = newLocalGameObject;
+            component.otherGameObject = newOtherGameObject;
             component.collisionType = newCollisionType;
             ReplaceComponent(ComponentIds.Collision, component);
             return this;

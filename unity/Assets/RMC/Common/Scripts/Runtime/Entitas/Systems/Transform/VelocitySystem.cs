@@ -1,5 +1,5 @@
 ﻿using Entitas;
-using UnityEngine;
+using RMC.Common.UnityEngineReplacement;
 
 namespace RMC.Common.Entitas.Systems.Transform
 {
@@ -16,8 +16,6 @@ namespace RMC.Common.Entitas.Systems.Transform
 
 		// ------------------ Non-serialized fields
 		private Group _group;
-        private float _deltaTime;
-        private Vector3 _friction;
             
 		// ------------------ Methods
 
@@ -26,53 +24,36 @@ namespace RMC.Common.Entitas.Systems.Transform
 		public void SetPool(Pool pool) 
 		{
 			// Get the group of entities that have a Move and position component
-			_group = pool.GetGroup(Matcher.AllOf(Matcher.Velocity, Matcher.Position));
+            _group = pool.GetGroup(Matcher.AllOf(Matcher.Velocity, Matcher.Position, Matcher.Friction, Matcher.Tick));
 
 		}
 
 
-        /// <summary>
-        /// ENTITAS_HELP_REQUEST: What is the best way to address OPTIONAL components like Tick and Friction below
-        /// </summary>
 		public void Execute() 
 		{
             //Debug.Log ("VelocitySystem.Execute(), _group.count : " + _group.count);
 
-			foreach (var e in _group.GetEntities()) 
+            foreach (var entity in _group.GetEntities()) 
 			{
-				Vector3 velocity = e.velocity.velocity;
-				Vector3 position = e.position.position;
+                Vector3 velocity = new Vector3 (
+                   entity.velocity.velocity.x,
+                   entity.velocity.velocity.y,
+                   entity.velocity.velocity.z
+                );
 
-                //TickComponent is optional
-                if (e.hasTick)
-                {
-                    _deltaTime = e.tick.deltaTime;
-                }
-                else
-                {
-                    //default
-                    _deltaTime = 1;
-                }
-                  
+                Vector3 position = new Vector3 (
+                    entity.position.position.x,
+                    entity.position.position.y,
+                    entity.position.position.z
+                );
 
-                //FrictionComponent is optional
-                _friction = Vector3.zero;
-                if (e.hasFriction)
-                {
-                    _friction = e.friction.friction;
-                }
-                else
-                {
-                    //default
-                    _friction = Vector3.zero;
-                }
-
-                e.ReplacePosition(new Vector3 (
-                    (position.x + velocity.x * _deltaTime) * (1- _friction.x), 
-                    (position.y + velocity.y * _deltaTime) * (1- _friction.y), 
-                    (position.z + velocity.z * _deltaTime) * (1- _friction.z)
+                entity.ReplacePosition(new RMC.Common.UnityEngineReplacement.Vector3 (
+                    (position.x + velocity.x * entity.tick.deltaTime) * (1- entity.friction.friction.x), 
+                    (position.y + velocity.y * entity.tick.deltaTime) * (1- entity.friction.friction.y), 
+                    (position.z + velocity.z * entity.tick.deltaTime) * (1- entity.friction.friction.z)
                 ));
 
+               
 			}
 		}
 

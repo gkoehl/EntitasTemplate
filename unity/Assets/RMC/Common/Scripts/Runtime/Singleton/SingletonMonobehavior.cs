@@ -199,7 +199,7 @@ namespace RMC.Common.Singleton
 
 		
 		//	PRIVATE
-		public void OnDestroy ()
+		protected virtual void OnDestroy ()
 		{
 			//override as needed
 		}

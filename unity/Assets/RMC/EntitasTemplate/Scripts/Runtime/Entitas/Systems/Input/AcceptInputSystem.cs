@@ -1,7 +1,7 @@
 ﻿using Entitas;
-using UnityEngine;
 using RMC.Common.Entitas.Components.Input;
 using RMC.EntitasTemplate.Entitas.Controllers.Singleton;
+using UnityEngine;
 
 namespace RMC.EntitasTemplate.Entitas.Systems
 {
@@ -54,7 +54,7 @@ namespace RMC.EntitasTemplate.Entitas.Systems
                     foreach (var acceptInputEntity in _acceptInputGroup.GetEntities())
                     {
                         //Debug.Log("inputEntity.input.inputAxis.y : " + inputEntity.input.inputAxis.y);
-                        Vector3 nextVelocity = new Vector3
+                        RMC.Common.UnityEngineReplacement.Vector3 nextVelocity = new RMC.Common.UnityEngineReplacement.Vector3
                             (
                                 inputEntity.input.inputAxis.x * GameConstants.VelocityPerInputAxisSpeed,
                                 inputEntity.input.inputAxis.y * GameConstants.VelocityPerInputAxisSpeed, 
@@ -68,9 +68,8 @@ namespace RMC.EntitasTemplate.Entitas.Systems
                 }
                 else if (inputEntity.input.inputType == InputComponent.InputType.KeyCode)
                 {
-                    if (inputEntity.input.inputKeyCode == KeyCode.Space)
+                    if (inputEntity.input.inputKeyCode == RMC.Common.UnityEngineReplacement.KeyCode.Space)
                     {
-                        //Debug.Log("inputEntity.input.inputKeyCode : " + inputEntity.input.inputKeyCode);
                         GameController.Instance.Restart();
                     }
                 }

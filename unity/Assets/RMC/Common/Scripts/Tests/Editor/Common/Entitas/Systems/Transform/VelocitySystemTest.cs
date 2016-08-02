@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Entitas;
 using RMC.Common.Entitas.Systems.Transform;
+using RMC.Common.UnityEngineReplacement;
 
 namespace RMC.Common.Entitas.Components.Transform
 {
@@ -10,6 +10,7 @@ namespace RMC.Common.Entitas.Components.Transform
     /// This test is important because it is unique to my project (and thus not covered by Entitas' owners testing)
     /// Because Entitas Systems are decoupled from UnityEngine (typically), testing can be easy and thorough. Nice! - srivello
     /// </summary>
+
     [TestFixture]
     public class VelocitySystemTest
     {
@@ -39,9 +40,6 @@ namespace RMC.Common.Entitas.Components.Transform
         }
 
 
-        /// <summary>
-        /// Here we will test a # of executions of the test. We could test much more executions too if desired.
-        /// </summary>
         [Test]
         public void ExecuteSystemTest ([NUnit.Framework.Range (1, 10, 1)] int totalSystemExecutions)
         {

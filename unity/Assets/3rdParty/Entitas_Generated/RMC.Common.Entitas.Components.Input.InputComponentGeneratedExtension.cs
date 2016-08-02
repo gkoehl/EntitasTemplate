@@ -12,7 +12,7 @@ namespace Entitas {
 
         public bool hasInput { get { return HasComponent(ComponentIds.Input); } }
 
-        public Entity AddInput(RMC.Common.Entitas.Components.Input.InputComponent.InputType newInputType, UnityEngine.KeyCode newInputKeyCode, UnityEngine.Vector2 newInputAxis) {
+        public Entity AddInput(RMC.Common.Entitas.Components.Input.InputComponent.InputType newInputType, RMC.Common.UnityEngineReplacement.KeyCode newInputKeyCode, RMC.Common.UnityEngineReplacement.Vector2 newInputAxis) {
             var component = CreateComponent<RMC.Common.Entitas.Components.Input.InputComponent>(ComponentIds.Input);
             component.inputType = newInputType;
             component.inputKeyCode = newInputKeyCode;
@@ -20,7 +20,7 @@ namespace Entitas {
             return AddComponent(ComponentIds.Input, component);
         }
 
-        public Entity ReplaceInput(RMC.Common.Entitas.Components.Input.InputComponent.InputType newInputType, UnityEngine.KeyCode newInputKeyCode, UnityEngine.Vector2 newInputAxis) {
+        public Entity ReplaceInput(RMC.Common.Entitas.Components.Input.InputComponent.InputType newInputType, RMC.Common.UnityEngineReplacement.KeyCode newInputKeyCode, RMC.Common.UnityEngineReplacement.Vector2 newInputAxis) {
             var component = CreateComponent<RMC.Common.Entitas.Components.Input.InputComponent>(ComponentIds.Input);
             component.inputType = newInputType;
             component.inputKeyCode = newInputKeyCode;

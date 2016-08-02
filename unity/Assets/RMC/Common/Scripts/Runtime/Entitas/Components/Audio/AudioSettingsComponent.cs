@@ -1,5 +1,4 @@
 ﻿using Entitas;
-using UnityEngine;
 using Entitas.CodeGenerator;
 
 namespace RMC.Common.Entitas.Components.Audio

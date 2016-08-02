@@ -47,9 +47,13 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
             Debug.Log ("GameController.Awake()");
 
 
-            GameController.OnDestroying += GameController_OnDestroying;
             AudioController.Instantiate();
             InputController.Instantiate();
+            ResourceController.Instantiate();
+            TickController.Instantiate();
+            ViewController.Instantiate();
+            GameController.OnDestroying += GameController_OnDestroying;
+
 
 			Application.targetFrameRate = 30;
 
@@ -78,14 +82,11 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 
             GameController.OnDestroying -= GameController_OnDestroying;
 
-            if (AudioController.IsInstantiated())
-            {
-                AudioController.Destroy();
-            }
-            if (InputController.IsInstantiated())
-            {
-                InputController.Destroy();
-            }
+            AudioController.Destroy();
+            InputController.Destroy();
+            ResourceController.Destroy();
+            TickController.Destroy();
+            ViewController.Destroy();
             _unpausableUpdateSystems.DeactivateReactiveSystems ();
 
             Pools.pool.Reset ();
@@ -137,8 +138,9 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
             //  Create human player on the right
             Entity playerEntity            = _pool.CreateEntity ();
             playerEntity.AddResource       ("Prefabs/Player");
-            playerEntity.AddVelocity       (Vector3.zero);
-            playerEntity.AddPosition       (Vector3.zero);
+            playerEntity.AddVelocity       (RMC.Common.UnityEngineReplacement.Vector3.zero);
+            playerEntity.AddFriction       (RMC.Common.UnityEngineReplacement.Vector3.zero);
+            playerEntity.AddPosition       (RMC.Common.UnityEngineReplacement.Vector3.zero);
             playerEntity.WillAcceptInput   (true);
             playerEntity.AddTick           (Time.deltaTime);
 
@@ -151,11 +153,6 @@ namespace RMC.EntitasTemplate.Entitas.Controllers.Singleton
 			//a feature is a group of systems
             _unpausableUpdateSystems = new Feature ();
             _unpausableUpdateSystems.Add (_pool.CreateSystem<VelocitySystem> ());
-            _unpausableUpdateSystems.Add (_pool.CreateSystem<ViewSystem> ());
-
-            _unpausableUpdateSystems.Add (_pool.CreateSystem<AddResourceSystem> ());
-            _unpausableUpdateSystems.Add (_pool.CreateSystem<RemoveResourceSystem> ());
-
             _unpausableUpdateSystems.Add (_pool.CreateSystem<AcceptInputSystem> ());
             _unpausableUpdateSystems.Add (_pool.CreateSystem<DestroySystem> ());
 

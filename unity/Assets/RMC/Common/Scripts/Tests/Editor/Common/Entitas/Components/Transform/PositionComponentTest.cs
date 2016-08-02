@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Entitas;
+using RMC.Common.UnityEngineReplacement;
 
 namespace RMC.Common.Entitas.Components.Transform
 {

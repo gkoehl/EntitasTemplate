@@ -12,14 +12,14 @@ namespace Entitas {
 
         public bool hasView { get { return HasComponent(ComponentIds.View); } }
 
-        public Entity AddView(UnityEngine.GameObject newGameObject, UnityEngine.Bounds newBounds) {
+        public Entity AddView(object newGameObject, RMC.Common.UnityEngineReplacement.Bounds newBounds) {
             var component = CreateComponent<RMC.Common.Entitas.Components.Render.ViewComponent>(ComponentIds.View);
             component.gameObject = newGameObject;
             component.bounds = newBounds;
             return AddComponent(ComponentIds.View, component);
         }
 
-        public Entity ReplaceView(UnityEngine.GameObject newGameObject, UnityEngine.Bounds newBounds) {
+        public Entity ReplaceView(object newGameObject, RMC.Common.UnityEngineReplacement.Bounds newBounds) {
             var component = CreateComponent<RMC.Common.Entitas.Components.Render.ViewComponent>(ComponentIds.View);
             component.gameObject = newGameObject;
             component.bounds = newBounds;

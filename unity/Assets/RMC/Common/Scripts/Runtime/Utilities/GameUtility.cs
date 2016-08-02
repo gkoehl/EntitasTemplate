@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace RMC.Common.Entitas.Utilities
+namespace RMC.Common.Utilities
 {
     /// <summary>
     /// Some potentially reusable utilities

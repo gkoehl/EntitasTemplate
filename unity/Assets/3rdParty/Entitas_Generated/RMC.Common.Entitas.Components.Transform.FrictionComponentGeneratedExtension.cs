@@ -12,13 +12,13 @@ namespace Entitas {
 
         public bool hasFriction { get { return HasComponent(ComponentIds.Friction); } }
 
-        public Entity AddFriction(UnityEngine.Vector3 newFriction) {
+        public Entity AddFriction(RMC.Common.UnityEngineReplacement.Vector3 newFriction) {
             var component = CreateComponent<RMC.Common.Entitas.Components.Transform.FrictionComponent>(ComponentIds.Friction);
             component.friction = newFriction;
             return AddComponent(ComponentIds.Friction, component);
         }
 
-        public Entity ReplaceFriction(UnityEngine.Vector3 newFriction) {
+        public Entity ReplaceFriction(RMC.Common.UnityEngineReplacement.Vector3 newFriction) {
             var component = CreateComponent<RMC.Common.Entitas.Components.Transform.FrictionComponent>(ComponentIds.Friction);
             component.friction = newFriction;
             ReplaceComponent(ComponentIds.Friction, component);

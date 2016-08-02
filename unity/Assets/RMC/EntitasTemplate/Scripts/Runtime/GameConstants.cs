@@ -1,6 +1,5 @@
 ﻿//Uncomment to remove debugging functionality
 //#define ENTITAS_DISABLE_VISUAL_DEBUGGING
-using UnityEngine;
 using RMC.Common.Entitas.Utilities;
 
 namespace RMC.EntitasTemplate.Entitas

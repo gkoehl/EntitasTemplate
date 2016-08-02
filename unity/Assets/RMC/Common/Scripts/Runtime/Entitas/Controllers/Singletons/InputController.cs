@@ -1,9 +1,9 @@
 ﻿using RMC.Common.Singleton;
 using Entitas;
-using UnityEngine;
 using System.Collections.Generic;
-using RMC.EntitasTemplate.Entitas.Components;
 using RMC.Common.Entitas.Components.Input;
+using RMC.Common.UnityEngineReplacement;
+using UnityEngine;
 
 
 namespace RMC.Common.Entitas.Controllers.Singleton
@@ -40,21 +40,23 @@ namespace RMC.Common.Entitas.Controllers.Singleton
 
         protected void Update ()
         {
-            float verticalAxis = Input.GetAxis("Vertical");
-            float horizontalAxis = Input.GetAxis("Horizontal");
+            float verticalAxis = UnityEngine.Input.GetAxis("Vertical");
+            float horizontalAxis = UnityEngine.Input.GetAxis("Horizontal");
 
             if (verticalAxis != 0 || horizontalAxis != 0)
             {
-                _pool.CreateEntity().AddInput(InputComponent.InputType.Axis, KeyCode.None, new Vector2(horizontalAxis, verticalAxis));
+                _pool.CreateEntity().AddInput(InputComponent.InputType.Axis, RMC.Common.UnityEngineReplacement.KeyCode.None, new RMC.Common.UnityEngineReplacement.Vector2(horizontalAxis, verticalAxis));
             }
 
-
-            //TODO: Support all keys here
-            if (Input.GetKeyDown(KeyCode.Space))
+            //TODO: Add button support
+            if (UnityEngine.Input.GetKeyDown(UnityEngine.KeyCode.Space))
             {
-                _pool.CreateEntity().AddInput (InputComponent.InputType.KeyCode, KeyCode.Space, Vector2.zero);
+                _pool.CreateEntity().AddInput (
+                    InputComponent.InputType.KeyCode, 
+                    RMC.Common.UnityEngineReplacement.KeyCode.Space, 
+                    RMC.Common.UnityEngineReplacement.Vector2.zero);
             }
-           
+
 
         }
 
