@@ -6,7 +6,7 @@ namespace RMC.Common.Entitas.Systems.Transform
 	/// <summary>
 	/// Update PositionComponent via VelocityComponent
 	/// </summary>
-	public class VelocitySystem : IExecuteSystem, ISetPool 
+    public class VelocitySystem : ISetPool, IInitializeSystem, IExecuteSystem
 	{
 		// ------------------ Constants and statics
 
@@ -15,6 +15,7 @@ namespace RMC.Common.Entitas.Systems.Transform
 		// ------------------ Serialized fields and properties
 
 		// ------------------ Non-serialized fields
+        private Pool _pool;
 		private Group _group;
             
 		// ------------------ Methods
@@ -23,10 +24,14 @@ namespace RMC.Common.Entitas.Systems.Transform
 		// pool.CreateSystem<VelocitySystem>();
 		public void SetPool(Pool pool) 
 		{
-			// Get the group of entities that have a Move and position component
-            _group = pool.GetGroup(Matcher.AllOf(Matcher.Velocity, Matcher.Position, Matcher.Friction, Matcher.Tick));
-
+            _pool = pool;
 		}
+
+        public void Initialize()
+        {
+            // Get the group of entities that have a Move and position component
+            _group = _pool.GetGroup(Matcher.AllOf(Matcher.Velocity, Matcher.Position, Matcher.Friction, Matcher.Tick));
+        }
 
 
 		public void Execute() 

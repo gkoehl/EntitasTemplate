@@ -9,7 +9,7 @@ namespace RMC.Common.Entitas.Systems.Destroy
     /// <summary>
     /// Destroy's the Entity
     /// </summary>
-    public class DestroySystem : IReactiveSystem, ISetPool
+    public class DestroySystem :  ISetPool, IReactiveSystem
     {
         private Pool _pool;
 
@@ -22,7 +22,7 @@ namespace RMC.Common.Entitas.Systems.Destroy
         {
             _pool = pool;
         }
-
+           
         public void Execute(List<Entity> entities)
         {
             foreach (var entity in entities)
