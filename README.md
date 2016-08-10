@@ -8,6 +8,10 @@
 * Entitas is an ECS (Entity Component System) which presents a new way to think about architecting your Unity projects. Thanks to the amazing work of <a href="http://github.com/sschmid/Entitas-CSharp/">https://github.com/sschmid/Entitas-CSharp/</a>
 
 </p>
+What is Entitas:
+=============
+
+![Alt text](http://www.rivellomultimediaconsulting.com/unity3d_architectures_entitas/ "Unity3D Architectures: Entitas") - Read my latest article for the full introduction
 
 Screenshot
 =============
